@@ -5,4 +5,4 @@
 
 ## Equipa / Equipo
 - Lucas Omena — Front-end
-- [Nome dela] — Dados
+- Paula — Dados
