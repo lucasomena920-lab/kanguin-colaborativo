@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kanban Colaborativo</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Kanban Colaborativo</h1>
+  </header>
+
+  <main class="quadro">
+    <section class="coluna" data-status="a-fazer">
+      <h2>A fazer</h2>
+      <div class="lista-tarefas"></div>
+    </section>
+
+    <section class="coluna" data-status="fazendo">
+      <h2>Fazendo</h2>
+      <div class="lista-tarefas"></div>
+    </section>
+
+    <section class="coluna" data-status="feito">
+      <h2>Feito</h2>
+      <div class="lista-tarefas"></div>
+    </section>
+  </main>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
