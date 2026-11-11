@@ -1,0 +1,55 @@
+{
+  "menu": {
+    "titulo": "Menu",
+    "quadro": "Board",
+    "estatisticas": "Statistics",
+    "calendario": "Calendar"
+  },
+  "equipe": "Team",
+  "idioma": "Language",
+  "tema": {
+    "escuro": "Dark theme",
+    "claro": "Light theme"
+  },
+  "topo": {
+    "titulo": "Kanban Project",
+    "subtitulo": "Sprint 1 · November",
+    "buscar": "Search tasks...",
+    "todasPrioridades": "All priorities",
+    "todos": "Everyone",
+    "novaTarefa": "New task"
+  },
+  "colunas": {
+    "a-fazer": "To do",
+    "fazendo": "In progress",
+    "feito": "Done"
+  },
+  "prioridade": {
+    "alta": "High",
+    "media": "Medium",
+    "baja": "Low"
+  },
+  "coluna": {
+    "vazia": "No tasks here",
+    "adicionar": "Add task"
+  },
+  "card": {
+    "atrasada": "overdue"
+  },
+  "modal": {
+    "nova": "New task",
+    "editar": "Edit task",
+    "titulo": "Title",
+    "tituloPlaceholder": "e.g. Build the sign-up page",
+    "descricao": "Description",
+    "descricaoPlaceholder": "Task details...",
+    "coluna": "Column",
+    "prioridade": "Priority",
+    "responsavel": "Assignee",
+    "dataLimite": "Due date",
+    "excluir": "Delete",
+    "cancelar": "Cancel",
+    "salvar": "Save",
+    "confirmarExclusao": "Are you sure you want to delete \"{{titulo}}\"?"
+  }
+}

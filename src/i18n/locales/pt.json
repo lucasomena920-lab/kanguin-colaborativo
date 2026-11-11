@@ -1,0 +1,55 @@
+{
+  "menu": {
+    "titulo": "Menu",
+    "quadro": "Quadro",
+    "estatisticas": "Estatísticas",
+    "calendario": "Calendário"
+  },
+  "equipe": "Equipe",
+  "idioma": "Idioma",
+  "tema": {
+    "escuro": "Tema escuro",
+    "claro": "Tema claro"
+  },
+  "topo": {
+    "titulo": "Projeto kanguin",
+    "subtitulo": "Sprint 1 · Novembro",
+    "buscar": "Buscar tarefa...",
+    "todasPrioridades": "Todas as prioridades",
+    "todos": "Todos",
+    "novaTarefa": "Nova tarefa"
+  },
+  "colunas": {
+    "a-fazer": "A fazer",
+    "fazendo": "Fazendo",
+    "feito": "Feito"
+  },
+  "prioridade": {
+    "alta": "Alta",
+    "media": "Média",
+    "baja": "Baixa"
+  },
+  "coluna": {
+    "vazia": "Nenhuma tarefa aqui",
+    "adicionar": "Adicionar tarefa"
+  },
+  "card": {
+    "atrasada": "atrasada"
+  },
+  "modal": {
+    "nova": "Nova tarefa",
+    "editar": "Editar tarefa",
+    "titulo": "Título",
+    "tituloPlaceholder": "Ex.: Criar tela de cadastro",
+    "descricao": "Descrição",
+    "descricaoPlaceholder": "Detalhes da tarefa...",
+    "coluna": "Coluna",
+    "prioridade": "Prioridade",
+    "responsavel": "Responsável",
+    "dataLimite": "Data-limite",
+    "excluir": "Excluir",
+    "cancelar": "Cancelar",
+    "salvar": "Salvar",
+    "confirmarExclusao": "Tem certeza que quer excluir \"{{titulo}}\"?"
+  }
+}

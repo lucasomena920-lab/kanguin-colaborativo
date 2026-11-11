@@ -1,9 +1,15 @@
+import { useTranslation } from 'react-i18next'
+
+const prioridades = ['alta', 'media', 'baja']
+
 function Topo({ filtros, onMudarFiltro, equipe, onNovaTarefa }) {
+  const { t } = useTranslation()
+
   return (
     <header className="topo d-flex flex-wrap align-items-center gap-2 px-4 py-3 border-bottom">
       <div className="me-auto">
-        <h1 className="h3 mb-0">Kanguin</h1>
-        <small className="text-body-secondary">Sprint 1 · Novembro</small>
+        <h1 className="h3 mb-0">{t('topo.titulo')}</h1>
+        <small className="text-body-secondary">{t('topo.subtitulo')}</small>
       </div>
 
       <div className="input-group busca">
@@ -13,7 +19,7 @@ function Topo({ filtros, onMudarFiltro, equipe, onNovaTarefa }) {
         <input
           type="search"
           className="form-control"
-          placeholder="Buscar tarefa..."
+          placeholder={t('topo.buscar')}
           value={filtros.busca}
           onChange={(e) => onMudarFiltro('busca', e.target.value)}
         />
@@ -24,10 +30,10 @@ function Topo({ filtros, onMudarFiltro, equipe, onNovaTarefa }) {
         value={filtros.prioridade}
         onChange={(e) => onMudarFiltro('prioridade', e.target.value)}
       >
-        <option value="">Todas as prioridades</option>
-        <option value="alta">Alta</option>
-        <option value="media">Média</option>
-        <option value="baja">Baixa</option>
+        <option value="">{t('topo.todasPrioridades')}</option>
+        {prioridades.map((p) => (
+          <option key={p} value={p}>{t(`prioridade.${p}`)}</option>
+        ))}
       </select>
 
       <select
@@ -35,17 +41,15 @@ function Topo({ filtros, onMudarFiltro, equipe, onNovaTarefa }) {
         value={filtros.responsavel}
         onChange={(e) => onMudarFiltro('responsavel', e.target.value)}
       >
-        <option value="">Todos</option>
+        <option value="">{t('topo.todos')}</option>
         {equipe.map((membro) => (
-          <option key={membro.nome} value={membro.nome}>
-            {membro.nome}
-          </option>
+          <option key={membro.nome} value={membro.nome}>{membro.nome}</option>
         ))}
       </select>
 
       <button className="btn btn-primary" onClick={onNovaTarefa}>
         <i className="bi bi-plus-lg me-1" />
-        Nova tarefa
+        {t('topo.novaTarefa')}
       </button>
     </header>
   )

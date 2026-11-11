@@ -1,0 +1,56 @@
+
+{
+  "menu": {
+    "titulo": "Menú",
+    "quadro": "Tablero",
+    "estatisticas": "Estadísticas",
+    "calendario": "Calendario"
+  },
+  "equipe": "Equipo",
+  "idioma": "Idioma",
+  "tema": {
+    "escuro": "Tema oscuro",
+    "claro": "Tema claro"
+  },
+  "topo": {
+    "titulo": "Proyecto Kanban",
+    "subtitulo": "Sprint 1 · Noviembre",
+    "buscar": "Buscar tarea...",
+    "todasPrioridades": "Todas las prioridades",
+    "todos": "Todos",
+    "novaTarefa": "Nueva tarea"
+  },
+  "colunas": {
+    "a-fazer": "Por hacer",
+    "fazendo": "En curso",
+    "feito": "Hecho"
+  },
+  "prioridade": {
+    "alta": "Alta",
+    "media": "Media",
+    "baja": "Baja"
+  },
+  "coluna": {
+    "vazia": "No hay tareas aquí",
+    "adicionar": "Añadir tarea"
+  },
+  "card": {
+    "atrasada": "atrasada"
+  },
+  "modal": {
+    "nova": "Nueva tarea",
+    "editar": "Editar tarea",
+    "titulo": "Título",
+    "tituloPlaceholder": "Ej.: Crear pantalla de registro",
+    "descricao": "Descripción",
+    "descricaoPlaceholder": "Detalles de la tarea...",
+    "coluna": "Columna",
+    "prioridade": "Prioridad",
+    "responsavel": "Responsable",
+    "dataLimite": "Fecha límite",
+    "excluir": "Eliminar",
+    "cancelar": "Cancelar",
+    "salvar": "Guardar",
+    "confirmarExclusao": "¿Seguro que quieres eliminar \"{{titulo}}\"?"
+  }
+}
