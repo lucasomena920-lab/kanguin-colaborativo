@@ -78,3 +78,32 @@ header {
     flex-direction: column;
   }
 }
+.card {
+  background-color: var(--fundo-cards);
+  border: 1px solid var(--bordas);
+  border-left: 4px solid var(--azul-claro);
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 10px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.1);
+}
+
+.card h3 {
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+
+.card p {
+  font-size: 13px;
+  color: var(--texto-secundario);
+}
+
+/* Prioridade (vem do JSON da sua amiga) */
+.card.prioridad-alta  { border-left-color: var(--urgente); }
+.card.prioridad-media { border-left-color: var(--andamento); }
+.card.prioridad-baja  { border-left-color: var(--sucesso); }
