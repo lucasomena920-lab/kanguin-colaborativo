@@ -11,12 +11,24 @@ const equipe = [
   { nome: 'Paula', cor: '#8B5CF6' },
 ]
 
-// Os nomes das colunas agora vêm da tradução (colunas.a-fazer, etc.)
+// Os nomes das colunas vêm da tradução (colunas.a-fazer, etc.)
 const colunas = [
-  { id: 'a-fazer', cor: 'var(--informativo)' },
+  { id: 'a-fazer', cor: 'var(--urgente)' },
   { id: 'fazendo', cor: 'var(--andamento)' },
   { id: 'feito', cor: 'var(--sucesso)' },
 ]
+
+// ===== FUNÇÕES AUXILIARES =====
+function hojeISO() {
+  return new Date().toISOString().slice(0, 10)
+}
+
+// Se a tarefa foi para "Feito", guarda a data de conclusão (para as estatísticas da Paula).
+// Se já tinha data, mantém. Se saiu de "Feito", apaga.
+function dataConclusao(novoStatus, tarefaAntiga) {
+  if (novoStatus !== 'feito') return null
+  return tarefaAntiga?.fecha_conclusion ?? hojeISO()
+}
 
 function App() {
   const { t } = useTranslation()
@@ -66,29 +78,40 @@ function App() {
     setTarefaEditando(null)
   }
 
-  // ===== FUNÇÕES: criar, editar, excluir =====
+  // ===== FUNÇÕES: criar, editar, mover, excluir =====
   function salvarTarefa(dados) {
-    const hoje = new Date().toISOString().slice(0, 10)
-
-    // Se foi para "Feito", guarda a data de conclusão (para as estatísticas da Paula)
-    const conclusao =
-      dados.status === 'feito' ? (tarefaEditando?.fecha_conclusion ?? hoje) : null
-
     if (tarefaEditando) {
       setTarefas(
-        tarefas.map((t) =>
-          t.id === tarefaEditando.id ? { ...t, ...dados, fecha_conclusion: conclusao } : t
+        tarefas.map((item) =>
+          item.id === tarefaEditando.id
+            ? { ...item, ...dados, fecha_conclusion: dataConclusao(dados.status, item) }
+            : item
         )
       )
     } else {
-      const novoId = Math.max(0, ...tarefas.map((t) => t.id)) + 1
+      const novoId = Math.max(0, ...tarefas.map((item) => item.id)) + 1
       setTarefas([
         ...tarefas,
-        { id: novoId, ...dados, fecha_creacion: hoje, fecha_conclusion: conclusao },
+        {
+          id: novoId,
+          ...dados,
+          fecha_creacion: hojeISO(),
+          fecha_conclusion: dataConclusao(dados.status, null),
+        },
       ])
     }
 
     fecharModal()
+  }
+
+  function moverTarefa(id, novoStatus) {
+    setTarefas(
+      tarefas.map((item) =>
+        item.id === id
+          ? { ...item, status: novoStatus, fecha_conclusion: dataConclusao(novoStatus, item) }
+          : item
+      )
+    )
   }
 
   function excluirTarefa(tarefa) {
@@ -128,6 +151,7 @@ function App() {
             equipe={equipe}
             onEditar={abrirEdicao}
             onAdicionar={abrirNovaTarefa}
+            onMover={moverTarefa}
           />
         </main>
       </div>

@@ -194,3 +194,28 @@
   color: var(--sucesso);
   background-color: color-mix(in srgb, var(--sucesso) 15%, transparent);
 }
+
+/* ===== Arrastar e soltar ===== */
+.coluna {
+  outline: 2px dashed transparent;
+  outline-offset: -2px;
+  transition: outline-color 0.2s, background-color 0.2s;
+}
+
+.coluna.alvo {
+  outline-color: var(--azul-claro);
+  background-color: color-mix(in srgb, var(--azul-claro) 12%, var(--fundo-colunas));
+}
+
+.arrastando {
+  opacity: 0.4;
+}
+
+.card-overlay {
+  transform: rotate(3deg);
+  cursor: grabbing;
+}
+
+.card-overlay .card-tarefa {
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.25);
+}

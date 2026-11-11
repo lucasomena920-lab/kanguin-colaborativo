@@ -1,11 +1,13 @@
+import { useDroppable } from '@dnd-kit/core'
 import { useTranslation } from 'react-i18next'
-import Card from './Card.jsx'
+import CardArrastavel from './CardArrastavel.jsx'
 
 function Coluna({ coluna, tarefas, equipe, onEditar, onAdicionar }) {
   const { t } = useTranslation()
+  const { setNodeRef, isOver } = useDroppable({ id: coluna.id })
 
   return (
-    <section className="coluna rounded-3 p-3">
+    <section ref={setNodeRef} className={`coluna rounded-3 p-3 ${isOver ? 'alvo' : ''}`}>
       <div className="d-flex align-items-center gap-2 mb-3 px-1">
         <span className="bolinha" style={{ backgroundColor: coluna.cor }} />
         <h2 className="h6 fw-semibold mb-0">{t(`colunas.${coluna.id}`)}</h2>
@@ -17,7 +19,12 @@ function Coluna({ coluna, tarefas, equipe, onEditar, onAdicionar }) {
           <p className="vazio">{t('coluna.vazia')}</p>
         ) : (
           tarefas.map((tarefa) => (
-            <Card key={tarefa.id} tarefa={tarefa} equipe={equipe} onEditar={onEditar} />
+            <CardArrastavel
+              key={tarefa.id}
+              tarefa={tarefa}
+              equipe={equipe}
+              onEditar={onEditar}
+            />
           ))
         )}
       </div>
