@@ -1,8 +1,10 @@
-function Sidebar({ equipe }) {
+function Sidebar({ equipe, tema, onAlternarTema }) {
   return (
     <aside className="sidebar d-none d-md-flex flex-column gap-4 p-3 border-end">
       <div className="d-flex align-items-center gap-2 fw-bold fs-5">
-        <div className="logo-icone">▦</div>
+        <div className="logo-icone">
+          <i className="bi bi-kanban" />
+        </div>
         Kanban Flow
       </div>
 
@@ -10,13 +12,22 @@ function Sidebar({ equipe }) {
         <p className="menu-titulo">Menu</p>
         <ul className="nav nav-pills flex-column gap-1">
           <li className="nav-item">
-            <a href="#" className="nav-link active">📋 Quadro</a>
+            <a href="#" className="nav-link active">
+              <i className="bi bi-columns-gap me-2" />
+              Quadro
+            </a>
           </li>
           <li className="nav-item">
-            <a href="#" className="nav-link">📊 Estatísticas</a>
+            <a href="#" className="nav-link">
+              <i className="bi bi-bar-chart-line me-2" />
+              Estatísticas
+            </a>
           </li>
           <li className="nav-item">
-            <a href="#" className="nav-link">📅 Calendário</a>
+            <a href="#" className="nav-link">
+              <i className="bi bi-calendar3 me-2" />
+              Calendário
+            </a>
           </li>
         </ul>
       </nav>
@@ -35,7 +46,10 @@ function Sidebar({ equipe }) {
         </ul>
       </div>
 
-      <button className="btn btn-outline-secondary mt-auto">🌙 Tema escuro</button>
+      <button className="btn btn-outline-secondary mt-auto" onClick={onAlternarTema}>
+        <i className={tema === 'light' ? 'bi bi-moon-stars me-2' : 'bi bi-sun me-2'} />
+        {tema === 'light' ? 'Tema escuro' : 'Tema claro'}
+      </button>
     </aside>
   )
 }
