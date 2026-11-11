@@ -1,0 +1,80 @@
+:root {
+  /* Primária */
+  --azul-principal: #2563EB;
+  --azul-hover: #1D4ED8;
+  --azul-claro: #60A5FA;
+
+  /* Neutras */
+  --fundo-geral: #F8FAFC;
+  --fundo-colunas: #E2E8F0;
+  --fundo-cards: #FFFFFF;
+  --bordas: #CBD5E1;
+
+  /* Texto */
+  --texto-principal: #0F172A;
+  --texto-secundario: #475569;
+  --texto-suave: #94A3B8;
+
+  /* Ações e status */
+  --sucesso: #10B981;
+  --andamento: #F59E0B;
+  --urgente: #EF4444;
+  --bloqueado: #8B5CF6;
+  --informativo: #06B6D4;
+}
+
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--fundo-geral);
+  color: var(--texto-principal);
+}
+
+header {
+  background-color: var(--azul-principal);
+  color: var(--fundo-cards);
+  padding: 20px;
+  text-align: center;
+}
+
+.quadro {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  align-items: flex-start;
+}
+
+.coluna {
+  flex: 1;
+  background-color: var(--fundo-colunas);
+  border: 1px solid var(--bordas);
+  border-radius: 8px;
+  padding: 15px;
+  min-height: 400px;
+}
+
+.coluna h2 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+  border-bottom: 3px solid var(--bordas);
+}
+
+/* Cor de cada coluna */
+.coluna[data-status="a-fazer"] h2 { border-bottom-color: var(--informativo); }
+.coluna[data-status="fazendo"] h2 { border-bottom-color: var(--andamento); }
+.coluna[data-status="feito"] h2   { border-bottom-color: var(--sucesso); }
+
+@media (max-width: 768px) {
+  .quadro {
+    flex-direction: column;
+  }
+}
