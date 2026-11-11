@@ -1,6 +1,6 @@
 function Topo({ filtros, onMudarFiltro, equipe, onNovaTarefa }) {
   return (
-    <header className="d-flex flex-wrap align-items-center gap-2 mb-4">
+    <header className="topo d-flex flex-wrap align-items-center gap-2 px-4 py-3 border-bottom">
       <div className="me-auto">
         <h1 className="h3 mb-0">Projeto Kanban</h1>
         <small className="text-body-secondary">Sprint 1 · Novembro</small>

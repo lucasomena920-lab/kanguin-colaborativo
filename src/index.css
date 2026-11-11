@@ -25,10 +25,24 @@
   --bs-body-bg: var(--fundo-geral);
   --bs-body-color: var(--texto-principal);
   --bs-border-color: var(--bordas);
+  --bs-secondary-color: var(--texto-secundario);
+  --bs-tertiary-bg: var(--fundo-colunas);
   --bs-body-font-family: "Segoe UI", system-ui, sans-serif;
 }
 
-/* Botão azul do Bootstrap com a nossa paleta */
+/* ===== Tema escuro ===== */
+[data-bs-theme="dark"] {
+  --fundo-geral: #0B1220;
+  --fundo-colunas: #111A2E;
+  --fundo-cards: #1A2540;
+  --bordas: #26324D;
+
+  --texto-principal: #E2E8F0;
+  --texto-secundario: #94A3B8;
+  --texto-suave: #64748B;
+}
+
+/* ===== Botão azul com a nossa paleta ===== */
 .btn-primary {
   --bs-btn-bg: var(--azul-principal);
   --bs-btn-border-color: var(--azul-principal);
@@ -38,7 +52,7 @@
   --bs-btn-active-border-color: var(--azul-hover);
 }
 
-/* Menu da sidebar */
+/* ===== Menu da sidebar ===== */
 .nav-pills {
   --bs-nav-pills-link-active-bg: var(--azul-principal);
   --bs-nav-link-color: var(--texto-secundario);
@@ -83,4 +97,100 @@
   font-weight: 700;
   display: grid;
   place-items: center;
+}
+
+/* ===== Topo ===== */
+.topo {
+  background-color: var(--fundo-cards);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.busca {
+  max-width: 260px;
+}
+
+/* ===== Quadro e colunas ===== */
+.quadro {
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.coluna {
+  flex: 1;
+  min-width: 280px;
+  background-color: var(--fundo-colunas);
+}
+
+.bolinha {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.contador {
+  font-size: 12px;
+  font-weight: 600;
+  background-color: var(--fundo-cards);
+  color: var(--texto-secundario);
+  padding: 2px 9px;
+  border-radius: 999px;
+}
+
+.vazio {
+  text-align: center;
+  font-size: 13px;
+  color: var(--texto-suave);
+  padding: 20px 10px;
+  border: 2px dashed var(--bordas);
+  border-radius: 10px;
+  margin: 0;
+}
+
+.btn-add {
+  color: var(--texto-secundario);
+  border: none;
+}
+
+.btn-add:hover {
+  background-color: var(--fundo-cards);
+  color: var(--azul-principal);
+}
+
+/* ===== Cards ===== */
+.card-tarefa {
+  background-color: var(--fundo-cards);
+  border: 1px solid var(--bordas);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+  cursor: grab;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.card-tarefa:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+}
+
+.etiqueta {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.etiqueta.alta {
+  color: var(--urgente);
+  background-color: color-mix(in srgb, var(--urgente) 15%, transparent);
+}
+
+.etiqueta.media {
+  color: var(--andamento);
+  background-color: color-mix(in srgb, var(--andamento) 15%, transparent);
+}
+
+.etiqueta.baja {
+  color: var(--sucesso);
+  background-color: color-mix(in srgb, var(--sucesso) 15%, transparent);
 }
