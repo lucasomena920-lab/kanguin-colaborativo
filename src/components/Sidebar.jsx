@@ -2,11 +2,10 @@ function Sidebar({ equipe, tema, onAlternarTema }) {
   return (
     <aside className="sidebar d-none d-md-flex flex-column gap-4 p-3 border-end">
       <div className="d-flex align-items-center gap-2 fw-bold fs-5">
-        <div className="logo-icone">
-          <i className="bi bi-kanban" />
-        </div>
-        Kanban Flow
+        <img src="/logo_1.png" alt="" width="36" height="36" />
+        Kanguin
       </div>
+      
 
       <nav>
         <p className="menu-titulo">Menu</p>
