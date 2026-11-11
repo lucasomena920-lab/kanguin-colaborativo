@@ -1,111 +1,86 @@
+/* ===== Paleta Ocean Flow ===== */
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  --azul-principal: #2563EB;
+  --azul-hover: #1D4ED8;
+  --azul-claro: #60A5FA;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  --fundo-geral: #F8FAFC;
+  --fundo-colunas: #E2E8F0;
+  --fundo-cards: #FFFFFF;
+  --bordas: #CBD5E1;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --texto-principal: #0F172A;
+  --texto-secundario: #475569;
+  --texto-suave: #94A3B8;
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  --sucesso: #10B981;
+  --andamento: #F59E0B;
+  --urgente: #EF4444;
+  --bloqueado: #8B5CF6;
+  --informativo: #06B6D4;
+
+  /* Bootstrap usando as nossas cores */
+  --bs-primary: #2563EB;
+  --bs-primary-rgb: 37, 99, 235;
+  --bs-body-bg: var(--fundo-geral);
+  --bs-body-color: var(--texto-principal);
+  --bs-border-color: var(--bordas);
+  --bs-body-font-family: "Segoe UI", system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+/* Botão azul do Bootstrap com a nossa paleta */
+.btn-primary {
+  --bs-btn-bg: var(--azul-principal);
+  --bs-btn-border-color: var(--azul-principal);
+  --bs-btn-hover-bg: var(--azul-hover);
+  --bs-btn-hover-border-color: var(--azul-hover);
+  --bs-btn-active-bg: var(--azul-hover);
+  --bs-btn-active-border-color: var(--azul-hover);
 }
 
-body {
-  margin: 0;
+/* Menu da sidebar */
+.nav-pills {
+  --bs-nav-pills-link-active-bg: var(--azul-principal);
+  --bs-nav-link-color: var(--texto-secundario);
+  --bs-nav-link-hover-color: var(--azul-principal);
 }
 
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
+/* ===== Layout ===== */
+.app {
+  min-height: 100vh;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+.sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background-color: var(--fundo-cards);
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
+.logo-icone {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--azul-principal), var(--informativo));
+  color: white;
+  display: grid;
+  place-items: center;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+.menu-titulo {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--texto-suave);
+  margin: 0 0 8px 12px;
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+.avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
 }
