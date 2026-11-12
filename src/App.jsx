@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { Routes, Route, Navigate } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import Sidebar from './components/Sidebar.jsx'
@@ -8,12 +8,16 @@ import Quadro from './components/Quadro.jsx'
 import ModalTarefa from './components/ModalTarefa.jsx'
 import ModalMembro from './components/ModalMembro.jsx'
 import AvisoDesfazer from './components/AvisoDesfazer.jsx'
-import Estatisticas from './pages/Estatisticas.jsx'
-import Calendario from './pages/Calendario.jsx'
+import Carregando from './components/Carregando.jsx'
 import Lixeira from './pages/Lixeira.jsx'
 import useLocalStorage from './hooks/useLocalStorage.js'
 import { gerarId } from './utils/gerarId.js'
 import { alertasDePrazo } from './utils/notificacoes.js'
+
+// Páginas carregadas só quando alguém abre (lazy loading).
+// Assim, a biblioteca de gráficos não pesa na primeira abertura do site.
+const Estatisticas = lazy(() => import('./pages/Estatisticas.jsx'))
+const Calendario = lazy(() => import('./pages/Calendario.jsx'))
 
 // Os nomes das colunas vêm da tradução (colunas.a-fazer, etc.)
 const colunas = [
@@ -248,61 +252,63 @@ function App() {
       <div className="conteudo flex-grow-1">
         <BarraMobile {...propsMenu} />
 
-        <Routes>
-          {/* Página do Quadro */}
-          <Route
-            path="/"
-            element={
-              <>
-                <Topo
-                  filtros={filtros}
-                  onMudarFiltro={mudarFiltro}
-                  equipe={equipe}
-                  onNovaTarefa={() => abrirNovaTarefa('a-fazer')}
-                  onLimpar={limparQuadro}
-                  podeLimpar={tarefas.length > 0}
-                />
-                <main className="p-3 p-md-4">
-                  <Quadro
-                    colunas={colunas}
-                    tarefas={tarefasVisiveis}
+        <Suspense fallback={<Carregando />}>
+          <Routes>
+            {/* Página do Quadro */}
+            <Route
+              path="/"
+              element={
+                <>
+                  <Topo
+                    filtros={filtros}
+                    onMudarFiltro={mudarFiltro}
                     equipe={equipe}
-                    onEditar={abrirEdicao}
-                    onAdicionar={abrirNovaTarefa}
-                    onMover={moverTarefa}
+                    onNovaTarefa={() => abrirNovaTarefa('a-fazer')}
+                    onLimpar={limparQuadro}
+                    podeLimpar={tarefas.length > 0}
                   />
-                </main>
-              </>
-            }
-          />
+                  <main className="p-3 p-md-4">
+                    <Quadro
+                      colunas={colunas}
+                      tarefas={tarefasVisiveis}
+                      equipe={equipe}
+                      onEditar={abrirEdicao}
+                      onAdicionar={abrirNovaTarefa}
+                      onMover={moverTarefa}
+                    />
+                  </main>
+                </>
+              }
+            />
 
-          <Route
-            path="/estatisticas"
-            element={<Estatisticas tarefas={tarefas} colunas={colunas} equipe={equipe} />}
-          />
+            <Route
+              path="/estatisticas"
+              element={<Estatisticas tarefas={tarefas} colunas={colunas} equipe={equipe} />}
+            />
 
-          <Route
-            path="/calendario"
-            element={
-              <Calendario
-                tarefas={tarefas}
-                equipe={equipe}
-                onEditar={abrirEdicao}
-                onAdicionar={(data) => abrirNovaTarefa('a-fazer', data)}
-              />
-            }
-          />
+            <Route
+              path="/calendario"
+              element={
+                <Calendario
+                  tarefas={tarefas}
+                  equipe={equipe}
+                  onEditar={abrirEdicao}
+                  onAdicionar={(data) => abrirNovaTarefa('a-fazer', data)}
+                />
+              }
+            />
 
-          <Route
-            path="/lixeira"
-            element={
-              <Lixeira itens={lixeira} onRestaurar={restaurarDaLixeira} onEsvaziar={esvaziarLixeira} />
-            }
-          />
+            <Route
+              path="/lixeira"
+              element={
+                <Lixeira itens={lixeira} onRestaurar={restaurarDaLixeira} onEsvaziar={esvaziarLixeira} />
+              }
+            />
 
-          {/* Qualquer outro endereço volta para o Quadro */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+            {/* Qualquer outro endereço volta para o Quadro */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Suspense>
       </div>
 
       {modalAberto && (

@@ -117,5 +117,6 @@
     "atrasadas": "Overdue",
     "hoje": "Due today",
     "amanha": "Due tomorrow"
-  }
+  },
+  "carregando": "Loading..."
 }
