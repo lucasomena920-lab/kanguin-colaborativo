@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { formatarHoras } from '../utils/formatar.js'
 
 // Formato de data de cada idioma
 const formatosData = { pt: 'pt-PT', es: 'es-ES', en: 'en-GB' }
@@ -20,6 +21,26 @@ function Card({ tarefa, equipe, onEditar }) {
   const hoje = new Date().toISOString().slice(0, 10)
   const atrasada =
     tarefa.status !== 'feito' && tarefa.fecha_limite && tarefa.fecha_limite < hoje
+
+  // ===== PRAZO: horas, data ou nada =====
+  let prazo = <span />
+
+  if (tarefa.tipo_prazo === 'horas' && tarefa.horas) {
+    prazo = (
+      <small className="text-body-secondary">
+        <i className="bi bi-clock me-1" />
+        {formatarHoras(tarefa.horas)}
+      </small>
+    )
+  } else if (tarefa.fecha_limite) {
+    prazo = (
+      <small className={atrasada ? 'text-danger fw-semibold' : 'text-body-secondary'}>
+        <i className="bi bi-calendar3 me-1" />
+        {formatarData(tarefa.fecha_limite, i18n.resolvedLanguage)}
+        {atrasada && ` · ${t('card.atrasada')}`}
+      </small>
+    )
+  }
 
   function teclado(e) {
     if (e.key === 'Enter') onEditar(tarefa)
@@ -43,15 +64,7 @@ function Card({ tarefa, equipe, onEditar }) {
       )}
 
       <div className="d-flex align-items-center justify-content-between mt-3">
-        {tarefa.fecha_limite ? (
-          <small className={atrasada ? 'text-danger fw-semibold' : 'text-body-secondary'}>
-            <i className="bi bi-calendar3 me-1" />
-            {formatarData(tarefa.fecha_limite, i18n.resolvedLanguage)}
-            {atrasada && ` · ${t('card.atrasada')}`}
-          </small>
-        ) : (
-          <span />
-        )}
+        {prazo}
 
         <span className="avatar" style={{ backgroundColor: cor }} title={tarefa.responsable}>
           {tarefa.responsable[0]}

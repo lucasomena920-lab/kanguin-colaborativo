@@ -303,3 +303,40 @@
 .recharts-tooltip-label {
   color: var(--texto-principal);
 }
+/* ===== Campo de horas (modal) ===== */
+.btn-horas {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+}
+
+.valor-horas {
+  font-size: 1.25rem;
+  padding: 4px 0;
+  background-color: var(--fundo-geral);
+  border: 1px solid var(--bordas);
+  border-radius: 10px;
+}
+
+.atalho-horas {
+  font-size: 12px;
+  padding: 2px 10px;
+  border: 1px solid var(--bordas);
+  border-radius: 999px;
+  color: var(--texto-secundario);
+}
+
+.atalho-horas:hover {
+  border-color: var(--azul-principal);
+  color: var(--azul-principal);
+}
+
+.atalho-horas.ativo,
+.atalho-horas.ativo:hover {
+  background-color: var(--azul-principal);
+  border-color: var(--azul-principal);
+  color: #fff;
+}

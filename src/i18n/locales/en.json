@@ -55,7 +55,9 @@
     "prazo": "Deadline",
     "porData": "Date",
     "porHoras": "Hours",
-    "horasAjuda": "e.g. 1.5 = 1h30"
+    "horasAjuda": "e.g. 1.5 = 1h30",
+    "menosTempo": "Decrease by 15 minutes",
+    "maisTempo": "Increase by 15 minutes"
   },
   "estatisticas": {
     "total": "Total tasks",

@@ -55,7 +55,9 @@
     "prazo": "Plazo",
     "porData": "Fecha",
     "porHoras": "Horas",
-    "horasAjuda": "Ej.: 1,5 = 1h30"
+    "horasAjuda": "Ej.: 1,5 = 1h30",
+    "menosTempo": "Restar 15 minutos",
+    "maisTempo": "Sumar 15 minutos"
   },
   "estatisticas": {
     "total": "Total de tareas",
