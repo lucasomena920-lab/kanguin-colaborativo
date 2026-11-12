@@ -6,6 +6,7 @@ import Topo from './components/Topo.jsx'
 import Quadro from './components/Quadro.jsx'
 import ModalTarefa from './components/ModalTarefa.jsx'
 import EmBreve from './pages/emBreve.jsx'
+import BarraMobile from './components/BarraMobile.jsx'
 import tarefasIniciais from './tarefasExemplo.js'
 import useLocalStorage from './hooks/useLocalStorage.js'
 
@@ -145,6 +146,8 @@ function App() {
       <Sidebar equipe={equipe} tema={tema} onAlternarTema={alternarTema} />
 
       <div className="conteudo flex-grow-1">
+         <BarraMobile equipe={equipe} tema={tema} onAlternarTema={alternarTema} />
+        
         <Routes>
           {/* Página do Quadro */}
           <Route
@@ -157,7 +160,7 @@ function App() {
                   equipe={equipe}
                   onNovaTarefa={() => abrirNovaTarefa('a-fazer')}
                 />
-                <main className="p-4">
+                <main className="p-3 p-md-4">
                   <Quadro
                     colunas={colunas}
                     tarefas={tarefasVisiveis}

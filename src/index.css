@@ -72,6 +72,12 @@
   min-height: 100vh;
 }
 
+/* Conteúdo ao lado da sidebar: sem o min-width: 0, o quadro
+   "estica" a página e o celular precisa de zoom */
+.conteudo {
+  min-width: 0;
+}
+
 .sidebar {
   width: 240px;
   flex-shrink: 0;
@@ -233,4 +239,40 @@
   --bs-modal-bg: var(--fundo-cards);
   --bs-modal-border-color: var(--bordas);
   border-radius: 14px;
+}
+/* ===== Celular ===== */
+.barra-mobile {
+  background-color: var(--fundo-cards);
+}
+
+.offcanvas-menu {
+  --bs-offcanvas-bg: var(--fundo-cards);
+  --bs-offcanvas-width: 280px;
+}
+
+@media (max-width: 767.98px) {
+  /* Topo: no celular não fica fixo (ocuparia metade da tela) */
+  .topo {
+    position: static;
+  }
+
+  /* Busca ocupa a linha toda; os selects dividem a linha de baixo */
+  .busca {
+    max-width: none;
+    flex: 1 1 100%;
+  }
+
+  .topo .form-select {
+    flex: 1;
+  }
+
+  /* Colunas: uma por vez, deslizando para o lado */
+  .quadro {
+    scroll-snap-type: x proximity;
+  }
+
+  .coluna {
+    min-width: 85%;
+    scroll-snap-align: start;
+  }
 }
