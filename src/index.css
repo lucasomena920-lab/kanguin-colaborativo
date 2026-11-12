@@ -122,7 +122,9 @@
 }
 
 .busca {
-  max-width: 260px;
+  /* A busca encolhe (até 140px) antes de empurrar os botões para a linha de baixo */
+  flex: 0 1 200px;
+  min-width: 140px;
 }
 
 /* ===== Quadro e colunas ===== */
