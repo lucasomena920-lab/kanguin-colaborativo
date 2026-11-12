@@ -3,6 +3,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router'
+import { Analytics } from '@vercel/analytics/react'
 import './i18n'
 import './index.css'
 import App from './App.jsx'
@@ -12,5 +13,6 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <App />
     </BrowserRouter>
+    <Analytics />
   </StrictMode>,
 )
