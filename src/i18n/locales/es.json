@@ -18,7 +18,8 @@
     "buscar": "Buscar tarea...",
     "todasPrioridades": "Todas las prioridades",
     "todos": "Todos",
-    "novaTarefa": "Nueva tarea"
+    "novaTarefa": "Nueva tarea",
+    "limpar": "Vaciar tablero"
   },
   "colunas": {
     "a-fazer": "Por hacer",
@@ -71,5 +72,17 @@
     "porResponsavel": "Por responsable",
     "tarefas": "Tareas",
     "semDados": "Todavía no hay tareas para analizar"
+  },
+  "calendario": {
+    "hoje": "Hoy",
+    "anterior": "Mes anterior",
+    "proximo": "Mes siguiente",
+    "diaVazio": "No hay tareas este día",
+    "semData": "Sin fecha (por horas o sin plazo)"
+  },
+  "aviso": {
+    "quadroLimpo": "Tablero vaciado ({{total}} tareas eliminadas)",
+    "desfazer": "Deshacer",
+    "fechar": "Cerrar aviso"
   }
 }

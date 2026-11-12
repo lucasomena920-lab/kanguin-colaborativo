@@ -5,9 +5,9 @@ import Sidebar from './components/Sidebar.jsx'
 import Topo from './components/Topo.jsx'
 import Quadro from './components/Quadro.jsx'
 import ModalTarefa from './components/ModalTarefa.jsx'
-import EmBreve from './pages/emBreve.jsx'
+import Calendario from './pages/Calendario.jsx'
 import BarraMobile from './components/BarraMobile.jsx'
-import tarefasIniciais from './tarefasExemplo.js'
+import AvisoDesfazer from './components/AvisoDesfazer.jsx'
 import useLocalStorage from './hooks/useLocalStorage.js'
 import Estatisticas from './pages/Estatisticas.jsx'
 
@@ -45,7 +45,7 @@ function App() {
 
   // ===== ESTADOS =====
   const [tema, setTema] = useLocalStorage('kanguin:tema', temaDoSistema)
-  const [tarefas, setTarefas] = useLocalStorage('kanguin:tarefas', tarefasIniciais)
+  const [tarefas, setTarefas] = useLocalStorage('kanguin:tarefas', [])
   const [filtros, setFiltros] = useState({
     busca: '',
     prioridade: '',
@@ -56,6 +56,10 @@ function App() {
   const [modalAberto, setModalAberto] = useState(false)
   const [tarefaEditando, setTarefaEditando] = useState(null)
   const [statusInicial, setStatusInicial] = useState('a-fazer')
+  const [dataInicial, setDataInicial] = useState('')
+
+  // Cópia das tarefas antes de limpar o quadro (para o "Desfazer")
+  const [copiaSeguranca, setCopiaSeguranca] = useState(null)
 
   // ===== EFEITO: aplica o tema na página =====
   useEffect(() => {
@@ -72,9 +76,10 @@ function App() {
   }
 
   // ===== FUNÇÕES: modal =====
-  function abrirNovaTarefa(status) {
+  function abrirNovaTarefa(status, data = '') {
     setTarefaEditando(null)
     setStatusInicial(status)
+    setDataInicial(data)
     setModalAberto(true)
   }
 
@@ -132,6 +137,23 @@ function App() {
     fecharModal()
   }
 
+  // ===== LIMPAR QUADRO (com desfazer) =====
+  function limparQuadro() {
+    if (tarefas.length === 0) return
+    setCopiaSeguranca(tarefas) // guarda tudo antes de apagar
+    setTarefas([])
+  }
+
+  function desfazerLimpeza() {
+    // Se a pessoa criou tarefas depois de limpar, elas são mantidas
+    // e ganham ids novos, para não repetir os ids das tarefas restauradas
+    const maiorId = Math.max(0, ...copiaSeguranca.map((item) => item.id))
+    const criadasDepois = tarefas.map((item, i) => ({ ...item, id: maiorId + i + 1 }))
+
+    setTarefas([...copiaSeguranca, ...criadasDepois])
+    setCopiaSeguranca(null)
+  }
+
   // ===== TAREFAS FILTRADAS =====
   const termo = filtros.busca.toLowerCase()
 
@@ -160,6 +182,8 @@ function App() {
                   onMudarFiltro={mudarFiltro}
                   equipe={equipe}
                   onNovaTarefa={() => abrirNovaTarefa('a-fazer')}
+                  onLimpar={limparQuadro}
+                  podeLimpar={tarefas.length > 0}
                 />
                 <main className="p-3 p-md-4">
                   <Quadro
@@ -185,7 +209,14 @@ function App() {
 
           <Route
             path="/calendario"
-            element={<EmBreve titulo={t('menu.calendario')} icone="bi-calendar3" />}
+            element={
+              <Calendario
+                tarefas={tarefas}
+                equipe={equipe}
+                onEditar={abrirEdicao}
+                onAdicionar={(data) => abrirNovaTarefa('a-fazer', data)}
+              />
+            }
           />
 
           {/* Qualquer outro endereço volta para o Quadro */}
@@ -197,6 +228,7 @@ function App() {
         <ModalTarefa
           tarefa={tarefaEditando}
           statusInicial={statusInicial}
+          dataInicial={dataInicial}
           colunas={colunas}
           equipe={equipe}
           onSalvar={salvarTarefa}
@@ -204,6 +236,14 @@ function App() {
           onFechar={fecharModal}
         />
       )}
+
+      <AvisoDesfazer
+        mensagem={
+          copiaSeguranca ? t('aviso.quadroLimpo', { total: copiaSeguranca.length }) : null
+        }
+        onDesfazer={desfazerLimpeza}
+        onFechar={() => setCopiaSeguranca(null)}
+      />
     </div>
   )
 }

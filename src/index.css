@@ -340,3 +340,147 @@
   border-color: var(--azul-principal);
   color: #fff;
 }
+
+/* ===== Calendário ===== */
+.grade-calendario {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.dia-semana {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+  color: var(--texto-secundario);
+  padding-bottom: 4px;
+}
+
+.dia {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-height: 96px;
+  padding: 6px;
+  overflow: hidden;
+  text-align: left;
+  color: var(--texto-principal);
+  background-color: var(--fundo-cards);
+  border: 1px solid var(--bordas);
+  border-radius: 8px;
+  transition: border-color 0.15s;
+}
+
+.dia:hover {
+  border-color: var(--azul-claro);
+}
+
+.dia.fora {
+  opacity: 0.45;
+}
+
+.dia.selecionado {
+  border-color: var(--azul-principal);
+  box-shadow: 0 0 0 1px var(--azul-principal);
+}
+
+.numero-dia {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.dia.hoje .numero-dia {
+  background-color: var(--azul-principal);
+  color: #fff;
+}
+
+.mini-tarefa {
+  display: block;
+  width: 100%;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-left: 3px solid var(--bordas);
+  border-radius: 4px;
+  background-color: var(--fundo-colunas);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mini-tarefa.alta { border-left-color: var(--urgente); }
+.mini-tarefa.media { border-left-color: var(--andamento); }
+.mini-tarefa.baja { border-left-color: var(--sucesso); }
+
+.mini-tarefa.feita {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.mais-tarefas {
+  font-size: 11px;
+  color: var(--texto-secundario);
+}
+
+.ponto {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.ponto.alta { background-color: var(--urgente); }
+.ponto.media { background-color: var(--andamento); }
+.ponto.baja { background-color: var(--sucesso); }
+
+@media (max-width: 767.98px) {
+  .grade-calendario {
+    gap: 2px;
+  }
+
+  .dia {
+    min-height: 52px;
+    align-items: center;
+    padding: 4px 2px;
+  }
+}
+
+/* ===== Aviso "Desfazer" ===== */
+.aviso-desfazer {
+  --bs-toast-bg: var(--texto-principal);
+  --bs-toast-color: var(--fundo-cards);
+  --bs-toast-border-color: transparent;
+  --bs-toast-max-width: 460px;
+  width: auto;
+  max-width: calc(100vw - 2rem);
+}
+
+.btn-desfazer {
+  color: var(--azul-claro);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.btn-desfazer:hover {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+/* No tema escuro o aviso fica claro, então o X precisa ser escuro */
+[data-bs-theme="dark"] .aviso-desfazer .btn-close {
+  filter: none;
+}
+
+[data-bs-theme="dark"] .btn-desfazer {
+  color: var(--azul-principal);
+}
+
+[data-bs-theme="dark"] .btn-desfazer:hover {
+  color: var(--azul-hover);
+  background-color: rgba(15, 23, 42, 0.08);
+}

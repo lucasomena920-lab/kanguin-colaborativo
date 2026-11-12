@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next'
 
 const prioridades = ['alta', 'media', 'baja']
 
-function Topo({ filtros, onMudarFiltro, equipe, onNovaTarefa }) {
+function Topo({ filtros, onMudarFiltro, equipe, onNovaTarefa, onLimpar, podeLimpar }) {
   const { t } = useTranslation()
 
   return (
@@ -46,6 +46,16 @@ function Topo({ filtros, onMudarFiltro, equipe, onNovaTarefa }) {
           <option key={membro.nome} value={membro.nome}>{membro.nome}</option>
         ))}
       </select>
+
+      <button
+        className="btn btn-outline-secondary"
+        onClick={onLimpar}
+        disabled={!podeLimpar}
+        title={t('topo.limpar')}
+        aria-label={t('topo.limpar')}
+      >
+        <i className="bi bi-trash3" />
+      </button>
 
       <button className="btn btn-primary" onClick={onNovaTarefa}>
         <i className="bi bi-plus-lg me-1" />

@@ -13,12 +13,13 @@
     "claro": "Tema claro"
   },
   "topo": {
-    "titulo": "Projeto kanguin",
+    "titulo": "Projeto Kanguin",
     "subtitulo": "Sprint 1 · Novembro",
     "buscar": "Buscar tarefa...",
     "todasPrioridades": "Todas as prioridades",
     "todos": "Todos",
-    "novaTarefa": "Nova tarefa"
+    "novaTarefa": "Nova tarefa",
+    "limpar": "Limpar quadro"
   },
   "colunas": {
     "a-fazer": "A fazer",
@@ -71,5 +72,17 @@
     "porResponsavel": "Por responsável",
     "tarefas": "Tarefas",
     "semDados": "Ainda não há tarefas para analisar"
+  },
+  "calendario": {
+    "hoje": "Hoje",
+    "anterior": "Mês anterior",
+    "proximo": "Próximo mês",
+    "diaVazio": "Nenhuma tarefa neste dia",
+    "semData": "Sem data (por horas ou sem prazo)"
+  },
+  "aviso": {
+    "quadroLimpo": "Quadro limpo ({{total}} tarefas removidas)",
+    "desfazer": "Desfazer",
+    "fechar": "Fechar aviso"
   }
 }

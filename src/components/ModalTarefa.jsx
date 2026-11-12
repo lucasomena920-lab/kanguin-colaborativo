@@ -10,7 +10,7 @@ import InputHoras from './InputHoras.jsx'
 
 const prioridades = ['alta', 'media', 'baja']
 
-function ModalTarefa({ tarefa, statusInicial, colunas, equipe, onSalvar, onExcluir, onFechar }) {
+function ModalTarefa({ tarefa, statusInicial, dataInicial = '', colunas, equipe, onSalvar, onExcluir, onFechar }) {
   const { t } = useTranslation()
   const editando = tarefa !== null
 
@@ -21,7 +21,7 @@ function ModalTarefa({ tarefa, statusInicial, colunas, equipe, onSalvar, onExclu
     prioridad: tarefa?.prioridad ?? 'media',
     responsable: tarefa?.responsable ?? equipe[0].nome,
     tipo_prazo: tarefa?.tipo_prazo ?? 'data',
-    fecha_limite: tarefa?.fecha_limite ?? '',
+    fecha_limite: tarefa?.fecha_limite ?? dataInicial,
     horas: tarefa?.horas ?? 1,
   })
 

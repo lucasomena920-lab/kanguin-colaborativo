@@ -18,7 +18,8 @@
     "buscar": "Search tasks...",
     "todasPrioridades": "All priorities",
     "todos": "Everyone",
-    "novaTarefa": "New task"
+    "novaTarefa": "New task",
+    "limpar": "Clear board"
   },
   "colunas": {
     "a-fazer": "To do",
@@ -71,5 +72,17 @@
     "porResponsavel": "By assignee",
     "tarefas": "Tasks",
     "semDados": "No tasks to analyse yet"
+  },
+  "calendario": {
+    "hoje": "Today",
+    "anterior": "Previous month",
+    "proximo": "Next month",
+    "diaVazio": "No tasks on this day",
+    "semData": "No date (by hours or no deadline)"
+  },
+  "aviso": {
+    "quadroLimpo": "Board cleared ({{total}} tasks removed)",
+    "desfazer": "Undo",
+    "fechar": "Close notice"
   }
 }
