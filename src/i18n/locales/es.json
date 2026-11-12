@@ -110,5 +110,12 @@
     "confirmarEsvaziar": "¿Vaciar la papelera? Las tareas se borrarán para siempre.",
     "vazia": "La papelera está vacía",
     "excluidaEm": "Eliminada el {{data}}"
+  },
+  "notificacoes": {
+    "titulo": "Notificaciones",
+    "nada": "¡Todo al día! No hay plazos próximos.",
+    "atrasadas": "Atrasadas",
+    "hoje": "Vencen hoy",
+    "amanha": "Vencen mañana"
   }
 }

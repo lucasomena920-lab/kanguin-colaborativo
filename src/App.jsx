@@ -13,6 +13,7 @@ import Calendario from './pages/Calendario.jsx'
 import Lixeira from './pages/Lixeira.jsx'
 import useLocalStorage from './hooks/useLocalStorage.js'
 import { gerarId } from './utils/gerarId.js'
+import { alertasDePrazo } from './utils/notificacoes.js'
 
 // Os nomes das colunas vêm da tradução (colunas.a-fazer, etc.)
 const colunas = [
@@ -79,10 +80,20 @@ function App() {
   // Aviso com "Desfazer": { id, mensagem, icone, aoDesfazer } ou null
   const [aviso, setAviso] = useState(null)
 
-  // ===== EFEITO: aplica o tema na página =====
+  // ===== NOTIFICAÇÕES (calculadas a partir das tarefas) =====
+  const alertas = alertasDePrazo(tarefas)
+  const totalAlertas = alertas.reduce((soma, grupo) => soma + grupo.itens.length, 0)
+
+  // ===== EFEITOS =====
+  // Aplica o tema na página
   useEffect(() => {
     document.documentElement.setAttribute('data-bs-theme', tema)
   }, [tema])
+
+  // Mostra o número de alertas no título da aba: "(3) Kanguin"
+  useEffect(() => {
+    document.title = totalAlertas > 0 ? `(${totalAlertas}) Kanguin` : 'Kanguin'
+  }, [totalAlertas])
 
   // ===== FUNÇÕES: tema e filtros =====
   function alternarTema() {
@@ -223,6 +234,8 @@ function App() {
     equipe,
     tema,
     totalLixeira: lixeira.length,
+    alertas,
+    onAbrirTarefa: abrirEdicao,
     onAlternarTema: alternarTema,
     onAdicionarMembro: () => setModalMembroAberto(true),
     onRemoverMembro: removerMembro,

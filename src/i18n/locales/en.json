@@ -110,5 +110,12 @@
     "confirmarEsvaziar": "Empty the trash? These tasks will be deleted forever.",
     "vazia": "The trash is empty",
     "excluidaEm": "Deleted on {{data}}"
+  },
+  "notificacoes": {
+    "titulo": "Notifications",
+    "nada": "All caught up! No upcoming deadlines.",
+    "atrasadas": "Overdue",
+    "hoje": "Due today",
+    "amanha": "Due tomorrow"
   }
 }

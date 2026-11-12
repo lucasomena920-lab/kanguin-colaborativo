@@ -110,5 +110,12 @@
     "confirmarEsvaziar": "Esvaziar a lixeira? As tarefas serão apagadas para sempre.",
     "vazia": "A lixeira está vazia",
     "excluidaEm": "Excluída em {{data}}"
+  },
+  "notificacoes": {
+    "titulo": "Notificações",
+    "nada": "Tudo em dia! Nenhum prazo próximo.",
+    "atrasadas": "Atrasadas",
+    "hoje": "Vencem hoje",
+    "amanha": "Vencem amanhã"
   }
 }

@@ -3,8 +3,9 @@ import { useTranslation } from 'react-i18next'
 import Offcanvas from 'react-bootstrap/Offcanvas'
 import Logo from './Logo.jsx'
 import ConteudoMenu from './ConteudoMenu.jsx'
+import Notificacoes from './Notificacoes.jsx'
 
-function BarraMobile({ onAdicionarMembro, ...props }) {
+function BarraMobile({ alertas, onAbrirTarefa, onAdicionarMembro, ...props }) {
   const { t } = useTranslation()
   const [aberto, setAberto] = useState(false)
 
@@ -23,6 +24,9 @@ function BarraMobile({ onAdicionarMembro, ...props }) {
           <i className="bi bi-list" />
         </button>
         <Logo />
+        <div className="ms-auto">
+          <Notificacoes alertas={alertas} onAbrirTarefa={onAbrirTarefa} alinhamento="end" />
+        </div>
       </div>
 
       <Offcanvas show={aberto} onHide={fechar} placement="start" className="offcanvas-menu">

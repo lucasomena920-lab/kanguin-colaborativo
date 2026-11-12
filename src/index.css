@@ -558,3 +558,66 @@
 .min-w-0 {
   min-width: 0;
 }
+
+/* ===== Notificações ===== */
+.contador-sino {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background-color: var(--urgente);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+}
+
+.menu-notificacoes {
+  --bs-dropdown-bg: var(--fundo-cards);
+  --bs-dropdown-border-color: var(--bordas);
+  width: 280px;
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.grupo-notificacao {
+  padding: 8px 16px 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Cor do sininho: cinza sem alertas, azul com alertas */
+.btn.sino {
+  color: var(--texto-secundario);
+  border: none;
+  padding: 4px 8px;
+  border-radius: 10px;
+  line-height: 1;
+}
+
+.btn.sino.tem-alertas {
+  color: var(--azul-principal);
+}
+
+.btn.sino:hover,
+.btn.sino.show {
+  color: var(--azul-principal);
+  background-color: color-mix(in srgb, var(--azul-principal) 12%, transparent);
+}
+
+[data-bs-theme="dark"] .btn.sino.tem-alertas,
+[data-bs-theme="dark"] .btn.sino:hover,
+[data-bs-theme="dark"] .btn.sino.show {
+  color: var(--azul-claro);
+}
+
+.contador-sino {
+  border: 2px solid var(--fundo-cards);
+  line-height: 14px;
+  top: -2px;
+  right: -2px;
+}
