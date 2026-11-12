@@ -7,7 +7,15 @@ const idiomas = [
   { codigo: 'en', rotulo: 'EN' },
 ]
 
-function ConteudoMenu({ equipe, tema, onAlternarTema, onNavegar }) {
+function ConteudoMenu({
+  equipe,
+  tema,
+  totalLixeira,
+  onAlternarTema,
+  onNavegar,
+  onAdicionarMembro,
+  onRemoverMembro,
+}) {
   const { t, i18n } = useTranslation()
 
   return (
@@ -33,21 +41,55 @@ function ConteudoMenu({ equipe, tema, onAlternarTema, onNavegar }) {
               {t('menu.calendario')}
             </NavLink>
           </li>
+          <li className="nav-item">
+            <NavLink to="/lixeira" className="nav-link d-flex align-items-center" onClick={onNavegar}>
+              <i className="bi bi-trash3 me-2" />
+              {t('menu.lixeira')}
+              {totalLixeira > 0 && (
+                <span className="badge rounded-pill contador-lixeira ms-auto">{totalLixeira}</span>
+              )}
+            </NavLink>
+          </li>
         </ul>
       </nav>
 
       <div>
-        <p className="menu-titulo">{t('equipe')}</p>
-        <ul className="list-unstyled d-flex flex-column gap-2 px-2">
-          {equipe.map((membro) => (
-            <li key={membro.nome} className="d-flex align-items-center gap-2">
-              <span className="avatar" style={{ backgroundColor: membro.cor }}>
-                {membro.nome[0]}
-              </span>
-              {membro.nome}
-            </li>
-          ))}
-        </ul>
+        <div className="d-flex align-items-center mb-2">
+          <p className="menu-titulo mb-0 me-auto">{t('equipe')}</p>
+          <button
+            type="button"
+            className="btn btn-sm btn-icone"
+            onClick={onAdicionarMembro}
+            aria-label={t('membro.adicionar')}
+            title={t('membro.adicionar')}
+          >
+            <i className="bi bi-person-plus" />
+          </button>
+        </div>
+
+        {equipe.length === 0 ? (
+          <p className="small text-body-secondary px-2 mb-0">{t('membro.vazia')}</p>
+        ) : (
+          <ul className="list-unstyled d-flex flex-column gap-1 px-2 mb-0">
+            {equipe.map((membro) => (
+              <li key={membro.nome} className="membro d-flex align-items-center gap-2">
+                <span className="avatar" style={{ backgroundColor: membro.cor }}>
+                  {membro.nome[0].toUpperCase()}
+                </span>
+                <span className="me-auto text-truncate">{membro.nome}</span>
+                <button
+                  type="button"
+                  className="btn btn-sm btn-icone btn-remover"
+                  onClick={() => onRemoverMembro(membro)}
+                  aria-label={t('membro.remover', { nome: membro.nome })}
+                  title={t('membro.remover', { nome: membro.nome })}
+                >
+                  <i className="bi bi-x-lg" />
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       <div className="mt-auto d-flex flex-column gap-3">

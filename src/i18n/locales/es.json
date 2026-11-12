@@ -3,7 +3,8 @@
     "titulo": "Menú",
     "quadro": "Tablero",
     "estatisticas": "Estadísticas",
-    "calendario": "Calendario"
+    "calendario": "Calendario",
+    "lixeira": "Papelera"
   },
   "equipe": "Equipo",
   "idioma": "Idioma",
@@ -36,7 +37,9 @@
     "adicionar": "Añadir tarea"
   },
   "card": {
-    "atrasada": "atrasada"
+    "atrasada": "atrasada",
+    "responsavelRemovido": "{{nome}} salió del equipo",
+    "semResponsavel": "Sin responsable"
   },
   "modal": {
     "nova": "Nueva tarea",
@@ -58,7 +61,10 @@
     "porHoras": "Horas",
     "horasAjuda": "Ej.: 1,5 = 1h30",
     "menosTempo": "Restar 15 minutos",
-    "maisTempo": "Sumar 15 minutos"
+    "maisTempo": "Sumar 15 minutos",
+    "semResponsavel": "Sin responsable",
+    "removido": "eliminado",
+    "responsavelRemovido": "{{nome}} ya no forma parte del equipo. Elige otra persona o elimina la tarea."
   },
   "estatisticas": {
     "total": "Total de tareas",
@@ -81,8 +87,28 @@
     "semData": "Sin fecha (por horas o sin plazo)"
   },
   "aviso": {
-    "quadroLimpo": "Tablero vaciado ({{total}} tareas eliminadas)",
+    "quadroLimpo": "Tablero vaciado: {{total}} tareas se movieron a la papelera",
     "desfazer": "Deshacer",
-    "fechar": "Cerrar aviso"
+    "fechar": "Cerrar aviso",
+    "tarefaExcluida": "\"{{titulo}}\" se movió a la papelera",
+    "membroRemovido": "{{nome}} salió del equipo"
+  },
+  "membro": {
+    "titulo": "Nueva persona",
+    "nome": "Nombre",
+    "cor": "Color del avatar",
+    "nomeRepetido": "Ya existe alguien con ese nombre",
+    "adicionar": "Añadir persona",
+    "remover": "Quitar a {{nome}} del equipo",
+    "vazia": "Todavía no hay nadie en el equipo"
+  },
+  "lixeira": {
+    "descricao": "Las tareas eliminadas se quedan aquí hasta que vacíes la papelera.",
+    "restaurar": "Restaurar",
+    "restaurarTudo": "Restaurar todo",
+    "esvaziar": "Vaciar papelera",
+    "confirmarEsvaziar": "¿Vaciar la papelera? Las tareas se borrarán para siempre.",
+    "vazia": "La papelera está vacía",
+    "excluidaEm": "Eliminada el {{data}}"
   }
 }

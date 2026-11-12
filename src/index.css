@@ -484,3 +484,77 @@
   color: var(--azul-hover);
   background-color: rgba(15, 23, 42, 0.08);
 }
+
+/* ===== Equipe ===== */
+.btn-icone {
+  color: var(--texto-secundario);
+  border: none;
+  padding: 2px 6px;
+  line-height: 1;
+}
+
+.btn-icone:hover {
+  color: var(--azul-principal);
+  background-color: var(--fundo-colunas);
+}
+
+/* O "x" de remover aparece ao passar o mouse (no celular fica sempre visível) */
+.membro .btn-remover {
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.membro:hover .btn-remover,
+.membro .btn-remover:focus-visible {
+  opacity: 1;
+}
+
+.membro .btn-remover:hover {
+  color: var(--urgente);
+}
+
+@media (hover: none) {
+  .membro .btn-remover {
+    opacity: 1;
+  }
+}
+
+.avatar-vazio {
+  background-color: var(--fundo-colunas);
+  color: var(--texto-secundario);
+  font-size: 14px;
+}
+
+.alerta-responsavel {
+  color: var(--etiqueta-media);
+  font-weight: 600;
+}
+
+.amostra-cor {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  outline: 2px solid transparent;
+  transition: outline-color 0.15s;
+}
+
+.amostra-cor.ativa {
+  border-color: var(--fundo-cards);
+  outline-color: var(--texto-principal);
+}
+
+/* ===== Lixeira ===== */
+.contador-lixeira {
+  background-color: var(--fundo-colunas);
+  color: var(--texto-secundario);
+}
+
+.nav-link.active .contador-lixeira {
+  background-color: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+.min-w-0 {
+  min-width: 0;
+}

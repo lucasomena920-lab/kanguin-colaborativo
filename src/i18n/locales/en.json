@@ -3,7 +3,8 @@
     "titulo": "Menu",
     "quadro": "Board",
     "estatisticas": "Statistics",
-    "calendario": "Calendar"
+    "calendario": "Calendar",
+    "lixeira": "Trash"
   },
   "equipe": "Team",
   "idioma": "Language",
@@ -36,7 +37,9 @@
     "adicionar": "Add task"
   },
   "card": {
-    "atrasada": "overdue"
+    "atrasada": "overdue",
+    "responsavelRemovido": "{{nome}} left the team",
+    "semResponsavel": "No assignee"
   },
   "modal": {
     "nova": "New task",
@@ -58,7 +61,10 @@
     "porHoras": "Hours",
     "horasAjuda": "e.g. 1.5 = 1h30",
     "menosTempo": "Decrease by 15 minutes",
-    "maisTempo": "Increase by 15 minutes"
+    "maisTempo": "Increase by 15 minutes",
+    "semResponsavel": "No assignee",
+    "removido": "removed",
+    "responsavelRemovido": "{{nome}} is no longer on the team. Choose someone else or delete the task."
   },
   "estatisticas": {
     "total": "Total tasks",
@@ -81,8 +87,28 @@
     "semData": "No date (by hours or no deadline)"
   },
   "aviso": {
-    "quadroLimpo": "Board cleared ({{total}} tasks removed)",
+    "quadroLimpo": "Board cleared: {{total}} tasks moved to the trash",
     "desfazer": "Undo",
-    "fechar": "Close notice"
+    "fechar": "Close notice",
+    "tarefaExcluida": "\"{{titulo}}\" moved to the trash",
+    "membroRemovido": "{{nome}} left the team"
+  },
+  "membro": {
+    "titulo": "New person",
+    "nome": "Name",
+    "cor": "Avatar color",
+    "nomeRepetido": "Someone with this name already exists",
+    "adicionar": "Add person",
+    "remover": "Remove {{nome}} from the team",
+    "vazia": "No one on the team yet"
+  },
+  "lixeira": {
+    "descricao": "Deleted tasks stay here until you empty the trash.",
+    "restaurar": "Restore",
+    "restaurarTudo": "Restore all",
+    "esvaziar": "Empty trash",
+    "confirmarEsvaziar": "Empty the trash? These tasks will be deleted forever.",
+    "vazia": "The trash is empty",
+    "excluidaEm": "Deleted on {{data}}"
   }
 }

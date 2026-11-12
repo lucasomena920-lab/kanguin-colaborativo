@@ -16,7 +16,8 @@ function Card({ tarefa, equipe, onEditar }) {
   const { t, i18n } = useTranslation()
 
   const membro = equipe.find((m) => m.nome === tarefa.responsable)
-  const cor = membro ? membro.cor : 'var(--texto-suave)'
+  // Tem um nome de responsável, mas essa pessoa não está mais na equipe
+  const responsavelRemovido = Boolean(tarefa.responsable) && !membro
 
   const hoje = new Date().toISOString().slice(0, 10)
   const atrasada =
@@ -59,6 +60,12 @@ function Card({ tarefa, equipe, onEditar }) {
       </span>
 
       <h3 className="h6 mt-2 mb-1">{tarefa.titulo}</h3>
+      {responsavelRemovido && (
+        <p className="alerta-responsavel small mb-1">
+          <i className="bi bi-exclamation-triangle-fill me-1" />
+          {t('card.responsavelRemovido', { nome: tarefa.responsable })}
+        </p>
+      )}
       {tarefa.descripcion && (
         <p className="small text-body-secondary mb-0">{tarefa.descripcion}</p>
       )}
@@ -66,9 +73,18 @@ function Card({ tarefa, equipe, onEditar }) {
       <div className="d-flex align-items-center justify-content-between mt-3">
         {prazo}
 
-        <span className="avatar" style={{ backgroundColor: cor }} title={tarefa.responsable}>
-          {tarefa.responsable[0]}
-        </span>
+        {membro ? (
+          <span className="avatar" style={{ backgroundColor: membro.cor }} title={membro.nome}>
+            {membro.nome[0].toUpperCase()}
+          </span>
+        ) : (
+          <span
+            className="avatar avatar-vazio"
+            title={responsavelRemovido ? tarefa.responsable : t('card.semResponsavel')}
+          >
+            <i className={responsavelRemovido ? 'bi bi-exclamation-lg' : 'bi bi-person'} />
+          </span>
+        )}
       </div>
     </article>
   )

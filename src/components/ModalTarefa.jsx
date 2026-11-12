@@ -19,11 +19,15 @@ function ModalTarefa({ tarefa, statusInicial, dataInicial = '', colunas, equipe,
     descripcion: tarefa?.descripcion ?? '',
     status: tarefa?.status ?? statusInicial,
     prioridad: tarefa?.prioridad ?? 'media',
-    responsable: tarefa?.responsable ?? equipe[0].nome,
+    responsable: tarefa?.responsable ?? equipe[0]?.nome ?? '',
     tipo_prazo: tarefa?.tipo_prazo ?? 'data',
     fecha_limite: tarefa?.fecha_limite ?? dataInicial,
     horas: tarefa?.horas ?? 1,
   })
+
+  // A pessoa responsável saiu da equipe?
+  const responsavelRemovido =
+    form.responsable !== '' && !equipe.some((m) => m.nome === form.responsable)
 
   function mudarCampo(e) {
     const { name, value } = e.target
@@ -114,11 +118,26 @@ function ModalTarefa({ tarefa, statusInicial, dataInicial = '', colunas, equipe,
             <Col sm={6}>
               <Form.Group controlId="fResponsavel">
                 <Form.Label>{t('modal.responsavel')}</Form.Label>
-                <Form.Select name="responsable" value={form.responsable} onChange={mudarCampo}>
+                <Form.Select
+                  name="responsable"
+                  value={form.responsable}
+                  onChange={mudarCampo}
+                  isInvalid={responsavelRemovido}
+                >
+                  <option value="">{t('modal.semResponsavel')}</option>
                   {equipe.map((m) => (
                     <option key={m.nome} value={m.nome}>{m.nome}</option>
                   ))}
+                  {/* Mantém o nome de quem saiu da equipe para não sumir sem aviso */}
+                  {responsavelRemovido && (
+                    <option value={form.responsable}>
+                      {form.responsable} ({t('modal.removido')})
+                    </option>
+                  )}
                 </Form.Select>
+                <Form.Control.Feedback type="invalid">
+                  {t('modal.responsavelRemovido', { nome: form.responsable })}
+                </Form.Control.Feedback>
               </Form.Group>
             </Col>
 

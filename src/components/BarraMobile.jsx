@@ -4,7 +4,7 @@ import Offcanvas from 'react-bootstrap/Offcanvas'
 import Logo from './Logo.jsx'
 import ConteudoMenu from './ConteudoMenu.jsx'
 
-function BarraMobile({ equipe, tema, onAlternarTema }) {
+function BarraMobile({ onAdicionarMembro, ...props }) {
   const { t } = useTranslation()
   const [aberto, setAberto] = useState(false)
 
@@ -34,10 +34,12 @@ function BarraMobile({ equipe, tema, onAlternarTema }) {
 
         <Offcanvas.Body className="d-flex flex-column gap-4">
           <ConteudoMenu
-            equipe={equipe}
-            tema={tema}
-            onAlternarTema={onAlternarTema}
+            {...props}
             onNavegar={fechar}
+            onAdicionarMembro={() => {
+              fechar()
+              onAdicionarMembro()
+            }}
           />
         </Offcanvas.Body>
       </Offcanvas>

@@ -173,6 +173,7 @@ function Estatisticas({ tarefas, colunas, equipe }) {
           </div>
         </div>
 
+        {dadosResponsavel.length > 0 && (
         <div className="col-12">
           <div className="painel p-3">
             <h2 className="h6 mb-3">{t('estatisticas.porResponsavel')}</h2>
@@ -191,6 +192,7 @@ function Estatisticas({ tarefas, colunas, equipe }) {
             </ResponsiveContainer>
           </div>
         </div>
+        )}
       </div>
     </main>
   )

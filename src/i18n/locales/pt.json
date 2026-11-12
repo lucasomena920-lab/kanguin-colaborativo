@@ -3,7 +3,8 @@
     "titulo": "Menu",
     "quadro": "Quadro",
     "estatisticas": "Estatísticas",
-    "calendario": "Calendário"
+    "calendario": "Calendário",
+    "lixeira": "Lixeira"
   },
   "equipe": "Equipe",
   "idioma": "Idioma",
@@ -36,7 +37,9 @@
     "adicionar": "Adicionar tarefa"
   },
   "card": {
-    "atrasada": "atrasada"
+    "atrasada": "atrasada",
+    "responsavelRemovido": "{{nome}} saiu da equipe",
+    "semResponsavel": "Sem responsável"
   },
   "modal": {
     "nova": "Nova tarefa",
@@ -58,7 +61,10 @@
     "porHoras": "Horas",
     "horasAjuda": "Ex.: 1,5 = 1h30",
     "menosTempo": "Diminuir 15 minutos",
-    "maisTempo": "Aumentar 15 minutos"
+    "maisTempo": "Aumentar 15 minutos",
+    "semResponsavel": "Sem responsável",
+    "removido": "removido",
+    "responsavelRemovido": "{{nome}} não faz mais parte da equipe. Escolha outra pessoa ou exclua a tarefa."
   },
   "estatisticas": {
     "total": "Total de tarefas",
@@ -81,8 +87,28 @@
     "semData": "Sem data (por horas ou sem prazo)"
   },
   "aviso": {
-    "quadroLimpo": "Quadro limpo ({{total}} tarefas removidas)",
+    "quadroLimpo": "Quadro limpo: {{total}} tarefas foram para a lixeira",
     "desfazer": "Desfazer",
-    "fechar": "Fechar aviso"
+    "fechar": "Fechar aviso",
+    "tarefaExcluida": "\"{{titulo}}\" foi para a lixeira",
+    "membroRemovido": "{{nome}} saiu da equipe"
+  },
+  "membro": {
+    "titulo": "Nova pessoa",
+    "nome": "Nome",
+    "cor": "Cor do avatar",
+    "nomeRepetido": "Já existe alguém com esse nome",
+    "adicionar": "Adicionar pessoa",
+    "remover": "Remover {{nome}} da equipe",
+    "vazia": "Ninguém na equipe ainda"
+  },
+  "lixeira": {
+    "descricao": "As tarefas excluídas ficam aqui até você esvaziar a lixeira.",
+    "restaurar": "Restaurar",
+    "restaurarTudo": "Restaurar tudo",
+    "esvaziar": "Esvaziar lixeira",
+    "confirmarEsvaziar": "Esvaziar a lixeira? As tarefas serão apagadas para sempre.",
+    "vazia": "A lixeira está vazia",
+    "excluidaEm": "Excluída em {{data}}"
   }
 }
