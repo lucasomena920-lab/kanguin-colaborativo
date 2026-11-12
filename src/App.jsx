@@ -1,10 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { Routes, Route, Navigate } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import Sidebar from './components/Sidebar.jsx'
 import Topo from './components/Topo.jsx'
 import Quadro from './components/Quadro.jsx'
 import ModalTarefa from './components/ModalTarefa.jsx'
+import EmBreve from './pages/emBreve.jsx'
 import tarefasIniciais from './tarefasExemplo.js'
+import useLocalStorage from './hooks/useLocalStorage.js'
 
 const equipe = [
   { nome: 'Lucas', cor: '#2563EB' },
@@ -30,12 +33,17 @@ function dataConclusao(novoStatus, tarefaAntiga) {
   return tarefaAntiga?.fecha_conclusion ?? hojeISO()
 }
 
+// Tema inicial: segue o tema do sistema operacional (claro/escuro)
+const temaDoSistema = window.matchMedia('(prefers-color-scheme: dark)').matches
+  ? 'dark'
+  : 'light'
+
 function App() {
   const { t } = useTranslation()
 
   // ===== ESTADOS =====
-  const [tema, setTema] = useState('light')
-  const [tarefas, setTarefas] = useState(tarefasIniciais)
+  const [tema, setTema] = useLocalStorage('kanguin:tema', temaDoSistema)
+  const [tarefas, setTarefas] = useLocalStorage('kanguin:tarefas', tarefasIniciais)
   const [filtros, setFiltros] = useState({
     busca: '',
     prioridade: '',
@@ -137,23 +145,47 @@ function App() {
       <Sidebar equipe={equipe} tema={tema} onAlternarTema={alternarTema} />
 
       <div className="conteudo flex-grow-1">
-        <Topo
-          filtros={filtros}
-          onMudarFiltro={mudarFiltro}
-          equipe={equipe}
-          onNovaTarefa={() => abrirNovaTarefa('a-fazer')}
-        />
-
-        <main className="p-4">
-          <Quadro
-            colunas={colunas}
-            tarefas={tarefasVisiveis}
-            equipe={equipe}
-            onEditar={abrirEdicao}
-            onAdicionar={abrirNovaTarefa}
-            onMover={moverTarefa}
+        <Routes>
+          {/* Página do Quadro */}
+          <Route
+            path="/"
+            element={
+              <>
+                <Topo
+                  filtros={filtros}
+                  onMudarFiltro={mudarFiltro}
+                  equipe={equipe}
+                  onNovaTarefa={() => abrirNovaTarefa('a-fazer')}
+                />
+                <main className="p-4">
+                  <Quadro
+                    colunas={colunas}
+                    tarefas={tarefasVisiveis}
+                    equipe={equipe}
+                    onEditar={abrirEdicao}
+                    onAdicionar={abrirNovaTarefa}
+                    onMover={moverTarefa}
+                  />
+                </main>
+              </>
+            }
           />
-        </main>
+
+          {/* Página da Paula. Quando estiver pronta, troque por:
+              <Estadisticas tareas={tarefas} /> */}
+          <Route
+            path="/estatisticas"
+            element={<EmBreve titulo={t('menu.estatisticas')} icone="bi-bar-chart-line" />}
+          />
+
+          <Route
+            path="/calendario"
+            element={<EmBreve titulo={t('menu.calendario')} icone="bi-calendar3" />}
+          />
+
+          {/* Qualquer outro endereço volta para o Quadro */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       </div>
 
       {modalAberto && (

@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router'
 import { useTranslation } from 'react-i18next'
 
 const idiomas = [
@@ -20,22 +21,22 @@ function Sidebar({ equipe, tema, onAlternarTema }) {
         <p className="menu-titulo">{t('menu.titulo')}</p>
         <ul className="nav nav-pills flex-column gap-1">
           <li className="nav-item">
-            <a href="#" className="nav-link active">
+            <NavLink to="/" end className="nav-link">
               <i className="bi bi-columns-gap me-2" />
               {t('menu.quadro')}
-            </a>
+            </NavLink>
           </li>
           <li className="nav-item">
-            <a href="#" className="nav-link">
+            <NavLink to="/estatisticas" className="nav-link">
               <i className="bi bi-bar-chart-line me-2" />
               {t('menu.estatisticas')}
-            </a>
+            </NavLink>
           </li>
           <li className="nav-item">
-            <a href="#" className="nav-link">
+            <NavLink to="/calendario" className="nav-link">
               <i className="bi bi-calendar3 me-2" />
               {t('menu.calendario')}
-            </a>
+            </NavLink>
           </li>
         </ul>
       </nav>

@@ -7,7 +7,8 @@
     "calendario": "Calendario"
   },
   "equipe": "Equipo",
-  "idioma": "Idioma",
+    "idioma": "Idioma",
+  "emBreve": "En construcción",
   "tema": {
     "escuro": "Tema oscuro",
     "claro": "Tema claro"

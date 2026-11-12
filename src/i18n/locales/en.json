@@ -6,7 +6,8 @@
     "calendario": "Calendar"
   },
   "equipe": "Team",
-  "idioma": "Language",
+    "idioma": "Language",
+  "emBreve": "Under construction",
   "tema": {
     "escuro": "Dark theme",
     "claro": "Light theme"

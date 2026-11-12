@@ -11,7 +11,11 @@
 
   --texto-principal: #0F172A;
   --texto-secundario: #475569;
-  --texto-suave: #94A3B8;
+  --texto-suave: #64748B;
+  /* Texto das etiquetas de prioridade (tom escuro no tema claro) */
+  --etiqueta-alta: #B91C1C;
+  --etiqueta-media: #92400E;
+  --etiqueta-baja: #047857;
 
   --sucesso: #10B981;
   --andamento: #F59E0B;
@@ -40,6 +44,10 @@
   --texto-principal: #E2E8F0;
   --texto-secundario: #94A3B8;
   --texto-suave: #64748B;
+
+  --etiqueta-alta: var(--urgente);
+  --etiqueta-media: var(--andamento);
+  --etiqueta-baja: var(--sucesso);
 }
 
 /* ===== Botão azul com a nossa paleta ===== */
@@ -141,7 +149,7 @@
 .vazio {
   text-align: center;
   font-size: 13px;
-  color: var(--texto-suave);
+  color: var(--texto-secundario);
   padding: 20px 10px;
   border: 2px dashed var(--bordas);
   border-radius: 10px;
@@ -181,17 +189,17 @@
 }
 
 .etiqueta.alta {
-  color: var(--urgente);
+  color: var(--etiqueta-alta);
   background-color: color-mix(in srgb, var(--urgente) 15%, transparent);
 }
 
 .etiqueta.media {
-  color: var(--andamento);
+  color: var(--etiqueta-media);
   background-color: color-mix(in srgb, var(--andamento) 15%, transparent);
 }
 
 .etiqueta.baja {
-  color: var(--sucesso);
+  color: var(--etiqueta-baja);
   background-color: color-mix(in srgb, var(--sucesso) 15%, transparent);
 }
 
@@ -218,4 +226,11 @@
 
 .card-overlay .card-tarefa {
   box-shadow: 0 12px 28px rgba(15, 23, 42, 0.25);
+}
+
+/* ===== Modal ===== */
+.modal-content {
+  --bs-modal-bg: var(--fundo-cards);
+  --bs-modal-border-color: var(--bordas);
+  border-radius: 14px;
 }
