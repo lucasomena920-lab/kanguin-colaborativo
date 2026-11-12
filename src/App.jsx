@@ -9,6 +9,7 @@ import EmBreve from './pages/emBreve.jsx'
 import BarraMobile from './components/BarraMobile.jsx'
 import tarefasIniciais from './tarefasExemplo.js'
 import useLocalStorage from './hooks/useLocalStorage.js'
+import Estatisticas from './pages/Estatisticas.jsx'
 
 const equipe = [
   { nome: 'Lucas', cor: '#2563EB' },
@@ -178,8 +179,9 @@ function App() {
               <Estadisticas tareas={tarefas} /> */}
           <Route
             path="/estatisticas"
-            element={<EmBreve titulo={t('menu.estatisticas')} icone="bi-bar-chart-line" />}
+            element={<Estatisticas tarefas={tarefas} colunas={colunas} equipe={equipe} />}
           />
+          
 
           <Route
             path="/calendario"

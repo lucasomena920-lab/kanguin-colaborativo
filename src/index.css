@@ -276,3 +276,30 @@
     scroll-snap-align: start;
   }
 }
+/* ===== Estatísticas ===== */
+.painel {
+  background-color: var(--fundo-cards);
+  border: 1px solid var(--bordas);
+  border-radius: 12px;
+}
+
+.icone-resumo {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+}
+
+/* Gráficos acompanham o tema claro/escuro */
+.recharts-cartesian-axis-tick-value {
+  fill: var(--texto-secundario);
+}
+
+.recharts-cartesian-grid line {
+  stroke: var(--bordas);
+}
+
+.recharts-tooltip-label {
+  color: var(--texto-principal);
+}

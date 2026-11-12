@@ -6,7 +6,7 @@
     "calendario": "Calendar"
   },
   "equipe": "Team",
-    "idioma": "Language",
+  "idioma": "Language",
   "emBreve": "Under construction",
   "tema": {
     "escuro": "Dark theme",
@@ -52,5 +52,18 @@
     "cancelar": "Cancel",
     "salvar": "Save",
     "confirmarExclusao": "Are you sure you want to delete \"{{titulo}}\"?"
+  },
+  "estatisticas": {
+    "total": "Total tasks",
+    "concluido": "Completed",
+    "deTotal": "{{feitas}} of {{total}}",
+    "atrasadas": "Overdue",
+    "tempoMedio": "Average time",
+    "diasAteConcluir": "days to complete",
+    "porColuna": "Tasks by column",
+    "porPrioridade": "By priority",
+    "porResponsavel": "By assignee",
+    "tarefas": "Tasks",
+    "semDados": "No tasks to analyse yet"
   }
 }

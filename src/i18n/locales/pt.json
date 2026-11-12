@@ -6,7 +6,7 @@
     "calendario": "Calendário"
   },
   "equipe": "Equipe",
-    "idioma": "Idioma",
+  "idioma": "Idioma",
   "emBreve": "Em construção",
   "tema": {
     "escuro": "Tema escuro",
@@ -52,5 +52,18 @@
     "cancelar": "Cancelar",
     "salvar": "Salvar",
     "confirmarExclusao": "Tem certeza que quer excluir \"{{titulo}}\"?"
+  },
+  "estatisticas": {
+    "total": "Total de tarefas",
+    "concluido": "Concluído",
+    "deTotal": "{{feitas}} de {{total}}",
+    "atrasadas": "Atrasadas",
+    "tempoMedio": "Tempo médio",
+    "diasAteConcluir": "dias até concluir",
+    "porColuna": "Tarefas por coluna",
+    "porPrioridade": "Por prioridade",
+    "porResponsavel": "Por responsável",
+    "tarefas": "Tarefas",
+    "semDados": "Ainda não há tarefas para analisar"
   }
 }
