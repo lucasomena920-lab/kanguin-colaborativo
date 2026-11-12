@@ -51,7 +51,11 @@
     "excluir": "Excluir",
     "cancelar": "Cancelar",
     "salvar": "Salvar",
-    "confirmarExclusao": "Tem certeza que quer excluir \"{{titulo}}\"?"
+    "confirmarExclusao": "Tem certeza que quer excluir \"{{titulo}}\"?",
+    "prazo": "Prazo",
+    "porData": "Data",
+    "porHoras": "Horas",
+    "horasAjuda": "Ex.: 1,5 = 1h30"
   },
   "estatisticas": {
     "total": "Total de tarefas",

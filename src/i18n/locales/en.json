@@ -51,7 +51,11 @@
     "excluir": "Delete",
     "cancelar": "Cancel",
     "salvar": "Save",
-    "confirmarExclusao": "Are you sure you want to delete \"{{titulo}}\"?"
+    "confirmarExclusao": "Are you sure you want to delete \"{{titulo}}\"?",
+    "prazo": "Deadline",
+    "porData": "Date",
+    "porHoras": "Hours",
+    "horasAjuda": "e.g. 1.5 = 1h30"
   },
   "estatisticas": {
     "total": "Total tasks",
