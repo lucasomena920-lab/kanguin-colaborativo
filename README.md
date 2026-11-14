@@ -102,6 +102,6 @@ src/
 Feito por **Lucas Omena**.
 [LinkedIn](https://www.linkedin.com/in/lucas-omena-9414661b8) · [GitHub](https://github.com/lucasomena920-lab)
 
-Ícone do pinguim adaptado de um ícone do [Flaticon](https://www.flaticon.com).
+Ícone do pinguim (com as cores adaptadas): [Animals icons created by Magnific - Flaticon](https://www.flaticon.com/free-icons/animals "animals icons").
 
 Licença [MIT](LICENSE).
