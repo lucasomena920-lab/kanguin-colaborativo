@@ -171,7 +171,8 @@
       "editor": "Editor",
       "colaborador": "Colaborador",
       "leitor": "Lector"
-    }
+    },
+    "quadroDe": "Tablero de {{nome}}"
   },
   "compartilhar": {
     "botao": "Compartir",
@@ -202,5 +203,12 @@
       "jaConvidado": "Ya hay una invitación para ese email.",
       "semPermissao": "No tienes permiso para hacer esto."
     }
+  },
+  "convites": {
+    "titulo": "Invitaciones",
+    "texto": "te invitó al tablero",
+    "como": "como",
+    "aceitar": "Aceptar",
+    "recusar": "Rechazar"
   }
 }

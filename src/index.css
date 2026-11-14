@@ -793,3 +793,13 @@
 [data-bs-theme='dark'] .badge-papel.editor {
   color: #5fd3a8;
 }
+
+/* Convite recebido, dentro do sininho */
+.item-convite + .item-convite {
+  border-top: 1px solid var(--bs-border-color);
+}
+
+.item-convite p {
+  white-space: normal;
+  line-height: 1.5;
+}

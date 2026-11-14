@@ -115,6 +115,11 @@ function useDadosKanguin(usuario) {
 
   // Quadros de quem está logado: { userId, lista: [{ id, nome, dono_id, papel }] }
   const [quadros, setQuadros] = useState(null)
+  // Muda de valor para carregar a lista de quadros de novo (ex.: depois de aceitar um convite)
+  const [versaoQuadros, setVersaoQuadros] = useState(0)
+
+  // Convites que eu recebi: { userId, lista }
+  const [convites, setConvites] = useState(null)
 
   // Dados do quadro aberto: { userId, quadroId, tarefas, lixeira, equipe }
   const [nuvem, setNuvem] = useState(null)
@@ -178,12 +183,39 @@ function useDadosKanguin(usuario) {
         lista = [{ ...data, papel: 'dono' }]
       }
 
+      // Nome dos donos dos quadros dos outros (para mostrar "Quadro da Paula")
+      const outrosDonos = [...new Set(lista.filter((q) => q.dono_id !== userId).map((q) => q.dono_id))]
+      if (outrosDonos.length > 0) {
+        const { data: perfis } = await supabase.from('perfis').select('id, nome').in('id', outrosDonos)
+        if (cancelado) return
+        lista = lista.map((q) => ({ ...q, dono_nome: perfis?.find((p) => p.id === q.dono_id)?.nome }))
+      }
+
       setQuadros({ userId, lista })
     }
 
     carregarQuadros()
     return () => {
       cancelado = true
+    }
+  }, [userId, versaoQuadros])
+
+  // ===== 1B. CONVITES QUE EU RECEBI =====
+  // Carrega ao entrar e toda vez que a pessoa volta para a aba do Kanguin
+  useEffect(() => {
+    if (!supabase || !userId) return
+    let cancelado = false
+
+    async function carregarConvites() {
+      const { data, error } = await supabase.rpc('meus_convites')
+      if (!cancelado && !error) setConvites({ userId, lista: data })
+    }
+
+    carregarConvites()
+    window.addEventListener('focus', carregarConvites)
+    return () => {
+      cancelado = true
+      window.removeEventListener('focus', carregarConvites)
     }
   }, [userId])
 
@@ -273,6 +305,27 @@ function useDadosKanguin(usuario) {
     return true
   }
 
+  // ===== 4B. CONVITES: ACEITAR E RECUSAR =====
+  const tirarConvite = (id) =>
+    setConvites((atual) => (atual ? { ...atual, lista: atual.lista.filter((c) => c.id !== id) } : atual))
+
+  async function aceitarConvite(convite) {
+    const { data: idQuadro, error } = await supabase.rpc('aceitar_convite', { convite: convite.id })
+    if (error) return false
+    tirarConvite(convite.id)
+    await salvarAgora()
+    setQuadroEscolhido(idQuadro) // já abre o quadro novo
+    setVersaoQuadros((v) => v + 1) // e recarrega a lista, agora com ele
+    return true
+  }
+
+  async function recusarConvite(convite) {
+    const { error } = await supabase.from('convites').delete().eq('id', convite.id)
+    if (error) return false
+    tirarConvite(convite.id)
+    return true
+  }
+
   // ===== 5. FUNÇÕES "SET" QUE ESCOLHEM ONDE GRAVAR =====
   // Funcionam igual ao setState: aceitam um valor ou uma função (atual) => novo
   function criarSetter(campo, setLocal) {
@@ -339,6 +392,10 @@ function useDadosKanguin(usuario) {
     trocarQuadro,
     criarQuadro,
     salvarAgora,
+    // Convites recebidos
+    convites: logado && convites?.userId === userId ? convites.lista : [],
+    aceitarConvite,
+    recusarConvite,
   }
 }
 

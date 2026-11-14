@@ -171,7 +171,8 @@
       "editor": "Editor",
       "colaborador": "Colaborador",
       "leitor": "Leitor"
-    }
+    },
+    "quadroDe": "Quadro de {{nome}}"
   },
   "compartilhar": {
     "botao": "Compartilhar",
@@ -202,5 +203,12 @@
       "jaConvidado": "Já existe um convite para esse email.",
       "semPermissao": "Você não tem permissão para fazer isso."
     }
+  },
+  "convites": {
+    "titulo": "Convites",
+    "texto": "convidou você para o quadro",
+    "como": "como",
+    "aceitar": "Aceitar",
+    "recusar": "Recusar"
   }
 }

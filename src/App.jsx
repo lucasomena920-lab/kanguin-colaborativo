@@ -92,6 +92,9 @@ function App() {
     trocarQuadro,
     criarQuadro,
     salvarAgora,
+    convites,
+    aceitarConvite,
+    recusarConvite,
   } = useDadosKanguin(usuario)
 
   // ===== ESTADOS DA TELA =====
@@ -118,7 +121,7 @@ function App() {
 
   // ===== NOTIFICAÇÕES (calculadas a partir das tarefas) =====
   const alertas = alertasDePrazo(tarefas)
-  const totalAlertas = alertas.reduce((soma, grupo) => soma + grupo.itens.length, 0)
+  const totalAlertas = alertas.reduce((soma, grupo) => soma + grupo.itens.length, 0) + convites.length
 
   // ===== EFEITOS =====
   // Aplica o tema na página
@@ -286,6 +289,9 @@ function App() {
     onSair: sair,
     alertas,
     onAbrirTarefa: abrirEdicao,
+    convites,
+    onAceitarConvite: aceitarConvite,
+    onRecusarConvite: recusarConvite,
     onAlternarTema: alternarTema,
     onAdicionarMembro: () => setModalMembroAberto(true),
     onRemoverMembro: removerMembro,

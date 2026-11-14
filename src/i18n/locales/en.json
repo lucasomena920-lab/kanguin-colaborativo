@@ -171,7 +171,8 @@
       "editor": "Editor",
       "colaborador": "Contributor",
       "leitor": "Viewer"
-    }
+    },
+    "quadroDe": "{{nome}}'s board"
   },
   "compartilhar": {
     "botao": "Share",
@@ -202,5 +203,12 @@
       "jaConvidado": "There's already an invite for that email.",
       "semPermissao": "You don't have permission to do that."
     }
+  },
+  "convites": {
+    "titulo": "Invites",
+    "texto": "invited you to the board",
+    "como": "as",
+    "aceitar": "Accept",
+    "recusar": "Decline"
   }
 }

@@ -5,7 +5,15 @@ import Logo from './Logo.jsx'
 import ConteudoMenu from './ConteudoMenu.jsx'
 import Notificacoes from './Notificacoes.jsx'
 
-function BarraMobile({ alertas, onAbrirTarefa, onAdicionarMembro, ...props }) {
+function BarraMobile({
+  alertas,
+  onAbrirTarefa,
+  convites,
+  onAceitarConvite,
+  onRecusarConvite,
+  onAdicionarMembro,
+  ...props
+}) {
   const { t } = useTranslation()
   const [aberto, setAberto] = useState(false)
 
@@ -25,7 +33,14 @@ function BarraMobile({ alertas, onAbrirTarefa, onAdicionarMembro, ...props }) {
         </button>
         <Logo />
         <div className="ms-auto">
-          <Notificacoes alertas={alertas} onAbrirTarefa={onAbrirTarefa} alinhamento="end" />
+          <Notificacoes
+            alertas={alertas}
+            onAbrirTarefa={onAbrirTarefa}
+            convites={convites}
+            onAceitarConvite={onAceitarConvite}
+            onRecusarConvite={onRecusarConvite}
+            alinhamento="end"
+          />
         </div>
       </div>
 

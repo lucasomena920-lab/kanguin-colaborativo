@@ -8,7 +8,10 @@ export function formatarHoras(horas) {
   return `${h}h${String(min).padStart(2, '0')}`
 }
 
-// "Meu quadro" é o nome padrão salvo no banco; na tela ele aparece traduzido
+// "Meu quadro" é o nome padrão salvo no banco; na tela ele aparece traduzido.
+// Se o quadro for de outra pessoa, vira "Quadro de Paula" (senão todo mundo teria um "Meu quadro").
 export function nomeDoQuadro(quadro, t) {
-  return quadro.nome === 'Meu quadro' ? t('quadros.meuQuadro') : quadro.nome
+  if (quadro.nome !== 'Meu quadro') return quadro.nome
+  if (quadro.papel !== 'dono' && quadro.dono_nome) return t('quadros.quadroDe', { nome: quadro.dono_nome })
+  return t('quadros.meuQuadro')
 }
