@@ -20,6 +20,7 @@ function Entrar({ onSemConta }) {
   const navigate = useNavigate()
 
   const [modo, setModo] = useState('entrar') // 'entrar' ou 'criar'
+  const [nome, setNome] = useState('')
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
   const [carregando, setCarregando] = useState(false)
@@ -71,7 +72,11 @@ function Entrar({ onSemConta }) {
     const { data, error } = await supabase.auth.signUp({
       email,
       password: senha,
-      options: { emailRedirectTo: window.location.origin },
+      options: {
+        emailRedirectTo: window.location.origin,
+        // O nome vai junto; o banco usa ele para criar o perfil da pessoa
+        data: { nome: nome.trim() },
+      },
     })
     setCarregando(false)
 
@@ -124,6 +129,23 @@ function Entrar({ onSemConta }) {
           </div>
         ) : (
           <form onSubmit={enviar}>
+            {/* Nome: só ao criar conta */}
+            {modo === 'criar' && (
+              <div className="mb-3">
+                <label htmlFor="authNome" className="form-label">{t('auth.seuNome')}</label>
+                <input
+                  id="authNome"
+                  className="form-control"
+                  value={nome}
+                  onChange={(e) => setNome(e.target.value)}
+                  placeholder={t('auth.seuNomePlaceholder')}
+                  autoComplete="given-name"
+                  maxLength={40}
+                  required
+                />
+              </div>
+            )}
+
             <div className="mb-3">
               <label htmlFor="authEmail" className="form-label">{t('auth.email')}</label>
               <input

@@ -102,7 +102,9 @@
     "nomeRepetido": "Someone with this name already exists",
     "adicionar": "Add person",
     "remover": "Remove {{nome}} from the team",
-    "vazia": "No one on the team yet"
+    "vazia": "No one on the team yet",
+    "voce": "you",
+    "semConta": "No account"
   },
   "lixeira": {
     "descricao": "Deleted tasks stay here until you empty the trash.",
@@ -152,7 +154,11 @@
       "salvando": "Saving...",
       "sincronizado": "Saved to the cloud",
       "erro": "Couldn't save to the cloud"
-    }
+    },
+    "seuNome": "Your name",
+    "seuNomePlaceholder": "What should we call you?",
+    "seuNomeAjuda": "This is how the team will see you.",
+    "mudarNome": "Change my name"
   },
   "migracao": {
     "titulo": "Move your board to your account?",

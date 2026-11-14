@@ -102,7 +102,9 @@
     "nomeRepetido": "Já existe alguém com esse nome",
     "adicionar": "Adicionar pessoa",
     "remover": "Remover {{nome}} da equipe",
-    "vazia": "Ninguém na equipe ainda"
+    "vazia": "Ninguém na equipe ainda",
+    "voce": "você",
+    "semConta": "Sem conta"
   },
   "lixeira": {
     "descricao": "As tarefas excluídas ficam aqui até você esvaziar a lixeira.",
@@ -152,7 +154,11 @@
       "salvando": "Salvando...",
       "sincronizado": "Salvo na nuvem",
       "erro": "Erro ao salvar na nuvem"
-    }
+    },
+    "seuNome": "Seu nome",
+    "seuNomePlaceholder": "Como quer ser chamado(a)",
+    "seuNomeAjuda": "É assim que você aparece para a equipe.",
+    "mudarNome": "Mudar meu nome"
   },
   "migracao": {
     "titulo": "Levar o seu quadro para a conta?",

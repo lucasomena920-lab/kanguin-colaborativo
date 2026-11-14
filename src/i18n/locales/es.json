@@ -102,7 +102,9 @@
     "nomeRepetido": "Ya existe alguien con ese nombre",
     "adicionar": "Añadir persona",
     "remover": "Quitar a {{nome}} del equipo",
-    "vazia": "Todavía no hay nadie en el equipo"
+    "vazia": "Todavía no hay nadie en el equipo",
+    "voce": "tú",
+    "semConta": "Sin cuenta"
   },
   "lixeira": {
     "descricao": "Las tareas eliminadas se quedan aquí hasta que vacíes la papelera.",
@@ -152,7 +154,11 @@
       "salvando": "Guardando...",
       "sincronizado": "Guardado en la nube",
       "erro": "Error al guardar en la nube"
-    }
+    },
+    "seuNome": "Tu nombre",
+    "seuNomePlaceholder": "Cómo quieres que te llamen",
+    "seuNomeAjuda": "Así te verá el equipo.",
+    "mudarNome": "Cambiar mi nombre"
   },
   "migracao": {
     "titulo": "¿Llevar tu tablero a la cuenta?",

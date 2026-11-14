@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase.js'
 import CartaoConta from './CartaoConta.jsx'
 import SeletorQuadro from './SeletorQuadro.jsx'
 import { usePermissoes } from '../contexts/permissoes.js'
+import { corDaPessoa } from '../utils/cores.js'
 
 const idiomas = [
   { codigo: 'pt', rotulo: 'PT' },
@@ -13,6 +14,9 @@ const idiomas = [
 
 function ConteudoMenu({
   equipe,
+  participantes = [],
+  meuNome,
+  onMudarNome,
   tema,
   totalLixeira,
   usuario,
@@ -93,9 +97,34 @@ function ConteudoMenu({
           )}
         </div>
 
-        {equipe.length === 0 ? (
+        {/* Pessoas com conta que participam do quadro (entram sozinhas) */}
+        {participantes.length > 0 && (
+          <ul className="list-unstyled d-flex flex-column gap-1 px-2 mb-0">
+            {participantes.map((pessoa) => (
+              <li key={pessoa.user_id} className="membro d-flex align-items-center gap-2">
+                <span className="avatar" style={{ backgroundColor: corDaPessoa(pessoa.user_id) }}>
+                  {pessoa.nome[0].toUpperCase()}
+                </span>
+                <span className="me-auto text-truncate">
+                  {pessoa.nome}
+                  {pessoa.user_id === usuario?.id && (
+                    <span className="text-body-secondary small"> ({t('membro.voce')})</span>
+                  )}
+                </span>
+                <span className={`badge-papel ${pessoa.papel}`}>{t(`quadros.papeis.${pessoa.papel}`)}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {/* Nomes adicionados à mão: pessoas sem conta no Kanguin */}
+        {participantes.length > 0 && equipe.length > 0 && (
+          <p className="menu-subtitulo">{t('membro.semConta')}</p>
+        )}
+
+        {participantes.length === 0 && equipe.length === 0 ? (
           <p className="small text-body-secondary px-2 mb-0">{t('membro.vazia')}</p>
-        ) : (
+        ) : equipe.length === 0 ? null : (
           <ul className="list-unstyled d-flex flex-column gap-1 px-2 mb-0">
             {equipe.map((membro) => (
               <li key={membro.nome} className="membro d-flex align-items-center gap-2">
@@ -147,7 +176,13 @@ function ConteudoMenu({
         {/* Conta: só aparece se o Supabase estiver configurado */}
         {supabase &&
           (usuario ? (
-            <CartaoConta usuario={usuario} statusNuvem={statusNuvem} onSair={onSair} />
+            <CartaoConta
+              usuario={usuario}
+              meuNome={meuNome}
+              statusNuvem={statusNuvem}
+              onMudarNome={onMudarNome}
+              onSair={onSair}
+            />
           ) : (
             <div>
               <p className="menu-titulo">{t('auth.conta')}</p>

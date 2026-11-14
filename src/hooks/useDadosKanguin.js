@@ -123,6 +123,13 @@ function useDadosKanguin(usuario) {
   // Muda de valor para carregar a lista de quadros de novo (ex.: depois de aceitar um convite)
   const [versaoQuadros, setVersaoQuadros] = useState(0)
 
+  // Pessoas com conta no quadro aberto: { quadroId, lista: [{ user_id, nome, papel }] }
+  const [participantes, setParticipantes] = useState(null)
+  const [versaoParticipantes, setVersaoParticipantes] = useState(0)
+
+  // Meu nome (o que aparece para a equipe): { userId, nome }
+  const [meuPerfil, setMeuPerfil] = useState(null)
+
   // Convites que eu recebi: { userId, lista }
   const [convites, setConvites] = useState(null)
   const [versaoConvites, setVersaoConvites] = useState(0)
@@ -227,6 +234,58 @@ function useDadosKanguin(usuario) {
       window.removeEventListener('focus', carregarConvites)
     }
   }, [userId, versaoConvites])
+
+  // ===== 1C. MEU NOME =====
+  useEffect(() => {
+    if (!supabase || !userId) return
+    let cancelado = false
+
+    supabase
+      .from('perfis')
+      .select('nome')
+      .eq('id', userId)
+      .single()
+      .then(({ data }) => {
+        if (!cancelado && data) setMeuPerfil({ userId, nome: data.nome })
+      })
+    return () => {
+      cancelado = true
+    }
+  }, [userId])
+
+  // ===== 1D. QUEM PARTICIPA DO QUADRO ABERTO (pessoas com conta) =====
+  useEffect(() => {
+    if (!supabase || !userId || !quadroId) return
+    let cancelado = false
+
+    async function carregarParticipantes() {
+      const { data: linhas, error } = await supabase
+        .from('quadro_membros')
+        .select('user_id, papel')
+        .eq('quadro_id', quadroId)
+      if (cancelado || error) return
+
+      const { data: perfis } = await supabase
+        .from('perfis')
+        .select('id, nome')
+        .in('id', linhas.map((m) => m.user_id))
+      if (cancelado) return
+
+      const ordem = ['dono', 'admin', 'editor', 'colaborador', 'leitor']
+      const lista = linhas
+        .map((m) => ({ ...m, nome: perfis?.find((p) => p.id === m.user_id)?.nome ?? '?' }))
+        .sort((a, b) => ordem.indexOf(a.papel) - ordem.indexOf(b.papel) || a.nome.localeCompare(b.nome))
+      setParticipantes({ quadroId, lista })
+    }
+
+    carregarParticipantes()
+    // Ao voltar para a aba, atualiza (alguém pode ter mudado de nome)
+    window.addEventListener('focus', carregarParticipantes)
+    return () => {
+      cancelado = true
+      window.removeEventListener('focus', carregarParticipantes)
+    }
+  }, [userId, quadroId, versaoParticipantes])
 
   // ===== 2. CARREGAR AS TAREFAS DO QUADRO ABERTO =====
   useEffect(() => {
@@ -341,6 +400,8 @@ function useDadosKanguin(usuario) {
       })
     }
 
+    const recarregarParticipantes = () => setVersaoParticipantes((v) => v + 1)
+
     const tabela = (nome, evento, filtro) => ({
       event: evento,
       schema: 'public',
@@ -364,6 +425,9 @@ function useDadosKanguin(usuario) {
         .on('postgres_changes', tabela('membros', 'DELETE'), ({ old }) => {
           if (old.quadro_id === quadroId) recarregarEquipe()
         })
+        // Alguém entrou, saiu ou mudou de papel neste quadro
+        .on('postgres_changes', tabela('quadro_membros', 'INSERT', doQuadro), recarregarParticipantes)
+        .on('postgres_changes', tabela('quadro_membros', 'UPDATE', doQuadro), recarregarParticipantes)
     }
 
     // Meus papéis: alguém mudou o meu papel, me tirou de um quadro, ou eu entrei num
@@ -373,6 +437,7 @@ function useDadosKanguin(usuario) {
       .on('postgres_changes', tabela('quadro_membros', 'UPDATE', `user_id=eq.${userId}`), recarregarQuadros)
       .on('postgres_changes', tabela('quadro_membros', 'DELETE'), ({ old }) => {
         if (old.user_id === userId) recarregarQuadros()
+        if (old.quadro_id === quadroId) recarregarParticipantes()
       })
 
     // Convites para o meu email: chegou um novo, ou cancelaram um
@@ -477,6 +542,19 @@ function useDadosKanguin(usuario) {
     return true
   }
 
+  // ===== 4C. MUDAR O MEU NOME =====
+  async function mudarMeuNome(nome) {
+    const { data, error } = await supabase
+      .from('perfis')
+      .update({ nome })
+      .eq('id', userId)
+      .select('nome')
+    if (error || !data?.length) return false
+    setMeuPerfil({ userId, nome: data[0].nome })
+    setVersaoParticipantes((v) => v + 1)
+    return true
+  }
+
   // ===== 5. FUNÇÕES "SET" QUE ESCOLHEM ONDE GRAVAR =====
   // Funcionam igual ao setState: aceitam um valor ou uma função (atual) => novo
   function criarSetter(campo, setLocal) {
@@ -548,6 +626,10 @@ function useDadosKanguin(usuario) {
     aceitarConvite,
     recusarConvite,
     sairDoQuadro,
+    // Pessoas com conta neste quadro, e o meu nome
+    participantes: logado && participantes?.quadroId === quadroId ? participantes.lista : [],
+    meuNome: logado && meuPerfil?.userId === userId ? meuPerfil.nome : null,
+    mudarMeuNome,
   }
 }
 

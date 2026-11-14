@@ -822,3 +822,10 @@
   color: var(--texto-secundario);
   background-color: var(--fundo-colunas);
 }
+
+/* Subtítulo dentro da Equipe ("Sem conta") */
+.menu-subtitulo {
+  font-size: 11px;
+  color: var(--texto-suave);
+  margin: 10px 0 4px 12px;
+}

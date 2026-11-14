@@ -21,6 +21,7 @@ import ModalCompartilhar from './components/ModalCompartilhar.jsx'
 import { nomeDoQuadro } from './utils/formatar.js'
 import { supabase } from './lib/supabase.js'
 import { PermissoesContext, calcularPermissoes } from './contexts/permissoes.js'
+import { corDaPessoa } from './utils/cores.js'
 
 // Páginas carregadas só quando alguém abre (lazy loading).
 // Assim, a biblioteca de gráficos não pesa na primeira abertura do site.
@@ -101,7 +102,19 @@ function App() {
     aceitarConvite,
     recusarConvite,
     sairDoQuadro,
+    participantes,
+    meuNome,
+    mudarMeuNome,
   } = useDadosKanguin(usuario)
+
+  // ===== EQUIPE COMPLETA =====
+  // Quem tem conta e participa do quadro entra sozinho na equipe.
+  // Os nomes adicionados à mão (pessoas sem conta) vêm depois.
+  const pessoasComConta = participantes.map((p) => ({ nome: p.nome, cor: corDaPessoa(p.user_id) }))
+  const equipeCompleta = [
+    ...pessoasComConta,
+    ...equipe.filter((m) => !pessoasComConta.some((p) => p.nome.toLowerCase() === m.nome.toLowerCase())),
+  ]
 
   // ===== TELA DE LOGIN PRIMEIRO =====
   // Quem chega sem login vai direto para a tela de entrar. Não vai se escolheu
@@ -304,6 +317,9 @@ function App() {
   // Props do menu (iguais na sidebar do computador e no menu do celular)
   const propsMenu = {
     equipe,
+    participantes,
+    meuNome,
+    onMudarNome: mudarMeuNome,
     tema,
     totalLixeira: lixeira.length,
     usuario,
@@ -348,7 +364,7 @@ function App() {
                         onCompartilhar={quadroAtual ? () => setCompartilhando(true) : null}
                         filtros={filtros}
                         onMudarFiltro={mudarFiltro}
-                        equipe={equipe}
+                        equipe={equipeCompleta}
                         onNovaTarefa={() => abrirNovaTarefa('a-fazer')}
                         onLimpar={limparQuadro}
                         podeLimpar={tarefas.length > 0}
@@ -357,7 +373,7 @@ function App() {
                         <Quadro
                           colunas={colunas}
                           tarefas={tarefasVisiveis}
-                          equipe={equipe}
+                          equipe={equipeCompleta}
                           onEditar={abrirEdicao}
                           onAdicionar={abrirNovaTarefa}
                           onMover={moverTarefa}
@@ -369,7 +385,7 @@ function App() {
 
                 <Route
                   path="/estatisticas"
-                  element={<Estatisticas tarefas={tarefas} colunas={colunas} equipe={equipe} />}
+                  element={<Estatisticas tarefas={tarefas} colunas={colunas} equipe={equipeCompleta} />}
                 />
 
                 <Route
@@ -377,7 +393,7 @@ function App() {
                   element={
                     <Calendario
                       tarefas={tarefas}
-                      equipe={equipe}
+                      equipe={equipeCompleta}
                       onEditar={abrirEdicao}
                       onAdicionar={(data) => abrirNovaTarefa('a-fazer', data)}
                     />
@@ -409,7 +425,7 @@ function App() {
             statusInicial={statusInicial}
             dataInicial={dataInicial}
             colunas={colunas}
-            equipe={equipe}
+            equipe={equipeCompleta}
             onSalvar={salvarTarefa}
             onExcluir={excluirTarefa}
             onFechar={fecharModal}
@@ -418,7 +434,7 @@ function App() {
 
         {modalMembroAberto && (
           <ModalMembro
-            equipe={equipe}
+            equipe={equipeCompleta}
             onSalvar={adicionarMembro}
             onFechar={() => setModalMembroAberto(false)}
           />

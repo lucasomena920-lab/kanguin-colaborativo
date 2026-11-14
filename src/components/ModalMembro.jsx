@@ -3,9 +3,7 @@ import { useTranslation } from 'react-i18next'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-
-// Cores que a pessoa pode escolher para o avatar (da paleta Ocean Flow)
-const coresMembro = ['#2563EB', '#8B5CF6', '#06B6D4', '#10B981', '#F59E0B', '#EC4899']
+import { coresMembro } from '../utils/cores.js'
 
 function ModalMembro({ equipe, onSalvar, onFechar }) {
   const { t } = useTranslation()
