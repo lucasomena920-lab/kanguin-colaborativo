@@ -23,7 +23,7 @@ function possoGerenciar(meuPapel, membro, meuId) {
   return meuPapel === 'admin' && membro.papel !== 'admin'
 }
 
-function ModalCompartilhar({ quadro, usuario, onFechar }) {
+function ModalCompartilhar({ quadro, usuario, onSair, onFechar }) {
   const { t } = useTranslation()
   const meuPapel = quadro.papel
   const podeConvidar = meuPapel === 'dono' || meuPapel === 'admin'
@@ -36,6 +36,18 @@ function ModalCompartilhar({ quadro, usuario, onFechar }) {
   const [papel, setPapel] = useState('editor')
   const [enviando, setEnviando] = useState(false)
   const [removendo, setRemovendo] = useState(null) // user_id de quem está para ser removido
+  const [confirmandoSaida, setConfirmandoSaida] = useState(false)
+  const [saindo, setSaindo] = useState(false)
+
+  async function sair() {
+    setSaindo(true)
+    setErro('')
+    const deuCerto = await onSair()
+    if (!deuCerto) {
+      setSaindo(false)
+      setErro(t('auth.erros.generico'))
+    }
+  }
 
   // Carrega quem participa (com nome e email) e os convites pendentes
   useEffect(() => {
@@ -297,6 +309,29 @@ function ModalCompartilhar({ quadro, usuario, onFechar }) {
           </section>
         )}
       </Modal.Body>
+
+      {/* Quem não é dono pode sair do quadro */}
+      {meuPapel !== 'dono' && (
+        <Modal.Footer className="justify-content-start">
+          {confirmandoSaida ? (
+            <div className="d-flex flex-wrap align-items-center gap-2 w-100">
+              <span className="small me-auto">{t('compartilhar.confirmarSaida')}</span>
+              <Button size="sm" variant="danger" onClick={sair} disabled={saindo}>
+                {saindo && <span className="spinner-border spinner-border-sm me-1" />}
+                {t('compartilhar.sair')}
+              </Button>
+              <Button size="sm" variant="outline-secondary" onClick={() => setConfirmandoSaida(false)}>
+                {t('modal.cancelar')}
+              </Button>
+            </div>
+          ) : (
+            <Button variant="link" className="text-danger text-decoration-none px-0" onClick={() => setConfirmandoSaida(true)}>
+              <i className="bi bi-box-arrow-left me-1" />
+              {t('compartilhar.sair')}
+            </Button>
+          )}
+        </Modal.Footer>
+      )}
     </Modal>
   )
 }

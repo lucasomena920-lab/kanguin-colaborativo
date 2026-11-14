@@ -64,7 +64,9 @@
     "maisTempo": "Increase by 15 minutes",
     "semResponsavel": "No assignee",
     "removido": "removed",
-    "responsavelRemovido": "{{nome}} is no longer on the team. Choose someone else or delete the task."
+    "responsavelRemovido": "{{nome}} is no longer on the team. Choose someone else or delete the task.",
+    "ver": "View task",
+    "fechar": "Close"
   },
   "estatisticas": {
     "total": "Total tasks",
@@ -202,7 +204,9 @@
       "jaMembro": "This person is already on the board.",
       "jaConvidado": "There's already an invite for that email.",
       "semPermissao": "You don't have permission to do that."
-    }
+    },
+    "sair": "Leave board",
+    "confirmarSaida": "Leave this board? You'll need a new invite to come back."
   },
   "convites": {
     "titulo": "Invites",
@@ -210,5 +214,9 @@
     "como": "as",
     "aceitar": "Accept",
     "recusar": "Decline"
+  },
+  "permissoes": {
+    "soLeitura": "You can't edit this task",
+    "avisoModal": "You can view this task, but not edit it. Ask the board owner to change your role."
   }
 }

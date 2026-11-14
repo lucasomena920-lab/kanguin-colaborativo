@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Card from '../components/Card.jsx'
+import { usePermissoes } from '../contexts/permissoes.js'
 
 const localidades = { pt: 'pt-PT', es: 'es-ES', en: 'en-GB' }
 
@@ -30,6 +31,7 @@ function diasDaGrade(ano, mes) {
 
 function Calendario({ tarefas, equipe, onEditar, onAdicionar }) {
   const { t, i18n } = useTranslation()
+  const { podeCriar } = usePermissoes()
   const local = localidades[i18n.resolvedLanguage] || 'pt-PT'
   const hoje = paraISO(new Date())
 
@@ -186,13 +188,15 @@ function Calendario({ tarefas, equipe, onEditar, onAdicionar }) {
               </div>
             )}
 
-            <button
-              className="btn btn-add w-100 text-start mt-2"
-              onClick={() => onAdicionar(diaSelecionado)}
-            >
-              <i className="bi bi-plus-lg me-1" />
-              {t('coluna.adicionar')}
-            </button>
+            {podeCriar && (
+              <button
+                className="btn btn-add w-100 text-start mt-2"
+                onClick={() => onAdicionar(diaSelecionado)}
+              >
+                <i className="bi bi-plus-lg me-1" />
+                {t('coluna.adicionar')}
+              </button>
+            )}
           </div>
 
           {semData.length > 0 && (

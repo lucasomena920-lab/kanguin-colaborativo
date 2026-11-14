@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { formatarHoras } from '../utils/formatar.js'
+import { usePermissoes } from '../contexts/permissoes.js'
 
 // Formato de data de cada idioma
 const formatosData = { pt: 'pt-PT', es: 'es-ES', en: 'en-GB' }
@@ -14,6 +15,8 @@ function formatarData(iso, idioma) {
 
 function Card({ tarefa, equipe, onEditar }) {
   const { t, i18n } = useTranslation()
+  const { podeEditar } = usePermissoes()
+  const travada = !podeEditar(tarefa)
 
   const membro = equipe.find((m) => m.nome === tarefa.responsable)
   // Tem um nome de responsável, mas essa pessoa não está mais na equipe
@@ -49,15 +52,20 @@ function Card({ tarefa, equipe, onEditar }) {
 
   return (
     <article
-      className="card-tarefa p-3 rounded-3"
+      className={`card-tarefa p-3 rounded-3 ${travada ? 'travada' : ''}`}
       onClick={() => onEditar(tarefa)}
       onKeyDown={teclado}
       role="button"
       tabIndex={0}
     >
-      <span className={`etiqueta ${tarefa.prioridad}`}>
-        {t(`prioridade.${tarefa.prioridad}`)}
-      </span>
+      <div className="d-flex align-items-center justify-content-between">
+        <span className={`etiqueta ${tarefa.prioridad}`}>
+          {t(`prioridade.${tarefa.prioridad}`)}
+        </span>
+        {travada && (
+          <i className="bi bi-lock-fill cadeado" title={t('permissoes.soLeitura')} aria-label={t('permissoes.soLeitura')} />
+        )}
+      </div>
 
       <h3 className="h6 mt-2 mb-1">{tarefa.titulo}</h3>
       {responsavelRemovido && (

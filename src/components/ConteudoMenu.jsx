@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { supabase } from '../lib/supabase.js'
 import CartaoConta from './CartaoConta.jsx'
 import SeletorQuadro from './SeletorQuadro.jsx'
+import { usePermissoes } from '../contexts/permissoes.js'
 
 const idiomas = [
   { codigo: 'pt', rotulo: 'PT' },
@@ -27,6 +28,8 @@ function ConteudoMenu({
   onRemoverMembro,
 }) {
   const { t, i18n } = useTranslation()
+  // Só dono, admin e editor mudam a equipe
+  const { podeTudo: podeMudarEquipe } = usePermissoes()
 
   return (
     <>
@@ -77,15 +80,17 @@ function ConteudoMenu({
       <div>
         <div className="d-flex align-items-center mb-2">
           <p className="menu-titulo mb-0 me-auto">{t('equipe')}</p>
-          <button
-            type="button"
-            className="btn btn-sm btn-icone"
-            onClick={onAdicionarMembro}
-            aria-label={t('membro.adicionar')}
-            title={t('membro.adicionar')}
-          >
-            <i className="bi bi-person-plus" />
-          </button>
+          {podeMudarEquipe && (
+            <button
+              type="button"
+              className="btn btn-sm btn-icone"
+              onClick={onAdicionarMembro}
+              aria-label={t('membro.adicionar')}
+              title={t('membro.adicionar')}
+            >
+              <i className="bi bi-person-plus" />
+            </button>
+          )}
         </div>
 
         {equipe.length === 0 ? (
@@ -98,15 +103,17 @@ function ConteudoMenu({
                   {membro.nome[0].toUpperCase()}
                 </span>
                 <span className="me-auto text-truncate">{membro.nome}</span>
-                <button
-                  type="button"
-                  className="btn btn-sm btn-icone btn-remover"
-                  onClick={() => onRemoverMembro(membro)}
-                  aria-label={t('membro.remover', { nome: membro.nome })}
-                  title={t('membro.remover', { nome: membro.nome })}
-                >
-                  <i className="bi bi-x-lg" />
-                </button>
+                {podeMudarEquipe && (
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-icone btn-remover"
+                    onClick={() => onRemoverMembro(membro)}
+                    aria-label={t('membro.remover', { nome: membro.nome })}
+                    title={t('membro.remover', { nome: membro.nome })}
+                  >
+                    <i className="bi bi-x-lg" />
+                  </button>
+                )}
               </li>
             ))}
           </ul>

@@ -64,7 +64,9 @@
     "maisTempo": "Sumar 15 minutos",
     "semResponsavel": "Sin responsable",
     "removido": "eliminado",
-    "responsavelRemovido": "{{nome}} ya no forma parte del equipo. Elige otra persona o elimina la tarea."
+    "responsavelRemovido": "{{nome}} ya no forma parte del equipo. Elige otra persona o elimina la tarea.",
+    "ver": "Ver tarea",
+    "fechar": "Cerrar"
   },
   "estatisticas": {
     "total": "Total de tareas",
@@ -202,7 +204,9 @@
       "jaMembro": "Esa persona ya participa en el tablero.",
       "jaConvidado": "Ya hay una invitación para ese email.",
       "semPermissao": "No tienes permiso para hacer esto."
-    }
+    },
+    "sair": "Salir del tablero",
+    "confirmarSaida": "¿Salir de este tablero? Para volver, necesitarás una nueva invitación."
   },
   "convites": {
     "titulo": "Invitaciones",
@@ -210,5 +214,9 @@
     "como": "como",
     "aceitar": "Aceptar",
     "recusar": "Rechazar"
+  },
+  "permissoes": {
+    "soLeitura": "No puedes editar esta tarea",
+    "avisoModal": "Puedes ver esta tarea, pero no editarla. Pide al dueño del tablero que cambie tu rol."
   }
 }

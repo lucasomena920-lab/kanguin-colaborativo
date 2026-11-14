@@ -1,9 +1,11 @@
 import { useDroppable } from '@dnd-kit/core'
 import { useTranslation } from 'react-i18next'
 import CardArrastavel from './CardArrastavel.jsx'
+import { usePermissoes } from '../contexts/permissoes.js'
 
 function Coluna({ coluna, tarefas, equipe, onEditar, onAdicionar }) {
   const { t } = useTranslation()
+  const { podeCriar } = usePermissoes()
   const { setNodeRef, isOver } = useDroppable({ id: coluna.id })
 
   return (
@@ -29,10 +31,12 @@ function Coluna({ coluna, tarefas, equipe, onEditar, onAdicionar }) {
         )}
       </div>
 
-      <button className="btn btn-add w-100 text-start mt-2" onClick={() => onAdicionar(coluna.id)}>
-        <i className="bi bi-plus-lg me-1" />
-        {t('coluna.adicionar')}
-      </button>
+      {podeCriar && (
+        <button className="btn btn-add w-100 text-start mt-2" onClick={() => onAdicionar(coluna.id)}>
+          <i className="bi bi-plus-lg me-1" />
+          {t('coluna.adicionar')}
+        </button>
+      )}
     </section>
   )
 }

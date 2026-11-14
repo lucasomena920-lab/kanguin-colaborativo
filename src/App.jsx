@@ -20,6 +20,7 @@ import ModalMigracao from './components/ModalMigracao.jsx'
 import ModalCompartilhar from './components/ModalCompartilhar.jsx'
 import { nomeDoQuadro } from './utils/formatar.js'
 import { supabase } from './lib/supabase.js'
+import { PermissoesContext, calcularPermissoes } from './contexts/permissoes.js'
 
 // Páginas carregadas só quando alguém abre (lazy loading).
 // Assim, a biblioteca de gráficos não pesa na primeira abertura do site.
@@ -95,7 +96,13 @@ function App() {
     convites,
     aceitarConvite,
     recusarConvite,
+    sairDoQuadro,
   } = useDadosKanguin(usuario)
+
+  // ===== PERMISSÕES NO QUADRO ABERTO =====
+  // Sem conta: pode tudo. Com conta: depende do papel (enquanto carrega, só vê).
+  const logadoNaNuvem = Boolean(supabase && usuario)
+  const permissoes = calcularPermissoes(logadoNaNuvem ? (quadroAtual?.papel ?? 'leitor') : null, usuario?.id)
 
   // ===== ESTADOS DA TELA =====
   const [filtros, setFiltros] = useState({
@@ -182,6 +189,8 @@ function App() {
         {
           id: gerarId(),
           ...dados,
+          // Quem criou (o colaborador só pode mexer nas tarefas dele)
+          ...(logadoNaNuvem && { criado_por: usuario.id }),
           fecha_creacion: hojeISO(),
           fecha_conclusion: dataConclusao(dados.status, null),
         },
@@ -192,6 +201,8 @@ function App() {
   }
 
   function moverTarefa(id, novoStatus) {
+    const tarefa = tarefas.find((item) => item.id === id)
+    if (!tarefa || !permissoes.podeEditar(tarefa)) return
     setTarefas(
       tarefas.map((item) =>
         item.id === id
@@ -235,7 +246,7 @@ function App() {
   }
 
   function limparQuadro() {
-    if (tarefas.length === 0) return
+    if (tarefas.length === 0 || !permissoes.podeTudo) return
     const removidas = tarefas
     moverParaLixeira(removidas)
     mostrarAviso(t('aviso.quadroLimpo', { total: removidas.length }), 'bi-trash3', () =>
@@ -298,119 +309,126 @@ function App() {
   }
 
   return (
-    <div className="app d-flex">
-      {!telaDeLogin && <Sidebar {...propsMenu} />}
+    <PermissoesContext value={permissoes}>
+      <div className="app d-flex">
+        {!telaDeLogin && <Sidebar {...propsMenu} />}
 
-      <div className="conteudo flex-grow-1">
-        {!telaDeLogin && <BarraMobile {...propsMenu} />}
+        <div className="conteudo flex-grow-1">
+          {!telaDeLogin && <BarraMobile {...propsMenu} />}
 
-        <Suspense fallback={<Carregando />}>
-          <Routes>
-            {/* Página do Quadro */}
-            <Route
-              path="/"
-              element={
-                <>
-                  <Topo
-                    titulo={quadroAtual ? nomeDoQuadro(quadroAtual, t) : null}
-                    onCompartilhar={quadroAtual ? () => setCompartilhando(true) : null}
-                    filtros={filtros}
-                    onMudarFiltro={mudarFiltro}
-                    equipe={equipe}
-                    onNovaTarefa={() => abrirNovaTarefa('a-fazer')}
-                    onLimpar={limparQuadro}
-                    podeLimpar={tarefas.length > 0}
-                  />
-                  <main className="p-3 p-md-4">
-                    <Quadro
-                      colunas={colunas}
-                      tarefas={tarefasVisiveis}
+          <Suspense fallback={<Carregando />}>
+            <Routes>
+              {/* Página do Quadro */}
+              <Route
+                path="/"
+                element={
+                  <>
+                    <Topo
+                      titulo={quadroAtual ? nomeDoQuadro(quadroAtual, t) : null}
+                      onCompartilhar={quadroAtual ? () => setCompartilhando(true) : null}
+                      filtros={filtros}
+                      onMudarFiltro={mudarFiltro}
                       equipe={equipe}
-                      onEditar={abrirEdicao}
-                      onAdicionar={abrirNovaTarefa}
-                      onMover={moverTarefa}
+                      onNovaTarefa={() => abrirNovaTarefa('a-fazer')}
+                      onLimpar={limparQuadro}
+                      podeLimpar={tarefas.length > 0}
                     />
-                  </main>
-                </>
-              }
-            />
+                    <main className="p-3 p-md-4">
+                      <Quadro
+                        colunas={colunas}
+                        tarefas={tarefasVisiveis}
+                        equipe={equipe}
+                        onEditar={abrirEdicao}
+                        onAdicionar={abrirNovaTarefa}
+                        onMover={moverTarefa}
+                      />
+                    </main>
+                  </>
+                }
+              />
 
-            <Route
-              path="/estatisticas"
-              element={<Estatisticas tarefas={tarefas} colunas={colunas} equipe={equipe} />}
-            />
+              <Route
+                path="/estatisticas"
+                element={<Estatisticas tarefas={tarefas} colunas={colunas} equipe={equipe} />}
+              />
 
-            <Route
-              path="/calendario"
-              element={
-                <Calendario
-                  tarefas={tarefas}
-                  equipe={equipe}
-                  onEditar={abrirEdicao}
-                  onAdicionar={(data) => abrirNovaTarefa('a-fazer', data)}
-                />
-              }
-            />
+              <Route
+                path="/calendario"
+                element={
+                  <Calendario
+                    tarefas={tarefas}
+                    equipe={equipe}
+                    onEditar={abrirEdicao}
+                    onAdicionar={(data) => abrirNovaTarefa('a-fazer', data)}
+                  />
+                }
+              />
 
-            <Route
-              path="/lixeira"
-              element={
-                <Lixeira itens={lixeira} onRestaurar={restaurarDaLixeira} onEsvaziar={esvaziarLixeira} />
-              }
-            />
+              <Route
+                path="/lixeira"
+                element={
+                  <Lixeira itens={lixeira} onRestaurar={restaurarDaLixeira} onEsvaziar={esvaziarLixeira} />
+                }
+              />
 
-            <Route path="/entrar" element={usuario ? <Navigate to="/" replace /> : <Entrar />} />
+              <Route path="/entrar" element={usuario ? <Navigate to="/" replace /> : <Entrar />} />
 
-            {/* Qualquer outro endereço volta para o Quadro */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </Suspense>
+              {/* Qualquer outro endereço volta para o Quadro */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </Suspense>
+        </div>
+
+        {modalAberto && (
+          <ModalTarefa
+            tarefa={tarefaEditando}
+            statusInicial={statusInicial}
+            dataInicial={dataInicial}
+            colunas={colunas}
+            equipe={equipe}
+            onSalvar={salvarTarefa}
+            onExcluir={excluirTarefa}
+            onFechar={fecharModal}
+          />
+        )}
+
+        {modalMembroAberto && (
+          <ModalMembro
+            equipe={equipe}
+            onSalvar={adicionarMembro}
+            onFechar={() => setModalMembroAberto(false)}
+          />
+        )}
+
+        {compartilhando && quadroAtual && usuario && (
+          <ModalCompartilhar
+            key={quadroAtual.id}
+            quadro={quadroAtual}
+            usuario={usuario}
+            onSair={async () => {
+              const deuCerto = await sairDoQuadro(quadroAtual)
+              if (deuCerto) setCompartilhando(false)
+              return deuCerto
+            }}
+            onFechar={() => setCompartilhando(false)}
+          />
+        )}
+
+        {migracao && (
+          <ModalMigracao
+            total={migracao.total}
+            onLevar={migracao.levarParaNuvem}
+            onAgoraNao={migracao.deixarNoNavegador}
+          />
+        )}
+
+        <AvisoDesfazer
+          key={aviso?.id}
+          aviso={aviso && aviso.dono === (usuario?.id ?? null) ? aviso : null}
+          onFechar={() => setAviso(null)}
+        />
       </div>
-
-      {modalAberto && (
-        <ModalTarefa
-          tarefa={tarefaEditando}
-          statusInicial={statusInicial}
-          dataInicial={dataInicial}
-          colunas={colunas}
-          equipe={equipe}
-          onSalvar={salvarTarefa}
-          onExcluir={excluirTarefa}
-          onFechar={fecharModal}
-        />
-      )}
-
-      {modalMembroAberto && (
-        <ModalMembro
-          equipe={equipe}
-          onSalvar={adicionarMembro}
-          onFechar={() => setModalMembroAberto(false)}
-        />
-      )}
-
-      {compartilhando && quadroAtual && usuario && (
-        <ModalCompartilhar
-          key={quadroAtual.id}
-          quadro={quadroAtual}
-          usuario={usuario}
-          onFechar={() => setCompartilhando(false)}
-        />
-      )}
-
-      {migracao && (
-        <ModalMigracao
-          total={migracao.total}
-          onLevar={migracao.levarParaNuvem}
-          onAgoraNao={migracao.deixarNoNavegador}
-        />
-      )}
-
-      <AvisoDesfazer
-        key={aviso?.id}
-        aviso={aviso && aviso.dono === (usuario?.id ?? null) ? aviso : null}
-        onFechar={() => setAviso(null)}
-      />
-    </div>
+    </PermissoesContext>
   )
 }
 

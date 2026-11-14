@@ -326,6 +326,23 @@ function useDadosKanguin(usuario) {
     return true
   }
 
+  // Sair de um quadro que é de outra pessoa (o dono não pode sair do próprio)
+  async function sairDoQuadro(quadro) {
+    await salvarAgora()
+    const { data, error } = await supabase
+      .from('quadro_membros')
+      .delete()
+      .eq('quadro_id', quadro.id)
+      .eq('user_id', userId)
+      .select('user_id')
+    if (error || !data?.length) return false
+
+    // Tira da lista; o quadro aberto passa a ser o primeiro em que sou dono
+    setQuadros((atual) => ({ ...atual, lista: atual.lista.filter((q) => q.id !== quadro.id) }))
+    setQuadroEscolhido(null)
+    return true
+  }
+
   // ===== 5. FUNÇÕES "SET" QUE ESCOLHEM ONDE GRAVAR =====
   // Funcionam igual ao setState: aceitam um valor ou uma função (atual) => novo
   function criarSetter(campo, setLocal) {
@@ -396,6 +413,7 @@ function useDadosKanguin(usuario) {
     convites: logado && convites?.userId === userId ? convites.lista : [],
     aceitarConvite,
     recusarConvite,
+    sairDoQuadro,
   }
 }
 

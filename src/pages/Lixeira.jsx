@@ -1,9 +1,11 @@
 import { useTranslation } from 'react-i18next'
+import { usePermissoes } from '../contexts/permissoes.js'
 
 const localidades = { pt: 'pt-PT', es: 'es-ES', en: 'en-GB' }
 
 function Lixeira({ itens, onRestaurar, onEsvaziar }) {
   const { t, i18n } = useTranslation()
+  const { podeEditar, podeTudo } = usePermissoes()
   const local = localidades[i18n.resolvedLanguage] || 'pt-PT'
 
   function formatarQuando(iso) {
@@ -24,7 +26,7 @@ function Lixeira({ itens, onRestaurar, onEsvaziar }) {
     <main className="p-3 p-md-4">
       <div className="d-flex flex-wrap align-items-center gap-2 mb-2">
         <h1 className="h3 mb-0 me-auto">{t('menu.lixeira')}</h1>
-        {itens.length > 0 && (
+        {itens.length > 0 && podeTudo && (
           <>
             <button className="btn btn-outline-secondary btn-sm" onClick={() => onRestaurar(itens)}>
               <i className="bi bi-arrow-counterclockwise me-1" />
@@ -57,10 +59,14 @@ function Lixeira({ itens, onRestaurar, onEsvaziar }) {
                   {t('lixeira.excluidaEm', { data: formatarQuando(item.excluida_em) })}
                 </small>
               </div>
-              <button className="btn btn-sm btn-outline-primary" onClick={() => onRestaurar([item])}>
-                <i className="bi bi-arrow-counterclockwise me-1" />
-                <span className="d-none d-sm-inline">{t('lixeira.restaurar')}</span>
-              </button>
+              {podeEditar(item) ? (
+                <button className="btn btn-sm btn-outline-primary" onClick={() => onRestaurar([item])}>
+                  <i className="bi bi-arrow-counterclockwise me-1" />
+                  <span className="d-none d-sm-inline">{t('lixeira.restaurar')}</span>
+                </button>
+              ) : (
+                <i className="bi bi-lock-fill cadeado" title={t('permissoes.soLeitura')} aria-label={t('permissoes.soLeitura')} />
+              )}
             </li>
           ))}
         </ul>

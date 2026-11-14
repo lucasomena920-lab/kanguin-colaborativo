@@ -7,12 +7,16 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import InputHoras from './InputHoras.jsx'
+import { usePermissoes } from '../contexts/permissoes.js'
 
 const prioridades = ['alta', 'media', 'baja']
 
 function ModalTarefa({ tarefa, statusInicial, dataInicial = '', colunas, equipe, onSalvar, onExcluir, onFechar }) {
   const { t } = useTranslation()
   const editando = tarefa !== null
+  const { podeCriar, podeEditar } = usePermissoes()
+  // Sem permissão, a janela abre só para ver
+  const somenteLeitura = editando ? !podeEditar(tarefa) : !podeCriar
 
   const [form, setForm] = useState({
     titulo: tarefa?.titulo ?? '',
@@ -44,7 +48,7 @@ function ModalTarefa({ tarefa, statusInicial, dataInicial = '', colunas, equipe,
 
   function enviar(e) {
     e.preventDefault()
-    if (!form.titulo.trim()) return
+    if (somenteLeitura || !form.titulo.trim()) return
 
     const porHoras = form.tipo_prazo === 'horas'
 
@@ -63,141 +67,159 @@ function ModalTarefa({ tarefa, statusInicial, dataInicial = '', colunas, equipe,
       <Form onSubmit={enviar}>
         <Modal.Header closeButton>
           <Modal.Title as="h2" className="h5">
-            {editando ? t('modal.editar') : t('modal.nova')}
+            {somenteLeitura ? t('modal.ver') : editando ? t('modal.editar') : t('modal.nova')}
           </Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
-          <Form.Group className="mb-3" controlId="fTitulo">
-            <Form.Label>{t('modal.titulo')}</Form.Label>
-            <Form.Control
-              name="titulo"
-              value={form.titulo}
-              onChange={mudarCampo}
-              placeholder={t('modal.tituloPlaceholder')}
-              required
-              autoFocus
-            />
-          </Form.Group>
+          {somenteLeitura && (
+            <p className="aviso-leitura small mb-3">
+              <i className="bi bi-lock-fill me-2" />
+              {t('permissoes.avisoModal')}
+            </p>
+          )}
 
-          <Form.Group className="mb-3" controlId="fDescricao">
-            <Form.Label>{t('modal.descricao')}</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
-              name="descripcion"
-              value={form.descripcion}
-              onChange={mudarCampo}
-              placeholder={t('modal.descricaoPlaceholder')}
-            />
-          </Form.Group>
+          {/* fieldset disabled trava todos os campos de uma vez */}
+          <fieldset disabled={somenteLeitura}>
+            <Form.Group className="mb-3" controlId="fTitulo">
+              <Form.Label>{t('modal.titulo')}</Form.Label>
+              <Form.Control
+                name="titulo"
+                value={form.titulo}
+                onChange={mudarCampo}
+                placeholder={t('modal.tituloPlaceholder')}
+                required
+                autoFocus
+              />
+            </Form.Group>
 
-          <Row className="g-3">
-            <Col sm={6}>
-              <Form.Group controlId="fStatus">
-                <Form.Label>{t('modal.coluna')}</Form.Label>
-                <Form.Select name="status" value={form.status} onChange={mudarCampo}>
-                  {colunas.map((c) => (
-                    <option key={c.id} value={c.id}>{t(`colunas.${c.id}`)}</option>
-                  ))}
-                </Form.Select>
-              </Form.Group>
-            </Col>
+            <Form.Group className="mb-3" controlId="fDescricao">
+              <Form.Label>{t('modal.descricao')}</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                name="descripcion"
+                value={form.descripcion}
+                onChange={mudarCampo}
+                placeholder={t('modal.descricaoPlaceholder')}
+              />
+            </Form.Group>
 
-            <Col sm={6}>
-              <Form.Group controlId="fPrioridade">
-                <Form.Label>{t('modal.prioridade')}</Form.Label>
-                <Form.Select name="prioridad" value={form.prioridad} onChange={mudarCampo}>
-                  {prioridades.map((p) => (
-                    <option key={p} value={p}>{t(`prioridade.${p}`)}</option>
-                  ))}
-                </Form.Select>
-              </Form.Group>
-            </Col>
+            <Row className="g-3">
+              <Col sm={6}>
+                <Form.Group controlId="fStatus">
+                  <Form.Label>{t('modal.coluna')}</Form.Label>
+                  <Form.Select name="status" value={form.status} onChange={mudarCampo}>
+                    {colunas.map((c) => (
+                      <option key={c.id} value={c.id}>{t(`colunas.${c.id}`)}</option>
+                    ))}
+                  </Form.Select>
+                </Form.Group>
+              </Col>
 
-            <Col sm={6}>
-              <Form.Group controlId="fResponsavel">
-                <Form.Label>{t('modal.responsavel')}</Form.Label>
-                <Form.Select
-                  name="responsable"
-                  value={form.responsable}
-                  onChange={mudarCampo}
-                  isInvalid={responsavelRemovido}
-                >
-                  <option value="">{t('modal.semResponsavel')}</option>
-                  {equipe.map((m) => (
-                    <option key={m.nome} value={m.nome}>{m.nome}</option>
-                  ))}
-                  {/* Mantém o nome de quem saiu da equipe para não sumir sem aviso */}
-                  {responsavelRemovido && (
-                    <option value={form.responsable}>
-                      {form.responsable} ({t('modal.removido')})
-                    </option>
-                  )}
-                </Form.Select>
-                <Form.Control.Feedback type="invalid">
-                  {t('modal.responsavelRemovido', { nome: form.responsable })}
-                </Form.Control.Feedback>
-              </Form.Group>
-            </Col>
+              <Col sm={6}>
+                <Form.Group controlId="fPrioridade">
+                  <Form.Label>{t('modal.prioridade')}</Form.Label>
+                  <Form.Select name="prioridad" value={form.prioridad} onChange={mudarCampo}>
+                    {prioridades.map((p) => (
+                      <option key={p} value={p}>{t(`prioridade.${p}`)}</option>
+                    ))}
+                  </Form.Select>
+                </Form.Group>
+              </Col>
 
-            <Col sm={6}>
-              <Form.Group controlId="fPrazo">
-                <Form.Label>{t('modal.prazo')}</Form.Label>
-
-                {/* Escolha: prazo por data ou por horas */}
-                <ButtonGroup size="sm" className="w-100 mb-2">
-                  <Button
-                    variant={form.tipo_prazo === 'data' ? 'primary' : 'outline-secondary'}
-                    aria-pressed={form.tipo_prazo === 'data'}
-                    onClick={() => mudarTipoPrazo('data')}
-                  >
-                    <i className="bi bi-calendar3 me-1" />
-                    {t('modal.porData')}
-                  </Button>
-                  <Button
-                    variant={form.tipo_prazo === 'horas' ? 'primary' : 'outline-secondary'}
-                    aria-pressed={form.tipo_prazo === 'horas'}
-                    onClick={() => mudarTipoPrazo('horas')}
-                  >
-                    <i className="bi bi-clock me-1" />
-                    {t('modal.porHoras')}
-                  </Button>
-                </ButtonGroup>
-
-                {/* O campo muda conforme a escolha */}
-                {form.tipo_prazo === 'data' ? (
-                  <Form.Control
-                    type="date"
-                    name="fecha_limite"
-                    value={form.fecha_limite}
+              <Col sm={6}>
+                <Form.Group controlId="fResponsavel">
+                  <Form.Label>{t('modal.responsavel')}</Form.Label>
+                  <Form.Select
+                    name="responsable"
+                    value={form.responsable}
                     onChange={mudarCampo}
-                  />
-                ) : (
-                  <InputHoras valor={Number(form.horas)} onChange={mudarHoras} />
-                )}
-              </Form.Group>
-            </Col>
-          </Row>
+                    isInvalid={responsavelRemovido}
+                  >
+                    <option value="">{t('modal.semResponsavel')}</option>
+                    {equipe.map((m) => (
+                      <option key={m.nome} value={m.nome}>{m.nome}</option>
+                    ))}
+                    {/* Mantém o nome de quem saiu da equipe para não sumir sem aviso */}
+                    {responsavelRemovido && (
+                      <option value={form.responsable}>
+                        {form.responsable} ({t('modal.removido')})
+                      </option>
+                    )}
+                  </Form.Select>
+                  <Form.Control.Feedback type="invalid">
+                    {t('modal.responsavelRemovido', { nome: form.responsable })}
+                  </Form.Control.Feedback>
+                </Form.Group>
+              </Col>
+
+              <Col sm={6}>
+                <Form.Group controlId="fPrazo">
+                  <Form.Label>{t('modal.prazo')}</Form.Label>
+
+                  {/* Escolha: prazo por data ou por horas */}
+                  <ButtonGroup size="sm" className="w-100 mb-2">
+                    <Button
+                      variant={form.tipo_prazo === 'data' ? 'primary' : 'outline-secondary'}
+                      aria-pressed={form.tipo_prazo === 'data'}
+                      onClick={() => mudarTipoPrazo('data')}
+                    >
+                      <i className="bi bi-calendar3 me-1" />
+                      {t('modal.porData')}
+                    </Button>
+                    <Button
+                      variant={form.tipo_prazo === 'horas' ? 'primary' : 'outline-secondary'}
+                      aria-pressed={form.tipo_prazo === 'horas'}
+                      onClick={() => mudarTipoPrazo('horas')}
+                    >
+                      <i className="bi bi-clock me-1" />
+                      {t('modal.porHoras')}
+                    </Button>
+                  </ButtonGroup>
+
+                  {/* O campo muda conforme a escolha */}
+                  {form.tipo_prazo === 'data' ? (
+                    <Form.Control
+                      type="date"
+                      name="fecha_limite"
+                      value={form.fecha_limite}
+                      onChange={mudarCampo}
+                    />
+                  ) : (
+                    <InputHoras valor={Number(form.horas)} onChange={mudarHoras} />
+                  )}
+                </Form.Group>
+              </Col>
+            </Row>
+          </fieldset>
         </Modal.Body>
 
         <Modal.Footer>
-          {editando && (
-            <Button
-              variant="link"
-              className="text-danger me-auto text-decoration-none"
-              onClick={() => onExcluir(tarefa)}
-            >
-              <i className="bi bi-trash3 me-1" />
-              {t('modal.excluir')}
+          {somenteLeitura ? (
+            <Button variant="primary" onClick={onFechar}>
+              {t('modal.fechar')}
             </Button>
+          ) : (
+            <>
+              {editando && (
+                <Button
+                  variant="link"
+                  className="text-danger me-auto text-decoration-none"
+                  onClick={() => onExcluir(tarefa)}
+                >
+                  <i className="bi bi-trash3 me-1" />
+                  {t('modal.excluir')}
+                </Button>
+              )}
+              <Button variant="outline-secondary" onClick={onFechar}>
+                {t('modal.cancelar')}
+              </Button>
+              <Button type="submit" variant="primary">
+                {t('modal.salvar')}
+              </Button>
+            </>
           )}
-          <Button variant="outline-secondary" onClick={onFechar}>
-            {t('modal.cancelar')}
-          </Button>
-          <Button type="submit" variant="primary">
-            {t('modal.salvar')}
-          </Button>
         </Modal.Footer>
       </Form>
     </Modal>

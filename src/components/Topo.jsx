@@ -1,9 +1,11 @@
 import { useTranslation } from 'react-i18next'
+import { usePermissoes } from '../contexts/permissoes.js'
 
 const prioridades = ['alta', 'media', 'baja']
 
 function Topo({ titulo, onCompartilhar, filtros, onMudarFiltro, equipe, onNovaTarefa, onLimpar, podeLimpar }) {
   const { t } = useTranslation()
+  const { podeCriar, podeTudo } = usePermissoes()
 
   return (
     <header className="topo d-flex flex-wrap align-items-center gap-2 px-4 py-3 border-bottom">
@@ -55,20 +57,24 @@ function Topo({ titulo, onCompartilhar, filtros, onMudarFiltro, equipe, onNovaTa
         </button>
       )}
 
-      <button
-        className="btn btn-outline-secondary"
-        onClick={onLimpar}
-        disabled={!podeLimpar}
-        title={t('topo.limpar')}
-        aria-label={t('topo.limpar')}
-      >
-        <i className="bi bi-trash3" />
-      </button>
+      {podeTudo && (
+        <button
+          className="btn btn-outline-secondary"
+          onClick={onLimpar}
+          disabled={!podeLimpar}
+          title={t('topo.limpar')}
+          aria-label={t('topo.limpar')}
+        >
+          <i className="bi bi-trash3" />
+        </button>
+      )}
 
-      <button className="btn btn-primary" onClick={onNovaTarefa}>
-        <i className="bi bi-plus-lg me-1" />
-        {t('topo.novaTarefa')}
-      </button>
+      {podeCriar && (
+        <button className="btn btn-primary" onClick={onNovaTarefa}>
+          <i className="bi bi-plus-lg me-1" />
+          {t('topo.novaTarefa')}
+        </button>
+      )}
     </header>
   )
 }

@@ -64,7 +64,9 @@
     "maisTempo": "Aumentar 15 minutos",
     "semResponsavel": "Sem responsável",
     "removido": "removido",
-    "responsavelRemovido": "{{nome}} não faz mais parte da equipe. Escolha outra pessoa ou exclua a tarefa."
+    "responsavelRemovido": "{{nome}} não faz mais parte da equipe. Escolha outra pessoa ou exclua a tarefa.",
+    "ver": "Ver tarefa",
+    "fechar": "Fechar"
   },
   "estatisticas": {
     "total": "Total de tarefas",
@@ -202,7 +204,9 @@
       "jaMembro": "Essa pessoa já participa do quadro.",
       "jaConvidado": "Já existe um convite para esse email.",
       "semPermissao": "Você não tem permissão para fazer isso."
-    }
+    },
+    "sair": "Sair do quadro",
+    "confirmarSaida": "Sair deste quadro? Para voltar, vai precisar de um novo convite."
   },
   "convites": {
     "titulo": "Convites",
@@ -210,5 +214,9 @@
     "como": "como",
     "aceitar": "Aceitar",
     "recusar": "Recusar"
+  },
+  "permissoes": {
+    "soLeitura": "Você não pode editar esta tarefa",
+    "avisoModal": "Você pode ver esta tarefa, mas não editar. Peça ao dono do quadro para mudar o seu papel."
   }
 }
