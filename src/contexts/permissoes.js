@@ -21,6 +21,20 @@ export function calcularPermissoes(papel, userId) {
   }
 }
 
+// Quais papéis cada um pode dar aos outros (o banco confere as mesmas regras)
+export function papeisQuePossoDar(meuPapel) {
+  if (meuPapel === 'dono') return ['admin', 'editor', 'colaborador', 'leitor']
+  if (meuPapel === 'admin') return ['editor', 'colaborador', 'leitor']
+  return []
+}
+
+// Posso mudar o papel ou tirar essa pessoa do quadro?
+export function possoGerenciar(meuPapel, membro, meuId) {
+  if (membro.user_id === meuId || membro.papel === 'dono') return false
+  if (meuPapel === 'dono') return true
+  return meuPapel === 'admin' && membro.papel !== 'admin'
+}
+
 // Contexto: deixa as permissões disponíveis para qualquer componente,
 // sem precisar passar por props de pai para filho em todos os níveis
 export const PermissoesContext = createContext(calcularPermissoes(null, null))

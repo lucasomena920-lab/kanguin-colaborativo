@@ -5,23 +5,12 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import { supabase } from '../lib/supabase.js'
 import { nomeDoQuadro } from '../utils/formatar.js'
+import { papeisQuePossoDar, possoGerenciar } from '../contexts/permissoes.js'
+import { enviarConvite } from '../lib/convites.js'
 
 // Ordem em que os papéis aparecem na lista (do que pode mais para o que pode menos)
 const ordemPapeis = ['dono', 'admin', 'editor', 'colaborador', 'leitor']
 
-// Quais papéis cada um pode dar aos outros (o banco confere as mesmas regras)
-function papeisQuePossoDar(meuPapel) {
-  if (meuPapel === 'dono') return ['admin', 'editor', 'colaborador', 'leitor']
-  if (meuPapel === 'admin') return ['editor', 'colaborador', 'leitor']
-  return []
-}
-
-// Posso mudar o papel ou remover essa pessoa?
-function possoGerenciar(meuPapel, membro, meuId) {
-  if (membro.user_id === meuId || membro.papel === 'dono') return false
-  if (meuPapel === 'dono') return true
-  return meuPapel === 'admin' && membro.papel !== 'admin'
-}
 
 function ModalCompartilhar({ quadro, usuario, onSair, onFechar }) {
   const { t } = useTranslation()
@@ -105,21 +94,11 @@ function ModalCompartilhar({ quadro, usuario, onSair, onFechar }) {
     if (convites.some((c) => c.email === emailLimpo)) return setErro(t('compartilhar.erros.jaConvidado'))
 
     setEnviando(true)
-    const { data, error } = await supabase
-      .from('convites')
-      .insert({ quadro_id: quadro.id, email: emailLimpo, papel })
-      .select('id, email, papel, criado_em')
-      .single()
+    const { convite, erro: chaveErro } = await enviarConvite(quadro.id, emailLimpo, papel)
     setEnviando(false)
 
-    if (error) {
-      // 23505 = já existe um convite igual (unique); 42501 = a regra de segurança barrou
-      if (error.code === '23505') setErro(t('compartilhar.erros.jaConvidado'))
-      else if (error.code === '42501') setErro(t('compartilhar.erros.semPermissao'))
-      else setErro(t('auth.erros.generico'))
-      return
-    }
-    setConvites((atual) => [...atual, data])
+    if (chaveErro) return setErro(t(chaveErro))
+    setConvites((atual) => [...atual, convite])
     setEmail('')
   }
 

@@ -105,6 +105,7 @@ function App() {
     participantes,
     meuNome,
     mudarMeuNome,
+    removerParticipante,
   } = useDadosKanguin(usuario)
 
   // ===== EQUIPE COMPLETA =====
@@ -320,6 +321,10 @@ function App() {
     participantes,
     meuNome,
     onMudarNome: mudarMeuNome,
+    onRemoverParticipante: async (pessoa) => {
+      if (!window.confirm(t('membro.confirmarTirar', { nome: pessoa.nome }))) return
+      if (!(await removerParticipante(pessoa))) window.alert(t('compartilhar.erros.semPermissao'))
+    },
     tema,
     totalLixeira: lixeira.length,
     usuario,
@@ -435,6 +440,9 @@ function App() {
         {modalMembroAberto && (
           <ModalMembro
             equipe={equipeCompleta}
+            quadro={quadroAtual}
+            usuario={usuario}
+            participantes={participantes}
             onSalvar={adicionarMembro}
             onFechar={() => setModalMembroAberto(false)}
           />

@@ -267,13 +267,16 @@ function useDadosKanguin(usuario) {
 
       const { data: perfis } = await supabase
         .from('perfis')
-        .select('id, nome')
+        .select('id, nome, email')
         .in('id', linhas.map((m) => m.user_id))
       if (cancelado) return
 
       const ordem = ['dono', 'admin', 'editor', 'colaborador', 'leitor']
       const lista = linhas
-        .map((m) => ({ ...m, nome: perfis?.find((p) => p.id === m.user_id)?.nome ?? '?' }))
+        .map((m) => {
+          const perfil = perfis?.find((p) => p.id === m.user_id)
+          return { ...m, nome: perfil?.nome ?? '?', email: perfil?.email ?? '' }
+        })
         .sort((a, b) => ordem.indexOf(a.papel) - ordem.indexOf(b.papel) || a.nome.localeCompare(b.nome))
       setParticipantes({ quadroId, lista })
     }
@@ -542,6 +545,19 @@ function useDadosKanguin(usuario) {
     return true
   }
 
+  // Tirar uma pessoa com conta do quadro aberto (dono e admin)
+  async function removerParticipante(pessoa) {
+    const { data, error } = await supabase
+      .from('quadro_membros')
+      .delete()
+      .eq('quadro_id', quadroId)
+      .eq('user_id', pessoa.user_id)
+      .select('user_id')
+    if (error || !data?.length) return false
+    setVersaoParticipantes((v) => v + 1)
+    return true
+  }
+
   // ===== 4C. MUDAR O MEU NOME =====
   async function mudarMeuNome(nome) {
     const { data, error } = await supabase
@@ -630,6 +646,7 @@ function useDadosKanguin(usuario) {
     participantes: logado && participantes?.quadroId === quadroId ? participantes.lista : [],
     meuNome: logado && meuPerfil?.userId === userId ? meuPerfil.nome : null,
     mudarMeuNome,
+    removerParticipante,
   }
 }
 

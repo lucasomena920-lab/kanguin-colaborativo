@@ -104,7 +104,14 @@
     "remover": "Remover {{nome}} da equipe",
     "vazia": "Ninguém na equipe ainda",
     "voce": "você",
-    "semConta": "Sem conta"
+    "semConta": "Sem conta",
+    "porEmail": "Convidar por email",
+    "soNome": "Só o nome",
+    "explicaConvite": "A pessoa recebe o convite no sininho do Kanguin e, ao aceitar, entra no quadro e na equipe.",
+    "explicaNome": "Para quem não tem conta: o nome aparece como responsável nas tarefas, mas a pessoa não acessa o quadro.",
+    "conviteEnviado": "Convite enviado para {{email}}. Quando a pessoa aceitar, ela aparece na equipe.",
+    "tirar": "Tirar {{nome}} do quadro",
+    "confirmarTirar": "Tirar {{nome}} do quadro? A pessoa perde o acesso às tarefas. Para voltar, vai precisar de um novo convite."
   },
   "lixeira": {
     "descricao": "As tarefas excluídas ficam aqui até você esvaziar a lixeira.",

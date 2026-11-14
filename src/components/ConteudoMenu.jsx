@@ -1,9 +1,11 @@
+import { useState } from 'react'
 import { NavLink } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { supabase } from '../lib/supabase.js'
 import CartaoConta from './CartaoConta.jsx'
+import ModalMeuNome from './ModalMeuNome.jsx'
 import SeletorQuadro from './SeletorQuadro.jsx'
-import { usePermissoes } from '../contexts/permissoes.js'
+import { usePermissoes, possoGerenciar } from '../contexts/permissoes.js'
 import { corDaPessoa } from '../utils/cores.js'
 
 const idiomas = [
@@ -17,6 +19,7 @@ function ConteudoMenu({
   participantes = [],
   meuNome,
   onMudarNome,
+  onRemoverParticipante,
   tema,
   totalLixeira,
   usuario,
@@ -33,7 +36,11 @@ function ConteudoMenu({
 }) {
   const { t, i18n } = useTranslation()
   // Só dono, admin e editor mudam a equipe
-  const { podeTudo: podeMudarEquipe } = usePermissoes()
+  const { podeTudo: podeMudarEquipe, papel: meuPapel } = usePermissoes()
+
+  // Meu nome: o escolhido pela pessoa; enquanto carrega, o começo do email
+  const nomeExibido = meuNome || usuario?.email?.split('@')[0] || ''
+  const [editandoNome, setEditandoNome] = useState(false)
 
   return (
     <>
@@ -111,7 +118,31 @@ function ConteudoMenu({
                     <span className="text-body-secondary small"> ({t('membro.voce')})</span>
                   )}
                 </span>
+                {/* Na minha linha: lápis para mudar como eu apareço */}
+                {pessoa.user_id === usuario?.id && (
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-icone"
+                    onClick={() => setEditandoNome(true)}
+                    aria-label={t('auth.mudarNome')}
+                    title={t('auth.mudarNome')}
+                  >
+                    <i className="bi bi-pencil" />
+                  </button>
+                )}
                 <span className={`badge-papel ${pessoa.papel}`}>{t(`quadros.papeis.${pessoa.papel}`)}</span>
+                {/* Dono e admin podem tirar a pessoa do quadro (mesmas regras do Compartilhar) */}
+                {possoGerenciar(meuPapel, pessoa, usuario?.id) && (
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-icone btn-remover"
+                    onClick={() => onRemoverParticipante(pessoa)}
+                    aria-label={t('membro.tirar', { nome: pessoa.nome })}
+                    title={t('membro.tirar', { nome: pessoa.nome })}
+                  >
+                    <i className="bi bi-x-lg" />
+                  </button>
+                )}
               </li>
             ))}
           </ul>
@@ -178,9 +209,9 @@ function ConteudoMenu({
           (usuario ? (
             <CartaoConta
               usuario={usuario}
-              meuNome={meuNome}
+              nome={nomeExibido}
               statusNuvem={statusNuvem}
-              onMudarNome={onMudarNome}
+              onEditarNome={() => setEditandoNome(true)}
               onSair={onSair}
             />
           ) : (
@@ -193,6 +224,10 @@ function ConteudoMenu({
             </div>
           ))}
       </div>
+
+      {editandoNome && (
+        <ModalMeuNome nomeAtual={nomeExibido} onSalvar={onMudarNome} onFechar={() => setEditandoNome(false)} />
+      )}
     </>
   )
 }

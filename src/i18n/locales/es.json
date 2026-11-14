@@ -104,7 +104,14 @@
     "remover": "Quitar a {{nome}} del equipo",
     "vazia": "Todavía no hay nadie en el equipo",
     "voce": "tú",
-    "semConta": "Sin cuenta"
+    "semConta": "Sin cuenta",
+    "porEmail": "Invitar por email",
+    "soNome": "Solo el nombre",
+    "explicaConvite": "La persona recibe la invitación en la campana de Kanguin y, al aceptar, entra en el tablero y en el equipo.",
+    "explicaNome": "Para quien no tiene cuenta: el nombre aparece como responsable en las tareas, pero la persona no accede al tablero.",
+    "conviteEnviado": "Invitación enviada a {{email}}. Cuando la acepte, aparecerá en el equipo.",
+    "tirar": "Quitar a {{nome}} del tablero",
+    "confirmarTirar": "¿Quitar a {{nome}} del tablero? Perderá el acceso a las tareas. Para volver, necesitará una nueva invitación."
   },
   "lixeira": {
     "descricao": "Las tareas eliminadas se quedan aquí hasta que vacíes la papelera.",

@@ -104,7 +104,14 @@
     "remover": "Remove {{nome}} from the team",
     "vazia": "No one on the team yet",
     "voce": "you",
-    "semConta": "No account"
+    "semConta": "No account",
+    "porEmail": "Invite by email",
+    "soNome": "Name only",
+    "explicaConvite": "They'll get the invite in Kanguin's bell and, once they accept, join the board and the team.",
+    "explicaNome": "For people without an account: the name shows up as assignee on tasks, but they can't open the board.",
+    "conviteEnviado": "Invite sent to {{email}}. Once they accept, they'll show up on the team.",
+    "tirar": "Remove {{nome}} from the board",
+    "confirmarTirar": "Remove {{nome}} from the board? They'll lose access to the tasks and will need a new invite to come back."
   },
   "lixeira": {
     "descricao": "Deleted tasks stay here until you empty the trash.",
