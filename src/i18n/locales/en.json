@@ -118,5 +118,89 @@
     "hoje": "Due today",
     "amanha": "Due tomorrow"
   },
-  "carregando": "Loading..."
+  "carregando": "Loading...",
+  "auth": {
+    "entrar": "Sign in",
+    "criarConta": "Create account",
+    "email": "Email",
+    "senha": "Password",
+    "senhaDica": "At least 6 characters.",
+    "confirmeEmail": "Almost there! We sent a confirmation link to {{email}}. Open the email and click the link to activate your account.",
+    "semConta": "Your tasks are saved only in this browser. If you open Kanguin on another device, in a private window or clear your browser data, they won't be there. With an account, they're saved in the cloud.",
+    "voltar": "Continue without an account",
+    "indisponivel": "Sign in is not available right now.",
+    "erros": {
+      "invalid_credentials": "Wrong email or password.",
+      "email_not_confirmed": "Please confirm your email before signing in. Look for the link in your inbox.",
+      "user_already_exists": "An account with this email already exists. Try signing in.",
+      "weak_password": "Weak password. Use at least 6 characters.",
+      "over_email_send_rate_limit": "Too many attempts. Wait a few minutes and try again.",
+      "generico": "Something went wrong. Please try again."
+    },
+    "sair": "Sign out",
+    "conectadoComo": "Signed in as",
+    "entrarDica": "Sign in to save your tasks to the cloud",
+    "conta": "Account",
+    "semContaTitulo": "Using it without an account?",
+    "nuvem": {
+      "local": "Saved in this browser",
+      "carregando": "Loading from the cloud...",
+      "salvando": "Saving...",
+      "sincronizado": "Saved to the cloud",
+      "erro": "Couldn't save to the cloud"
+    }
+  },
+  "migracao": {
+    "titulo": "Move your board to your account?",
+    "texto_one": "We found 1 task saved in this browser, from when you used Kanguin without an account. Do you want to move it to your account? That way it's saved in the cloud and shows up on any device.",
+    "texto_other": "We found {{count}} tasks saved in this browser, from when you used Kanguin without an account. Do you want to move them to your account? That way they're saved in the cloud and show up on any device.",
+    "nota": "Your team and trash come along too. If you choose \"Not now\", everything stays in this browser and shows up when you sign out.",
+    "levar": "Move to my account",
+    "agoraNao": "Not now"
+  },
+  "quadros": {
+    "titulo": "Board",
+    "meuQuadro": "My board",
+    "novo": "New board",
+    "nome": "Board name",
+    "nomePlaceholder": "e.g. Work, College...",
+    "criar": "Create board",
+    "papeis": {
+      "dono": "Owner",
+      "admin": "Admin",
+      "editor": "Editor",
+      "colaborador": "Contributor",
+      "leitor": "Viewer"
+    }
+  },
+  "compartilhar": {
+    "botao": "Share",
+    "titulo": "Share board",
+    "convidar": "Invite by email",
+    "emailPlaceholder": "email@example.com",
+    "papel": "Role",
+    "enviar": "Invite",
+    "membros": "Who's in",
+    "voce": "you",
+    "papelDe": "{{nome}}'s role",
+    "remover": "Remove",
+    "removerNome": "Remove {{nome}} from the board",
+    "pendentes": "Pending invites",
+    "aguardando": "Waiting for them to accept",
+    "cancelarConvite": "Cancel invite",
+    "notaConvite": "They'll see the invite when they sign in to Kanguin with that email. If they don't have an account yet, they just need to create one.",
+    "soDonoAdmin": "Only the owner and admins can invite people and change roles.",
+    "descricoes": {
+      "admin": "invites people and edits every task.",
+      "editor": "creates and edits every task.",
+      "colaborador": "creates tasks, but only edits their own.",
+      "leitor": "only views the board, can't change anything."
+    },
+    "erros": {
+      "voceMesmo": "That's your own email.",
+      "jaMembro": "This person is already on the board.",
+      "jaConvidado": "There's already an invite for that email.",
+      "semPermissao": "You don't have permission to do that."
+    }
+  }
 }

@@ -623,3 +623,173 @@
   top: -2px;
   right: -2px;
 }
+
+/* ===== Tela de login ===== */
+.aviso-convidado {
+  display: flex;
+  gap: 10px;
+  padding: 12px 14px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--texto-principal);
+  background-color: color-mix(in srgb, var(--andamento) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--andamento) 35%, transparent);
+  border-radius: 10px;
+}
+
+.aviso-convidado .bi {
+  color: var(--etiqueta-media);
+  margin-top: 2px;
+}
+
+/* ===== Cartão da conta (rodapé do menu) ===== */
+.cartao-conta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  color: var(--texto-principal);
+  background-color: var(--fundo-geral);
+  border: 1px solid var(--bordas);
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.3;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+
+.cartao-conta:hover,
+.cartao-conta.show {
+  background-color: var(--fundo-colunas);
+  border-color: var(--azul-claro);
+}
+
+.avatar-conta {
+  position: relative;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, var(--azul-principal), var(--informativo));
+}
+
+/* Bolinha da situação da nuvem, no canto do avatar */
+.ponto-status {
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--fundo-geral);
+  background-color: var(--texto-suave);
+}
+
+.ponto-status.sincronizado { background-color: var(--sucesso); }
+.ponto-status.salvando { background-color: var(--andamento); }
+.ponto-status.erro { background-color: var(--urgente); }
+
+.menu-conta {
+  --bs-dropdown-bg: var(--fundo-cards);
+  --bs-dropdown-border-color: var(--bordas);
+  width: max-content;
+  min-width: 100%;
+  max-width: 320px;
+}
+
+/* Situação da nuvem, embaixo do nome */
+.status-nuvem {
+  font-size: 12px;
+  color: var(--texto-secundario);
+}
+
+.status-nuvem.sincronizado { color: var(--etiqueta-baja); }
+.status-nuvem.erro { color: var(--etiqueta-alta); }
+
+/* ===== Seletor de quadros ===== */
+.seletor-quadro {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  color: var(--texto-principal);
+  background-color: var(--fundo-geral);
+  border: 1px solid var(--bordas);
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.seletor-quadro:hover,
+.seletor-quadro.show {
+  border-color: var(--azul-claro);
+}
+
+.menu-quadros {
+  --bs-dropdown-bg: var(--fundo-cards);
+  --bs-dropdown-border-color: var(--bordas);
+  --bs-dropdown-link-active-bg: color-mix(in srgb, var(--azul-principal) 15%, transparent);
+  --bs-dropdown-link-active-color: var(--texto-principal);
+  width: 100%;
+  min-width: 240px;
+}
+
+/* Etiqueta do papel (Dono, Admin, Editor...) */
+.badge-papel {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  color: var(--texto-secundario);
+  background-color: var(--fundo-colunas);
+}
+
+.badge-papel.dono,
+.badge-papel.admin {
+  color: var(--azul-principal);
+  background-color: color-mix(in srgb, var(--azul-principal) 14%, transparent);
+}
+
+/* ===== COMPARTILHAR QUADRO ===== */
+.lista-compartilhar li + li {
+  border-top: 1px solid var(--bs-border-color);
+}
+
+.avatar-membro {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 14px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--azul-principal), var(--informativo));
+}
+
+.avatar-membro.pendente {
+  color: var(--texto-secundario);
+  background: var(--fundo-colunas);
+  border: 1px dashed var(--bs-border-color);
+}
+
+.campo-convite {
+  min-width: 200px;
+  flex-basis: 200px;
+}
+
+.min-w-0 {
+  min-width: 0;
+}
+
+.badge-papel.editor {
+  color: #1d7a5c;
+  background-color: color-mix(in srgb, #1d7a5c 14%, transparent);
+}
+
+[data-bs-theme='dark'] .badge-papel.editor {
+  color: #5fd3a8;
+}

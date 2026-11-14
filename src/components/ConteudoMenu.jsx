@@ -1,5 +1,8 @@
 import { NavLink } from 'react-router'
 import { useTranslation } from 'react-i18next'
+import { supabase } from '../lib/supabase.js'
+import CartaoConta from './CartaoConta.jsx'
+import SeletorQuadro from './SeletorQuadro.jsx'
 
 const idiomas = [
   { codigo: 'pt', rotulo: 'PT' },
@@ -11,6 +14,13 @@ function ConteudoMenu({
   equipe,
   tema,
   totalLixeira,
+  usuario,
+  statusNuvem,
+  quadros,
+  quadroAtual,
+  onTrocarQuadro,
+  onCriarQuadro,
+  onSair,
   onAlternarTema,
   onNavegar,
   onAdicionarMembro,
@@ -20,6 +30,17 @@ function ConteudoMenu({
 
   return (
     <>
+      {/* Seletor de quadros: só com login */}
+      {usuario && (
+        <SeletorQuadro
+          quadros={quadros}
+          quadroAtual={quadroAtual}
+          onTrocar={onTrocarQuadro}
+          onCriar={onCriarQuadro}
+          onNavegar={onNavegar}
+        />
+      )}
+
       <nav>
         <p className="menu-titulo">{t('menu.titulo')}</p>
         <ul className="nav nav-pills flex-column gap-1">
@@ -115,6 +136,20 @@ function ConteudoMenu({
           <i className={tema === 'light' ? 'bi bi-moon-stars me-2' : 'bi bi-sun me-2'} />
           {tema === 'light' ? t('tema.escuro') : t('tema.claro')}
         </button>
+
+        {/* Conta: só aparece se o Supabase estiver configurado */}
+        {supabase &&
+          (usuario ? (
+            <CartaoConta usuario={usuario} statusNuvem={statusNuvem} onSair={onSair} />
+          ) : (
+            <div>
+              <p className="menu-titulo">{t('auth.conta')}</p>
+              <NavLink to="/entrar" className="btn btn-outline-primary w-100" onClick={onNavegar}>
+                <i className="bi bi-person-circle me-2" />
+                {t('auth.entrar')}
+              </NavLink>
+            </div>
+          ))}
       </div>
     </>
   )

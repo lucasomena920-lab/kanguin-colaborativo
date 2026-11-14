@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
-import { Routes, Route, Navigate } from 'react-router'
+import { Routes, Route, Navigate, useLocation } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import Sidebar from './components/Sidebar.jsx'
 import BarraMobile from './components/BarraMobile.jsx'
@@ -13,6 +13,13 @@ import Lixeira from './pages/Lixeira.jsx'
 import useLocalStorage from './hooks/useLocalStorage.js'
 import { gerarId } from './utils/gerarId.js'
 import { alertasDePrazo } from './utils/notificacoes.js'
+import Entrar from './pages/Entrar.jsx'
+import useSessao from './hooks/useSessao.js'
+import useDadosKanguin from './hooks/useDadosKanguin.js'
+import ModalMigracao from './components/ModalMigracao.jsx'
+import ModalCompartilhar from './components/ModalCompartilhar.jsx'
+import { nomeDoQuadro } from './utils/formatar.js'
+import { supabase } from './lib/supabase.js'
 
 // Páginas carregadas só quando alguém abre (lazy loading).
 // Assim, a biblioteca de gráficos não pesa na primeira abertura do site.
@@ -59,11 +66,33 @@ const temaDoSistema = window.matchMedia('(prefers-color-scheme: dark)').matches
 function App() {
   const { t } = useTranslation()
 
+  // Na tela de login, o app aparece sem a sidebar
+  const { pathname } = useLocation()
+  const telaDeLogin = pathname === '/entrar'
+
   // ===== ESTADOS SALVOS NO NAVEGADOR =====
   const [tema, setTema] = useLocalStorage('kanguin:tema', temaDoSistema)
-  const [tarefas, setTarefas] = useLocalStorage('kanguin:tarefas', [])
-  const [equipe, setEquipe] = useLocalStorage('kanguin:equipe', [])
-  const [lixeira, setLixeira] = useLocalStorage('kanguin:lixeira', [])
+
+  // Quem está logado (null = ninguém)
+  const usuario = useSessao()
+
+  // ===== TAREFAS, LIXEIRA E EQUIPE =====
+  // Sem login: salvas no navegador. Com login: salvas na nuvem (Supabase).
+  const {
+    tarefas,
+    setTarefas,
+    lixeira,
+    setLixeira,
+    equipe,
+    setEquipe,
+    statusNuvem,
+    migracao,
+    quadros,
+    quadroAtual,
+    trocarQuadro,
+    criarQuadro,
+    salvarAgora,
+  } = useDadosKanguin(usuario)
 
   // ===== ESTADOS DA TELA =====
   const [filtros, setFiltros] = useState({
@@ -80,6 +109,9 @@ function App() {
 
   // Modal de nova pessoa
   const [modalMembroAberto, setModalMembroAberto] = useState(false)
+
+  // Janela de compartilhar o quadro
+  const [compartilhando, setCompartilhando] = useState(false)
 
   // Aviso com "Desfazer": { id, mensagem, icone, aoDesfazer } ou null
   const [aviso, setAviso] = useState(null)
@@ -109,7 +141,8 @@ function App() {
   }
 
   function mostrarAviso(mensagem, icone, aoDesfazer) {
-    setAviso({ id: gerarId(), mensagem, icone, aoDesfazer })
+    // Guarda de quem é o aviso: se a pessoa entrar ou sair da conta, ele some
+    setAviso({ id: gerarId(), mensagem, icone, aoDesfazer, dono: usuario?.id ?? null })
   }
 
   // ===== FUNÇÕES: modal de tarefa =====
@@ -233,11 +266,24 @@ function App() {
     return textoOk && prioridadeOk && responsavelOk
   })
 
+  // ===== CONTA =====
+  async function sair() {
+    await salvarAgora() // não perde o que estava esperando para salvar
+    await supabase.auth.signOut()
+  }
+
   // Props do menu (iguais na sidebar do computador e no menu do celular)
   const propsMenu = {
     equipe,
     tema,
     totalLixeira: lixeira.length,
+    usuario,
+    statusNuvem,
+    quadros,
+    quadroAtual,
+    onTrocarQuadro: trocarQuadro,
+    onCriarQuadro: criarQuadro,
+    onSair: sair,
     alertas,
     onAbrirTarefa: abrirEdicao,
     onAlternarTema: alternarTema,
@@ -247,10 +293,10 @@ function App() {
 
   return (
     <div className="app d-flex">
-      <Sidebar {...propsMenu} />
+      {!telaDeLogin && <Sidebar {...propsMenu} />}
 
       <div className="conteudo flex-grow-1">
-        <BarraMobile {...propsMenu} />
+        {!telaDeLogin && <BarraMobile {...propsMenu} />}
 
         <Suspense fallback={<Carregando />}>
           <Routes>
@@ -260,6 +306,8 @@ function App() {
               element={
                 <>
                   <Topo
+                    titulo={quadroAtual ? nomeDoQuadro(quadroAtual, t) : null}
+                    onCompartilhar={quadroAtual ? () => setCompartilhando(true) : null}
                     filtros={filtros}
                     onMudarFiltro={mudarFiltro}
                     equipe={equipe}
@@ -305,6 +353,8 @@ function App() {
               }
             />
 
+            <Route path="/entrar" element={usuario ? <Navigate to="/" replace /> : <Entrar />} />
+
             {/* Qualquer outro endereço volta para o Quadro */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
@@ -332,7 +382,28 @@ function App() {
         />
       )}
 
-      <AvisoDesfazer key={aviso?.id} aviso={aviso} onFechar={() => setAviso(null)} />
+      {compartilhando && quadroAtual && usuario && (
+        <ModalCompartilhar
+          key={quadroAtual.id}
+          quadro={quadroAtual}
+          usuario={usuario}
+          onFechar={() => setCompartilhando(false)}
+        />
+      )}
+
+      {migracao && (
+        <ModalMigracao
+          total={migracao.total}
+          onLevar={migracao.levarParaNuvem}
+          onAgoraNao={migracao.deixarNoNavegador}
+        />
+      )}
+
+      <AvisoDesfazer
+        key={aviso?.id}
+        aviso={aviso && aviso.dono === (usuario?.id ?? null) ? aviso : null}
+        onFechar={() => setAviso(null)}
+      />
     </div>
   )
 }

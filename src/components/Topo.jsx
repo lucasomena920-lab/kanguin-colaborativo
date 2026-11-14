@@ -2,13 +2,13 @@ import { useTranslation } from 'react-i18next'
 
 const prioridades = ['alta', 'media', 'baja']
 
-function Topo({ filtros, onMudarFiltro, equipe, onNovaTarefa, onLimpar, podeLimpar }) {
+function Topo({ titulo, onCompartilhar, filtros, onMudarFiltro, equipe, onNovaTarefa, onLimpar, podeLimpar }) {
   const { t } = useTranslation()
 
   return (
     <header className="topo d-flex flex-wrap align-items-center gap-2 px-4 py-3 border-bottom">
       <div className="me-auto">
-        <h1 className="h3 mb-0">{t('topo.titulo')}</h1>
+        <h1 className="h3 mb-0">{titulo || t('topo.titulo')}</h1>
         <small className="text-body-secondary">{t('topo.subtitulo')}</small>
       </div>
 
@@ -46,6 +46,14 @@ function Topo({ filtros, onMudarFiltro, equipe, onNovaTarefa, onLimpar, podeLimp
           <option key={membro.nome} value={membro.nome}>{membro.nome}</option>
         ))}
       </select>
+
+      {onCompartilhar && (
+        <button className="btn btn-outline-primary" onClick={onCompartilhar} title={t('compartilhar.botao')}>
+          <i className="bi bi-person-plus" />
+          <span className="d-none d-xxl-inline ms-1">{t('compartilhar.botao')}</span>
+          <span className="visually-hidden d-xxl-none">{t('compartilhar.botao')}</span>
+        </button>
+      )}
 
       <button
         className="btn btn-outline-secondary"

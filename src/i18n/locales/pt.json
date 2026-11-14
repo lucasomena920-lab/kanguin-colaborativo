@@ -118,5 +118,89 @@
     "hoje": "Vencem hoje",
     "amanha": "Vencem amanhã"
   },
-  "carregando": "Carregando..."
+  "carregando": "Carregando...",
+  "auth": {
+    "entrar": "Entrar",
+    "criarConta": "Criar conta",
+    "email": "Email",
+    "senha": "Senha",
+    "senhaDica": "Mínimo de 6 caracteres.",
+    "confirmeEmail": "Quase lá! Enviamos um link de confirmação para {{email}}. Abra o email e clique no link para ativar a sua conta.",
+    "semConta": "As tarefas ficam salvas só neste navegador. Se abrir o Kanguin em outro aparelho, numa aba anônima ou limpar os dados do navegador, elas não vão aparecer. Com uma conta, elas ficam guardadas na nuvem.",
+    "voltar": "Continuar sem conta",
+    "indisponivel": "O login não está disponível no momento.",
+    "erros": {
+      "invalid_credentials": "Email ou senha incorretos.",
+      "email_not_confirmed": "Confirme o seu email antes de entrar. Procure o link na sua caixa de entrada.",
+      "user_already_exists": "Já existe uma conta com este email. Tente entrar.",
+      "weak_password": "Senha fraca. Use pelo menos 6 caracteres.",
+      "over_email_send_rate_limit": "Muitas tentativas. Espere alguns minutos e tente de novo.",
+      "generico": "Algo deu errado. Tente de novo."
+    },
+    "sair": "Sair",
+    "conectadoComo": "Conectado como",
+    "entrarDica": "Entre para salvar as tarefas na nuvem",
+    "conta": "Conta",
+    "semContaTitulo": "Vai usar sem conta?",
+    "nuvem": {
+      "local": "Salvo neste navegador",
+      "carregando": "Carregando da nuvem...",
+      "salvando": "Salvando...",
+      "sincronizado": "Salvo na nuvem",
+      "erro": "Erro ao salvar na nuvem"
+    }
+  },
+  "migracao": {
+    "titulo": "Levar o seu quadro para a conta?",
+    "texto_one": "Encontramos 1 tarefa salva neste navegador, de quando você usava o Kanguin sem conta. Quer levá-la para a sua conta? Assim, ela fica na nuvem e aparece em qualquer aparelho.",
+    "texto_other": "Encontramos {{count}} tarefas salvas neste navegador, de quando você usava o Kanguin sem conta. Quer levá-las para a sua conta? Assim, elas ficam na nuvem e aparecem em qualquer aparelho.",
+    "nota": "A equipe e a lixeira vão junto. Se escolher \"Agora não\", tudo continua neste navegador e aparece quando você sair da conta.",
+    "levar": "Levar para a conta",
+    "agoraNao": "Agora não"
+  },
+  "quadros": {
+    "titulo": "Quadro",
+    "meuQuadro": "Meu quadro",
+    "novo": "Novo quadro",
+    "nome": "Nome do quadro",
+    "nomePlaceholder": "Ex.: Trabalho, Faculdade...",
+    "criar": "Criar quadro",
+    "papeis": {
+      "dono": "Dono",
+      "admin": "Admin",
+      "editor": "Editor",
+      "colaborador": "Colaborador",
+      "leitor": "Leitor"
+    }
+  },
+  "compartilhar": {
+    "botao": "Compartilhar",
+    "titulo": "Compartilhar quadro",
+    "convidar": "Convidar por email",
+    "emailPlaceholder": "email@exemplo.com",
+    "papel": "Papel",
+    "enviar": "Convidar",
+    "membros": "Quem participa",
+    "voce": "você",
+    "papelDe": "Papel de {{nome}}",
+    "remover": "Remover",
+    "removerNome": "Remover {{nome}} do quadro",
+    "pendentes": "Convites pendentes",
+    "aguardando": "Aguardando a pessoa aceitar",
+    "cancelarConvite": "Cancelar convite",
+    "notaConvite": "A pessoa vê o convite quando entrar no Kanguin com esse email. Se ainda não tiver conta, é só criar uma.",
+    "soDonoAdmin": "Só o dono e os admins podem convidar pessoas e mudar papéis.",
+    "descricoes": {
+      "admin": "convida pessoas e mexe em todas as tarefas.",
+      "editor": "cria e mexe em todas as tarefas.",
+      "colaborador": "cria tarefas, mas só mexe nas que ele criou.",
+      "leitor": "só vê o quadro, sem mexer em nada."
+    },
+    "erros": {
+      "voceMesmo": "Esse é o seu próprio email.",
+      "jaMembro": "Essa pessoa já participa do quadro.",
+      "jaConvidado": "Já existe um convite para esse email.",
+      "semPermissao": "Você não tem permissão para fazer isso."
+    }
+  }
 }

@@ -7,3 +7,8 @@ export function formatarHoras(horas) {
   if (min === 0) return `${h}h`
   return `${h}h${String(min).padStart(2, '0')}`
 }
+
+// "Meu quadro" é o nome padrão salvo no banco; na tela ele aparece traduzido
+export function nomeDoQuadro(quadro, t) {
+  return quadro.nome === 'Meu quadro' ? t('quadros.meuQuadro') : quadro.nome
+}

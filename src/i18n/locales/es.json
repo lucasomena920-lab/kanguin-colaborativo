@@ -118,5 +118,89 @@
     "hoje": "Vencen hoy",
     "amanha": "Vencen mañana"
   },
-  "carregando": "Cargando..."
+  "carregando": "Cargando...",
+  "auth": {
+    "entrar": "Entrar",
+    "criarConta": "Crear cuenta",
+    "email": "Email",
+    "senha": "Contraseña",
+    "senhaDica": "Mínimo 6 caracteres.",
+    "confirmeEmail": "¡Casi listo! Enviamos un enlace de confirmación a {{email}}. Abre el email y haz clic en el enlace para activar tu cuenta.",
+    "semConta": "Las tareas se guardan solo en este navegador. Si abres Kanguin en otro dispositivo, en una ventana de incógnito o borras los datos del navegador, no aparecerán. Con una cuenta, se guardan en la nube.",
+    "voltar": "Continuar sin cuenta",
+    "indisponivel": "El inicio de sesión no está disponible en este momento.",
+    "erros": {
+      "invalid_credentials": "Email o contraseña incorrectos.",
+      "email_not_confirmed": "Confirma tu email antes de entrar. Busca el enlace en tu bandeja de entrada.",
+      "user_already_exists": "Ya existe una cuenta con este email. Intenta entrar.",
+      "weak_password": "Contraseña débil. Usa al menos 6 caracteres.",
+      "over_email_send_rate_limit": "Demasiados intentos. Espera unos minutos y vuelve a intentarlo.",
+      "generico": "Algo salió mal. Inténtalo de nuevo."
+    },
+    "sair": "Cerrar sesión",
+    "conectadoComo": "Conectado como",
+    "entrarDica": "Entra para guardar tus tareas en la nube",
+    "conta": "Cuenta",
+    "semContaTitulo": "¿Lo vas a usar sin cuenta?",
+    "nuvem": {
+      "local": "Guardado en este navegador",
+      "carregando": "Cargando de la nube...",
+      "salvando": "Guardando...",
+      "sincronizado": "Guardado en la nube",
+      "erro": "Error al guardar en la nube"
+    }
+  },
+  "migracao": {
+    "titulo": "¿Llevar tu tablero a la cuenta?",
+    "texto_one": "Encontramos 1 tarea guardada en este navegador, de cuando usabas Kanguin sin cuenta. ¿Quieres llevarla a tu cuenta? Así queda en la nube y aparece en cualquier dispositivo.",
+    "texto_other": "Encontramos {{count}} tareas guardadas en este navegador, de cuando usabas Kanguin sin cuenta. ¿Quieres llevarlas a tu cuenta? Así quedan en la nube y aparecen en cualquier dispositivo.",
+    "nota": "El equipo y la papelera también se llevan. Si eliges \"Ahora no\", todo sigue en este navegador y aparece cuando cierres sesión.",
+    "levar": "Llevar a la cuenta",
+    "agoraNao": "Ahora no"
+  },
+  "quadros": {
+    "titulo": "Tablero",
+    "meuQuadro": "Mi tablero",
+    "novo": "Nuevo tablero",
+    "nome": "Nombre del tablero",
+    "nomePlaceholder": "Ej.: Trabajo, Universidad...",
+    "criar": "Crear tablero",
+    "papeis": {
+      "dono": "Dueño",
+      "admin": "Admin",
+      "editor": "Editor",
+      "colaborador": "Colaborador",
+      "leitor": "Lector"
+    }
+  },
+  "compartilhar": {
+    "botao": "Compartir",
+    "titulo": "Compartir tablero",
+    "convidar": "Invitar por email",
+    "emailPlaceholder": "email@ejemplo.com",
+    "papel": "Rol",
+    "enviar": "Invitar",
+    "membros": "Quién participa",
+    "voce": "tú",
+    "papelDe": "Rol de {{nome}}",
+    "remover": "Quitar",
+    "removerNome": "Quitar a {{nome}} del tablero",
+    "pendentes": "Invitaciones pendientes",
+    "aguardando": "Esperando a que acepte",
+    "cancelarConvite": "Cancelar invitación",
+    "notaConvite": "La persona ve la invitación cuando entra en Kanguin con ese email. Si todavía no tiene cuenta, solo tiene que crear una.",
+    "soDonoAdmin": "Solo el dueño y los admins pueden invitar personas y cambiar roles.",
+    "descricoes": {
+      "admin": "invita personas y edita todas las tareas.",
+      "editor": "crea y edita todas las tareas.",
+      "colaborador": "crea tareas, pero solo edita las suyas.",
+      "leitor": "solo ve el tablero, sin cambiar nada."
+    },
+    "erros": {
+      "voceMesmo": "Ese es tu propio email.",
+      "jaMembro": "Esa persona ya participa en el tablero.",
+      "jaConvidado": "Ya hay una invitación para ese email.",
+      "semPermissao": "No tienes permiso para hacer esto."
+    }
+  }
 }
