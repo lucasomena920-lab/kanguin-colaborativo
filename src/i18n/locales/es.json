@@ -141,7 +141,7 @@
     "voltar": "Continuar sin cuenta",
     "indisponivel": "El inicio de sesión no está disponible en este momento.",
     "erros": {
-      "invalid_credentials": "Email o contraseña incorrectos.",
+      "invalid_credentials": "Email o contraseña incorrectos. Revisa los dos e inténtalo de nuevo.",
       "email_not_confirmed": "Confirma tu email antes de entrar. Busca el enlace en tu bandeja de entrada.",
       "user_already_exists": "Ya existe una cuenta con este email. Intenta entrar.",
       "weak_password": "Contraseña débil. Usa al menos 6 caracteres.",
@@ -165,7 +165,11 @@
     "seuNome": "Tu nombre",
     "seuNomePlaceholder": "Cómo quieres que te llamen",
     "seuNomeAjuda": "Así te verá el equipo.",
-    "mudarNome": "Cambiar mi nombre"
+    "mudarNome": "Cambiar mi nombre",
+    "mostrarSenha": "Mostrar contraseña",
+    "esconderSenha": "Ocultar contraseña",
+    "repetirSenha": "Repite la contraseña",
+    "senhasDiferentes": "Las contraseñas no coinciden."
   },
   "migracao": {
     "titulo": "¿Llevar tu tablero a la cuenta?",

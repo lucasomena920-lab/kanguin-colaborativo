@@ -829,3 +829,9 @@
   color: var(--texto-suave);
   margin: 10px 0 4px 12px;
 }
+
+/* Botão do "olhinho" ao lado da senha: mesma borda dos campos */
+.botao-olho {
+  border-color: var(--bs-border-color);
+  color: var(--texto-secundario);
+}

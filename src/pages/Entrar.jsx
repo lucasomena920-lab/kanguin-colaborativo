@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useNavigate, Link } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { supabase } from '../lib/supabase.js'
@@ -22,6 +22,11 @@ function Entrar({ onSemConta }) {
   const [modo, setModo] = useState('entrar') // 'entrar' ou 'criar'
   const [nome, setNome] = useState('')
   const [email, setEmail] = useState('')
+  const [confirmarSenha, setConfirmarSenha] = useState('')
+  const [mostrarSenha, setMostrarSenha] = useState(false)
+  // Email ou senha errados: deixa os dois campos vermelhos até a pessoa mexer neles
+  const [credenciaisErradas, setCredenciaisErradas] = useState(false)
+  const campoSenha = useRef(null)
   const [senha, setSenha] = useState('')
   const [carregando, setCarregando] = useState(false)
   const [erro, setErro] = useState('')
@@ -40,10 +45,14 @@ function Entrar({ onSemConta }) {
     setModo(novoModo)
     setErro('')
     setAviso('')
+    setConfirmarSenha('')
+    setCredenciaisErradas(false)
   }
 
   function mensagemDeErro(error) {
     if (errosConhecidos.includes(error.code)) return t(`auth.erros.${error.code}`)
+    // Versões antigas do Supabase mandam só a mensagem, sem o código
+    if (error.message === 'Invalid login credentials') return t('auth.erros.invalid_credentials')
     // Erro desconhecido: mostra o código, para ajudar a descobrir o que aconteceu
     console.error('Erro do Supabase:', error)
     const codigo = error.code || error.status
@@ -62,13 +71,26 @@ function Entrar({ onSemConta }) {
 
       if (error) {
         setErro(mensagemDeErro(error))
+        if (error.code === 'invalid_credentials' || error.message === 'Invalid login credentials') {
+          // Por segurança, o Supabase não diz QUAL dos dois está errado
+          // (senão alguém poderia descobrir quais emails têm conta)
+          setCredenciaisErradas(true)
+          setSenha('')
+          campoSenha.current?.focus()
+        }
         return
       }
       navigate('/')
       return
     }
 
-    // modo === 'criar'
+    // modo === 'criar': as duas senhas precisam ser iguais
+    if (senha !== confirmarSenha) {
+      setCarregando(false)
+      setErro(t('auth.senhasDiferentes'))
+      return
+    }
+
     const { data, error } = await supabase.auth.signUp({
       email,
       password: senha,
@@ -151,9 +173,12 @@ function Entrar({ onSemConta }) {
               <input
                 id="authEmail"
                 type="email"
-                className="form-control"
+                className={`form-control ${credenciaisErradas ? 'is-invalid' : ''}`}
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value)
+                  setCredenciaisErradas(false)
+                }}
                 autoComplete="email"
                 required
                 autoFocus
@@ -162,18 +187,54 @@ function Entrar({ onSemConta }) {
 
             <div className="mb-3">
               <label htmlFor="authSenha" className="form-label">{t('auth.senha')}</label>
-              <input
-                id="authSenha"
-                type="password"
-                className="form-control"
-                value={senha}
-                onChange={(e) => setSenha(e.target.value)}
-                autoComplete={modo === 'entrar' ? 'current-password' : 'new-password'}
-                minLength={6}
-                required
-              />
+              {/* Campo de senha com o "olhinho" para mostrar ou esconder o que foi digitado */}
+              <div className="input-group">
+                <input
+                  id="authSenha"
+                  ref={campoSenha}
+                  type={mostrarSenha ? 'text' : 'password'}
+                  className={`form-control ${credenciaisErradas ? 'is-invalid' : ''}`}
+                  value={senha}
+                  onChange={(e) => {
+                    setSenha(e.target.value)
+                    setCredenciaisErradas(false)
+                  }}
+                  autoComplete={modo === 'entrar' ? 'current-password' : 'new-password'}
+                  minLength={6}
+                  required
+                />
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary botao-olho"
+                  onClick={() => setMostrarSenha(!mostrarSenha)}
+                  aria-label={mostrarSenha ? t('auth.esconderSenha') : t('auth.mostrarSenha')}
+                  title={mostrarSenha ? t('auth.esconderSenha') : t('auth.mostrarSenha')}
+                  aria-pressed={mostrarSenha}
+                >
+                  <i className={`bi ${mostrarSenha ? 'bi-eye-slash' : 'bi-eye'}`} />
+                </button>
+              </div>
               {modo === 'criar' && <div className="form-text">{t('auth.senhaDica')}</div>}
             </div>
+
+            {/* Repetir a senha: só ao criar conta, para evitar erro de digitação */}
+            {modo === 'criar' && (
+              <div className="mb-3">
+                <label htmlFor="authConfirmar" className="form-label">{t('auth.repetirSenha')}</label>
+                <input
+                  id="authConfirmar"
+                  type={mostrarSenha ? 'text' : 'password'}
+                  className={`form-control ${
+                    confirmarSenha && confirmarSenha !== senha ? 'is-invalid' : ''
+                  } ${confirmarSenha && confirmarSenha === senha ? 'is-valid' : ''}`}
+                  value={confirmarSenha}
+                  onChange={(e) => setConfirmarSenha(e.target.value)}
+                  autoComplete="new-password"
+                  required
+                />
+                <div className="invalid-feedback">{t('auth.senhasDiferentes')}</div>
+              </div>
+            )}
 
             {erro && (
               <div className="alert alert-danger py-2 small" role="alert">

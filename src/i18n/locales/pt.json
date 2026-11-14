@@ -141,7 +141,7 @@
     "voltar": "Continuar sem conta",
     "indisponivel": "O login não está disponível no momento.",
     "erros": {
-      "invalid_credentials": "Email ou senha incorretos.",
+      "invalid_credentials": "Email ou senha incorretos. Confira os dois e tente de novo.",
       "email_not_confirmed": "Confirme o seu email antes de entrar. Procure o link na sua caixa de entrada.",
       "user_already_exists": "Já existe uma conta com este email. Tente entrar.",
       "weak_password": "Senha fraca. Use pelo menos 6 caracteres.",
@@ -165,7 +165,11 @@
     "seuNome": "Seu nome",
     "seuNomePlaceholder": "Como quer ser chamado(a)",
     "seuNomeAjuda": "É assim que você aparece para a equipe.",
-    "mudarNome": "Mudar meu nome"
+    "mudarNome": "Mudar meu nome",
+    "mostrarSenha": "Mostrar senha",
+    "esconderSenha": "Esconder senha",
+    "repetirSenha": "Repita a senha",
+    "senhasDiferentes": "As senhas não são iguais."
   },
   "migracao": {
     "titulo": "Levar o seu quadro para a conta?",

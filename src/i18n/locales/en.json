@@ -141,7 +141,7 @@
     "voltar": "Continue without an account",
     "indisponivel": "Sign in is not available right now.",
     "erros": {
-      "invalid_credentials": "Wrong email or password.",
+      "invalid_credentials": "Wrong email or password. Check both and try again.",
       "email_not_confirmed": "Please confirm your email before signing in. Look for the link in your inbox.",
       "user_already_exists": "An account with this email already exists. Try signing in.",
       "weak_password": "Weak password. Use at least 6 characters.",
@@ -165,7 +165,11 @@
     "seuNome": "Your name",
     "seuNomePlaceholder": "What should we call you?",
     "seuNomeAjuda": "This is how the team will see you.",
-    "mudarNome": "Change my name"
+    "mudarNome": "Change my name",
+    "mostrarSenha": "Show password",
+    "esconderSenha": "Hide password",
+    "repetirSenha": "Repeat the password",
+    "senhasDiferentes": "The passwords don't match."
   },
   "migracao": {
     "titulo": "Move your board to your account?",
