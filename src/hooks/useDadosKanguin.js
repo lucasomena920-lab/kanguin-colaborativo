@@ -94,7 +94,12 @@ async function salvarDiferencas(dados, userId, salvo, setStatus) {
     return
   }
 
-  salvo.current = { tarefas: agoraTarefas, membros: agoraMembros }
+  // Atualiza a "fotografia" só do que foi enviado agora. Assim, o que chegou
+  // em tempo real de outra pessoa enquanto salvava não é apagado daqui.
+  for (const linha of mudaram) salvo.current.tarefas[linha.id] = agoraTarefas[linha.id]
+  for (const id of sumiram) delete salvo.current.tarefas[id]
+  for (const linha of membrosMudaram) salvo.current.membros[linha.nome] = agoraMembros[linha.nome]
+  for (const nome of membrosSumiram) delete salvo.current.membros[nome]
   setStatus('sincronizado')
 }
 
@@ -120,9 +125,12 @@ function useDadosKanguin(usuario) {
 
   // Convites que eu recebi: { userId, lista }
   const [convites, setConvites] = useState(null)
+  const [versaoConvites, setVersaoConvites] = useState(0)
 
   // Dados do quadro aberto: { userId, quadroId, tarefas, lixeira, equipe }
   const [nuvem, setNuvem] = useState(null)
+  // Cópia da versão mais recente, para o tempo real comparar sem esperar o React redesenhar
+  const nuvemRef = useRef(null)
   const [statusNuvem, setStatusNuvem] = useState('sincronizado')
 
   // Última versão salva no banco (para mandar só o que mudou)
@@ -133,6 +141,7 @@ function useDadosKanguin(usuario) {
   const fila = useRef(Promise.resolve())
 
   const userId = usuario?.id ?? null
+  const email = usuario?.email?.toLowerCase() ?? null
   const logado = Boolean(supabase && userId)
 
   const listaQuadros = logado && quadros?.userId === userId ? quadros.lista : null
@@ -217,7 +226,7 @@ function useDadosKanguin(usuario) {
       cancelado = true
       window.removeEventListener('focus', carregarConvites)
     }
-  }, [userId])
+  }, [userId, versaoConvites])
 
   // ===== 2. CARREGAR AS TAREFAS DO QUADRO ABERTO =====
   useEffect(() => {
@@ -258,6 +267,131 @@ function useDadosKanguin(usuario) {
       cancelado = true
     }
   }, [userId, quadroId])
+
+  // ===== 2B. TEMPO REAL: RECEBER O QUE OS OUTROS MUDAM =====
+  useEffect(() => {
+    nuvemRef.current = nuvem
+  }, [nuvem])
+
+  useEffect(() => {
+    if (!supabase || !userId) return
+
+    // Muda os dados do quadro aberto a partir de um evento que veio do banco.
+    // "decidir" olha o estado atual e devolve como transformar os dados (ou null para ignorar).
+    // A transformação roda no setNuvem com a forma (atual) => novo, para não perder
+    // uma mudança que a pessoa fez neste mesmo instante.
+    function atualizar(decidir) {
+      const atual = nuvemRef.current
+      if (!atual || atual.userId !== userId || atual.quadroId !== quadroId) return
+      const transformar = decidir(atual)
+      if (!transformar) return
+      setNuvem((ultimo) => (ultimo?.quadroId === quadroId ? transformar(ultimo) : ultimo))
+    }
+
+    // Esta tarefa tem uma mudança minha que ainda não foi salva?
+    // (aí a minha versão ganha: ela vai ser salva daqui a pouco)
+    function tenhoMudancaNaoSalva(atual, id) {
+      const local = [...atual.tarefas, ...atual.lixeira].find((t) => t.id === id)
+      const linhaLocal = local ? JSON.stringify(paraLinha(local, local.excluida_em ?? null)) : undefined
+      return linhaLocal !== salvo.current.tarefas[id]
+    }
+
+    function receberTarefa({ eventType, new: linhaNova, old: linhaAntiga }) {
+      const id = eventType === 'DELETE' ? linhaAntiga.id : linhaNova.id
+
+      atualizar((atual) => {
+        if (tenhoMudancaNaoSalva(atual, id)) return null
+        const semEla = (lista) => lista.filter((t) => t.id !== id)
+
+        // Apagada de vez (por exemplo: alguém esvaziou a lixeira)
+        if (eventType === 'DELETE') {
+          if (!(id in salvo.current.tarefas)) return null // não era deste quadro
+          delete salvo.current.tarefas[id]
+          return (d) => ({ ...d, tarefas: semEla(d.tarefas), lixeira: semEla(d.lixeira) })
+        }
+
+        // Criada ou alterada: vai para o quadro ou para a lixeira, no mesmo lugar de antes
+        const tarefa = paraTarefa(linhaNova)
+        salvo.current.tarefas[id] = JSON.stringify(paraLinha(tarefa, linhaNova.excluida_em))
+        const colocar = (lista, noFim) =>
+          lista.some((t) => t.id === id)
+            ? lista.map((t) => (t.id === id ? tarefa : t))
+            : noFim ? [...lista, tarefa] : [tarefa, ...lista]
+
+        return linhaNova.excluida_em
+          ? (d) => ({ ...d, tarefas: semEla(d.tarefas), lixeira: colocar(d.lixeira, false) })
+          : (d) => ({ ...d, tarefas: colocar(d.tarefas, true), lixeira: semEla(d.lixeira) })
+      })
+    }
+
+    // Equipe: se mudou algo e eu não estou mexendo nela, carrega a lista de novo
+    async function recarregarEquipe() {
+      const { data, error } = await supabase
+        .from('membros')
+        .select('*')
+        .eq('quadro_id', quadroId)
+        .order('posicao')
+      if (error) return
+      atualizar((atual) => {
+        const agora = fotografar(linhasDosMembros(atual), 'nome')
+        if (JSON.stringify(agora) !== JSON.stringify(salvo.current.membros)) return null
+        const equipe = data.map(({ nome, cor }) => ({ nome, cor }))
+        salvo.current.membros = fotografar(linhasDosMembros({ quadroId, equipe }), 'nome')
+        return (d) => ({ ...d, equipe })
+      })
+    }
+
+    const tabela = (nome, evento, filtro) => ({
+      event: evento,
+      schema: 'public',
+      table: nome,
+      ...(filtro && { filter: filtro }),
+    })
+
+    // Um "canal" é uma conexão aberta com o Supabase que avisa quando o banco muda.
+    // Os filtros (quadro_id=eq...) fazem chegar só o que interessa. As exclusões
+    // não aceitam filtro, por isso são conferidas aqui dentro.
+    const canal = supabase.channel(`kanguin:${userId}:${quadroId ?? 'nenhum'}`)
+
+    if (quadroId) {
+      const doQuadro = `quadro_id=eq.${quadroId}`
+      canal
+        .on('postgres_changes', tabela('tarefas', 'INSERT', doQuadro), receberTarefa)
+        .on('postgres_changes', tabela('tarefas', 'UPDATE', doQuadro), receberTarefa)
+        .on('postgres_changes', tabela('tarefas', 'DELETE'), receberTarefa)
+        .on('postgres_changes', tabela('membros', 'INSERT', doQuadro), recarregarEquipe)
+        .on('postgres_changes', tabela('membros', 'UPDATE', doQuadro), recarregarEquipe)
+        .on('postgres_changes', tabela('membros', 'DELETE'), ({ old }) => {
+          if (old.quadro_id === quadroId) recarregarEquipe()
+        })
+    }
+
+    // Meus papéis: alguém mudou o meu papel, me tirou de um quadro, ou eu entrei num
+    const recarregarQuadros = () => setVersaoQuadros((v) => v + 1)
+    canal
+      .on('postgres_changes', tabela('quadro_membros', 'INSERT', `user_id=eq.${userId}`), recarregarQuadros)
+      .on('postgres_changes', tabela('quadro_membros', 'UPDATE', `user_id=eq.${userId}`), recarregarQuadros)
+      .on('postgres_changes', tabela('quadro_membros', 'DELETE'), ({ old }) => {
+        if (old.user_id === userId) recarregarQuadros()
+      })
+
+    // Convites para o meu email: chegou um novo, ou cancelaram um
+    if (email) {
+      canal.on('postgres_changes', tabela('convites', 'INSERT', `email=eq.${email}`), () =>
+        setVersaoConvites((v) => v + 1)
+      )
+    }
+    canal.on('postgres_changes', tabela('convites', 'DELETE'), ({ old }) =>
+      setConvites((atual) =>
+        atual ? { ...atual, lista: atual.lista.filter((c) => c.id !== old.id) } : atual
+      )
+    )
+
+    canal.subscribe()
+    return () => {
+      supabase.removeChannel(canal)
+    }
+  }, [userId, quadroId, email])
 
   // ===== 3. SALVAR NA NUVEM A CADA MUDANÇA =====
   useEffect(() => {
