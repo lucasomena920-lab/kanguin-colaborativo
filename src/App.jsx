@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
-import { Routes, Route, Navigate, useLocation } from 'react-router'
+import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import Sidebar from './components/Sidebar.jsx'
 import BarraMobile from './components/BarraMobile.jsx'
@@ -70,12 +70,16 @@ function App() {
   // Na tela de login, o app aparece sem a sidebar
   const { pathname } = useLocation()
   const telaDeLogin = pathname === '/entrar'
+  const navigate = useNavigate()
 
   // ===== ESTADOS SALVOS NO NAVEGADOR =====
   const [tema, setTema] = useLocalStorage('kanguin:tema', temaDoSistema)
 
-  // Quem está logado (null = ninguém)
+  // Quem está logado (undefined = ainda conferindo, null = ninguém)
   const usuario = useSessao()
+
+  // Quem clicou em "Continuar sem conta" não é mandado para o login de novo
+  const [semConta, setSemConta] = useLocalStorage('kanguin:sem-conta', false)
 
   // ===== TAREFAS, LIXEIRA E EQUIPE =====
   // Sem login: salvas no navegador. Com login: salvas na nuvem (Supabase).
@@ -98,6 +102,15 @@ function App() {
     recusarConvite,
     sairDoQuadro,
   } = useDadosKanguin(usuario)
+
+  // ===== TELA DE LOGIN PRIMEIRO =====
+  // Quem chega sem login vai direto para a tela de entrar. Não vai se escolheu
+  // usar sem conta, ou se já tem tarefas guardadas neste navegador.
+  const carregandoSessao = usuario === undefined
+  const jaUsaSemConta = semConta || tarefas.length + lixeira.length > 0
+  const mandarParaLogin = Boolean(supabase) && usuario === null && !jaUsaSemConta && !telaDeLogin
+  // Enquanto confere o login ou vai para a tela de entrar, não mostra o quadro
+  const esconderQuadro = mandarParaLogin || (carregandoSessao && !telaDeLogin)
 
   // ===== PERMISSÕES NO QUADRO ABERTO =====
   // Sem conta: pode tudo. Com conta: depende do papel (enquanto carrega, só vê).
@@ -284,6 +297,8 @@ function App() {
   async function sair() {
     await salvarAgora() // não perde o que estava esperando para salvar
     await supabase.auth.signOut()
+    setSemConta(false)
+    navigate('/entrar')
   }
 
   // Props do menu (iguais na sidebar do computador e no menu do celular)
@@ -311,71 +326,80 @@ function App() {
   return (
     <PermissoesContext value={permissoes}>
       <div className="app d-flex">
-        {!telaDeLogin && <Sidebar {...propsMenu} />}
+        {!telaDeLogin && !esconderQuadro && <Sidebar {...propsMenu} />}
 
         <div className="conteudo flex-grow-1">
-          {!telaDeLogin && <BarraMobile {...propsMenu} />}
+          {!telaDeLogin && !esconderQuadro && <BarraMobile {...propsMenu} />}
 
           <Suspense fallback={<Carregando />}>
-            <Routes>
-              {/* Página do Quadro */}
-              <Route
-                path="/"
-                element={
-                  <>
-                    <Topo
-                      titulo={quadroAtual ? nomeDoQuadro(quadroAtual, t) : null}
-                      onCompartilhar={quadroAtual ? () => setCompartilhando(true) : null}
-                      filtros={filtros}
-                      onMudarFiltro={mudarFiltro}
-                      equipe={equipe}
-                      onNovaTarefa={() => abrirNovaTarefa('a-fazer')}
-                      onLimpar={limparQuadro}
-                      podeLimpar={tarefas.length > 0}
-                    />
-                    <main className="p-3 p-md-4">
-                      <Quadro
-                        colunas={colunas}
-                        tarefas={tarefasVisiveis}
+            {mandarParaLogin ? (
+              <Navigate to="/entrar" replace />
+            ) : esconderQuadro ? (
+              <Carregando />
+            ) : (
+              <Routes>
+                {/* Página do Quadro */}
+                <Route
+                  path="/"
+                  element={
+                    <>
+                      <Topo
+                        titulo={quadroAtual ? nomeDoQuadro(quadroAtual, t) : null}
+                        onCompartilhar={quadroAtual ? () => setCompartilhando(true) : null}
+                        filtros={filtros}
+                        onMudarFiltro={mudarFiltro}
                         equipe={equipe}
-                        onEditar={abrirEdicao}
-                        onAdicionar={abrirNovaTarefa}
-                        onMover={moverTarefa}
+                        onNovaTarefa={() => abrirNovaTarefa('a-fazer')}
+                        onLimpar={limparQuadro}
+                        podeLimpar={tarefas.length > 0}
                       />
-                    </main>
-                  </>
-                }
-              />
+                      <main className="p-3 p-md-4">
+                        <Quadro
+                          colunas={colunas}
+                          tarefas={tarefasVisiveis}
+                          equipe={equipe}
+                          onEditar={abrirEdicao}
+                          onAdicionar={abrirNovaTarefa}
+                          onMover={moverTarefa}
+                        />
+                      </main>
+                    </>
+                  }
+                />
 
-              <Route
-                path="/estatisticas"
-                element={<Estatisticas tarefas={tarefas} colunas={colunas} equipe={equipe} />}
-              />
+                <Route
+                  path="/estatisticas"
+                  element={<Estatisticas tarefas={tarefas} colunas={colunas} equipe={equipe} />}
+                />
 
-              <Route
-                path="/calendario"
-                element={
-                  <Calendario
-                    tarefas={tarefas}
-                    equipe={equipe}
-                    onEditar={abrirEdicao}
-                    onAdicionar={(data) => abrirNovaTarefa('a-fazer', data)}
-                  />
-                }
-              />
+                <Route
+                  path="/calendario"
+                  element={
+                    <Calendario
+                      tarefas={tarefas}
+                      equipe={equipe}
+                      onEditar={abrirEdicao}
+                      onAdicionar={(data) => abrirNovaTarefa('a-fazer', data)}
+                    />
+                  }
+                />
 
-              <Route
-                path="/lixeira"
-                element={
-                  <Lixeira itens={lixeira} onRestaurar={restaurarDaLixeira} onEsvaziar={esvaziarLixeira} />
-                }
-              />
+                <Route
+                  path="/lixeira"
+                  element={
+                    <Lixeira itens={lixeira} onRestaurar={restaurarDaLixeira} onEsvaziar={esvaziarLixeira} />
+                  }
+                />
 
-              <Route path="/entrar" element={usuario ? <Navigate to="/" replace /> : <Entrar />} />
+                <Route
+                  path="/entrar"
+                  element={usuario ? <Navigate to="/" replace /> : <Entrar onSemConta={() => setSemConta(true)} />}
+                />
 
-              {/* Qualquer outro endereço volta para o Quadro */}
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
+                {/* Qualquer outro endereço volta para o Quadro */}
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            )}
           </Suspense>
         </div>
 

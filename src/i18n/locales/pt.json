@@ -137,7 +137,9 @@
       "user_already_exists": "Já existe uma conta com este email. Tente entrar.",
       "weak_password": "Senha fraca. Use pelo menos 6 caracteres.",
       "over_email_send_rate_limit": "Muitas tentativas. Espere alguns minutos e tente de novo.",
-      "generico": "Algo deu errado. Tente de novo."
+      "generico": "Algo deu errado. Tente de novo.",
+      "signup_disabled": "Novos cadastros estão desligados no momento.",
+      "email_address_invalid": "Esse email não é aceito. Confira se digitou certo."
     },
     "sair": "Sair",
     "conectadoComo": "Conectado como",

@@ -137,7 +137,9 @@
       "user_already_exists": "An account with this email already exists. Try signing in.",
       "weak_password": "Weak password. Use at least 6 characters.",
       "over_email_send_rate_limit": "Too many attempts. Wait a few minutes and try again.",
-      "generico": "Something went wrong. Please try again."
+      "generico": "Something went wrong. Please try again.",
+      "signup_disabled": "New sign-ups are turned off right now.",
+      "email_address_invalid": "That email isn't accepted. Check that it's spelled right."
     },
     "sair": "Sign out",
     "conectadoComo": "Signed in as",

@@ -11,9 +11,11 @@ const errosConhecidos = [
   'user_already_exists',
   'weak_password',
   'over_email_send_rate_limit',
+  'signup_disabled',
+  'email_address_invalid',
 ]
 
-function Entrar() {
+function Entrar({ onSemConta }) {
   const { t } = useTranslation()
   const navigate = useNavigate()
 
@@ -40,9 +42,11 @@ function Entrar() {
   }
 
   function mensagemDeErro(error) {
-    return errosConhecidos.includes(error.code)
-      ? t(`auth.erros.${error.code}`)
-      : t('auth.erros.generico')
+    if (errosConhecidos.includes(error.code)) return t(`auth.erros.${error.code}`)
+    // Erro desconhecido: mostra o código, para ajudar a descobrir o que aconteceu
+    console.error('Erro do Supabase:', error)
+    const codigo = error.code || error.status
+    return codigo ? `${t('auth.erros.generico')} (${codigo})` : t('auth.erros.generico')
   }
 
   async function enviar(e) {
@@ -172,7 +176,7 @@ function Entrar() {
         </div>
 
         <div className="text-center mt-3">
-          <Link to="/" className="small">
+          <Link to="/" className="small" onClick={onSemConta}>
             <i className="bi bi-arrow-left me-1" />
             {t('auth.voltar')}
           </Link>
