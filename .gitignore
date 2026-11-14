@@ -137,3 +137,5 @@ dist
 
 # Arquivos de apoio gerados durante o desenvolvimento (não fazem parte do app)
 Claude outputs/
+
+.env.local
