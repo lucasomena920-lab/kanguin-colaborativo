@@ -528,6 +528,26 @@ function useDadosKanguin(usuario) {
     return true
   }
 
+  // Excluir um quadro (só o dono). O banco apaga junto, em cascata:
+  // tarefas, lixeira, equipe, participantes e convites desse quadro.
+  async function excluirQuadro(quadro) {
+    // Se havia algo esperando para salvar nesse quadro, não adianta mais
+    if (pendente.current) {
+      clearTimeout(pendente.current.timer)
+      pendente.current = null
+    }
+    await fila.current
+
+    const { data, error } = await supabase.from('quadros').delete().eq('id', quadro.id).select('id')
+    if (error || !data?.length) return false
+
+    setQuadros((atual) => ({ ...atual, lista: atual.lista.filter((q) => q.id !== quadro.id) }))
+    setQuadroEscolhido(null)
+    // Recarrega a lista (se era o único quadro, um "Meu quadro" novo é criado)
+    setVersaoQuadros((v) => v + 1)
+    return true
+  }
+
   // Sair de um quadro que é de outra pessoa (o dono não pode sair do próprio)
   async function sairDoQuadro(quadro) {
     await salvarAgora()
@@ -636,6 +656,7 @@ function useDadosKanguin(usuario) {
     quadroAtual,
     trocarQuadro,
     criarQuadro,
+    excluirQuadro,
     salvarAgora,
     // Convites recebidos
     convites: logado && convites?.userId === userId ? convites.lista : [],

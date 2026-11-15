@@ -193,7 +193,12 @@
       "colaborador": "Colaborador",
       "leitor": "Leitor"
     },
-    "quadroDe": "Quadro de {{nome}}"
+    "quadroDe": "Quadro de {{nome}}",
+    "excluir": "Excluir este quadro",
+    "excluirTitulo": "Excluir \"{{nome}}\"?",
+    "excluirAviso": "Todas as tarefas, a lixeira e a equipe deste quadro serão apagadas para sempre, para todos que participam dele. Isso não pode ser desfeito.",
+    "excluirDigite": "Para confirmar, digite o nome do quadro:",
+    "excluirConfirmar": "Excluir para sempre"
   },
   "compartilhar": {
     "botao": "Compartilhar",

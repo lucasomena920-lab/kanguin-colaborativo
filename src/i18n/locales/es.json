@@ -193,7 +193,12 @@
       "colaborador": "Colaborador",
       "leitor": "Lector"
     },
-    "quadroDe": "Tablero de {{nome}}"
+    "quadroDe": "Tablero de {{nome}}",
+    "excluir": "Eliminar este tablero",
+    "excluirTitulo": "¿Eliminar \"{{nome}}\"?",
+    "excluirAviso": "Todas las tareas, la papelera y el equipo de este tablero se borrarán para siempre, para todos los que participan. No se puede deshacer.",
+    "excluirDigite": "Para confirmar, escribe el nombre del tablero:",
+    "excluirConfirmar": "Eliminar para siempre"
   },
   "compartilhar": {
     "botao": "Compartir",

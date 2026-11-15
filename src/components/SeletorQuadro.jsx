@@ -7,12 +7,18 @@ import Button from 'react-bootstrap/Button'
 import { nomeDoQuadro } from '../utils/formatar.js'
 
 // Escolher qual quadro está aberto, e criar quadros novos
-function SeletorQuadro({ quadros, quadroAtual, onTrocar, onCriar, onNavegar }) {
+function SeletorQuadro({ quadros, quadroAtual, onTrocar, onCriar, onExcluir, onNavegar }) {
   const { t } = useTranslation()
   const [criando, setCriando] = useState(false)
   const [nome, setNome] = useState('')
   const [salvando, setSalvando] = useState(false)
   const [erro, setErro] = useState(false)
+
+  // Excluir: para confirmar, a pessoa digita o nome do quadro
+  const [excluindo, setExcluindo] = useState(false)
+  const [confirmacao, setConfirmacao] = useState('')
+  const [apagando, setApagando] = useState(false)
+  const [erroExcluir, setErroExcluir] = useState(false)
 
   if (!quadroAtual) return null
 
@@ -20,6 +26,29 @@ function SeletorQuadro({ quadros, quadroAtual, onTrocar, onCriar, onNavegar }) {
     setNome('')
     setErro(false)
     setCriando(true)
+  }
+
+  const nomeAtual = quadroAtual ? nomeDoQuadro(quadroAtual, t) : ''
+  const confirmou = confirmacao.trim().toLowerCase() === nomeAtual.toLowerCase()
+
+  function abrirExclusao() {
+    setConfirmacao('')
+    setErroExcluir(false)
+    setExcluindo(true)
+  }
+
+  async function excluir(e) {
+    e.preventDefault()
+    if (!confirmou) return
+    setApagando(true)
+    const deuCerto = await onExcluir(quadroAtual)
+    setApagando(false)
+    if (!deuCerto) {
+      setErroExcluir(true)
+      return
+    }
+    setExcluindo(false)
+    onNavegar?.()
   }
 
   async function criar(e) {
@@ -70,6 +99,13 @@ function SeletorQuadro({ quadros, quadroAtual, onTrocar, onCriar, onNavegar }) {
               <i className="bi bi-plus-lg me-2" />
               {t('quadros.novo')}
             </Dropdown.Item>
+            {/* Só o dono pode excluir o quadro aberto */}
+            {quadroAtual.papel === 'dono' && (
+              <Dropdown.Item as="button" onClick={abrirExclusao} className="text-danger">
+                <i className="bi bi-trash3 me-2" />
+                {t('quadros.excluir')}
+              </Dropdown.Item>
+            )}
           </Dropdown.Menu>
         </Dropdown>
       </div>
@@ -101,6 +137,43 @@ function SeletorQuadro({ quadros, quadroAtual, onTrocar, onCriar, onNavegar }) {
               <Button type="submit" variant="primary" disabled={!nome.trim() || salvando}>
                 {salvando && <span className="spinner-border spinner-border-sm me-2" />}
                 {t('quadros.criar')}
+              </Button>
+            </Modal.Footer>
+          </Form>
+        </Modal>
+      )}
+
+      {excluindo && (
+        <Modal show onHide={() => setExcluindo(false)} centered>
+          <Form onSubmit={excluir}>
+            <Modal.Header closeButton>
+              <Modal.Title as="h2" className="h5 text-danger">
+                <i className="bi bi-exclamation-triangle-fill me-2" />
+                {t('quadros.excluirTitulo', { nome: nomeAtual })}
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <p className="mb-3">{t('quadros.excluirAviso')}</p>
+              <Form.Group controlId="fConfirmarExclusao">
+                <Form.Label className="small">
+                  {t('quadros.excluirDigite')} <strong>{nomeAtual}</strong>
+                </Form.Label>
+                <Form.Control
+                  value={confirmacao}
+                  onChange={(e) => setConfirmacao(e.target.value)}
+                  autoComplete="off"
+                  autoFocus
+                />
+              </Form.Group>
+              {erroExcluir && <div className="alert alert-danger py-2 small mt-3 mb-0">{t('auth.erros.generico')}</div>}
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="outline-secondary" onClick={() => setExcluindo(false)}>
+                {t('modal.cancelar')}
+              </Button>
+              <Button type="submit" variant="danger" disabled={!confirmou || apagando}>
+                {apagando && <span className="spinner-border spinner-border-sm me-2" />}
+                {t('quadros.excluirConfirmar')}
               </Button>
             </Modal.Footer>
           </Form>

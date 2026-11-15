@@ -193,7 +193,12 @@
       "colaborador": "Contributor",
       "leitor": "Viewer"
     },
-    "quadroDe": "{{nome}}'s board"
+    "quadroDe": "{{nome}}'s board",
+    "excluir": "Delete this board",
+    "excluirTitulo": "Delete \"{{nome}}\"?",
+    "excluirAviso": "All tasks, the trash and the team of this board will be deleted forever, for everyone on it. This can't be undone.",
+    "excluirDigite": "To confirm, type the board name:",
+    "excluirConfirmar": "Delete forever"
   },
   "compartilhar": {
     "botao": "Share",

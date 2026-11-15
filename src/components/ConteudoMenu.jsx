@@ -28,6 +28,7 @@ function ConteudoMenu({
   quadroAtual,
   onTrocarQuadro,
   onCriarQuadro,
+  onExcluirQuadro,
   onSair,
   onAlternarTema,
   onNavegar,
@@ -51,6 +52,7 @@ function ConteudoMenu({
           quadroAtual={quadroAtual}
           onTrocar={onTrocarQuadro}
           onCriar={onCriarQuadro}
+          onExcluir={onExcluirQuadro}
           onNavegar={onNavegar}
         />
       )}
