@@ -144,7 +144,7 @@
       "invalid_credentials": "Wrong email or password. Check both and try again.",
       "email_not_confirmed": "Please confirm your email before signing in. Look for the link in your inbox.",
       "user_already_exists": "An account with this email already exists. Try signing in.",
-      "weak_password": "Weak password. Use at least 6 characters.",
+      "weak_password": "The password needs to meet every rule on the list.",
       "over_email_send_rate_limit": "Too many attempts. Wait a few minutes and try again.",
       "generico": "Something went wrong. Please try again.",
       "signup_disabled": "New sign-ups are turned off right now.",
@@ -169,7 +169,14 @@
     "mostrarSenha": "Show password",
     "esconderSenha": "Hide password",
     "repetirSenha": "Repeat the password",
-    "senhasDiferentes": "The passwords don't match."
+    "senhasDiferentes": "The passwords don't match.",
+    "regras": {
+      "tamanho": "At least 8 characters",
+      "minuscula": "A lowercase letter (a-z)",
+      "maiuscula": "An uppercase letter (A-Z)",
+      "numero": "A number (0-9)",
+      "simbolo": "A symbol (! @ # $ % & * ...)"
+    }
   },
   "migracao": {
     "titulo": "Move your board to your account?",

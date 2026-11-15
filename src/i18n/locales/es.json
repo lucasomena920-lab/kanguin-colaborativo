@@ -144,7 +144,7 @@
       "invalid_credentials": "Email o contraseña incorrectos. Revisa los dos e inténtalo de nuevo.",
       "email_not_confirmed": "Confirma tu email antes de entrar. Busca el enlace en tu bandeja de entrada.",
       "user_already_exists": "Ya existe una cuenta con este email. Intenta entrar.",
-      "weak_password": "Contraseña débil. Usa al menos 6 caracteres.",
+      "weak_password": "La contraseña tiene que cumplir todas las reglas de la lista.",
       "over_email_send_rate_limit": "Demasiados intentos. Espera unos minutos y vuelve a intentarlo.",
       "generico": "Algo salió mal. Inténtalo de nuevo.",
       "signup_disabled": "Los registros nuevos están desactivados en este momento.",
@@ -169,7 +169,14 @@
     "mostrarSenha": "Mostrar contraseña",
     "esconderSenha": "Ocultar contraseña",
     "repetirSenha": "Repite la contraseña",
-    "senhasDiferentes": "Las contraseñas no coinciden."
+    "senhasDiferentes": "Las contraseñas no coinciden.",
+    "regras": {
+      "tamanho": "Al menos 8 caracteres",
+      "minuscula": "Una letra minúscula (a-z)",
+      "maiuscula": "Una letra mayúscula (A-Z)",
+      "numero": "Un número (0-9)",
+      "simbolo": "Un símbolo (! @ # $ % & * ...)"
+    }
   },
   "migracao": {
     "titulo": "¿Llevar tu tablero a la cuenta?",

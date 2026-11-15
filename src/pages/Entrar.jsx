@@ -4,6 +4,15 @@ import { useTranslation } from 'react-i18next'
 import { supabase } from '../lib/supabase.js'
 import Logo from '../components/Logo.jsx'
 
+// Regras de uma senha forte (as mesmas configuradas no Supabase)
+const regrasSenha = [
+  { id: 'tamanho', ok: (senha) => senha.length >= 8 },
+  { id: 'minuscula', ok: (senha) => /[a-z]/.test(senha) },
+  { id: 'maiuscula', ok: (senha) => /[A-Z]/.test(senha) },
+  { id: 'numero', ok: (senha) => /[0-9]/.test(senha) },
+  { id: 'simbolo', ok: (senha) => /[^A-Za-z0-9]/.test(senha) },
+]
+
 // Erros do Supabase que têm mensagem própria nos arquivos de tradução
 const errosConhecidos = [
   'invalid_credentials',
@@ -31,6 +40,9 @@ function Entrar({ onSemConta }) {
   const [carregando, setCarregando] = useState(false)
   const [erro, setErro] = useState('')
   const [aviso, setAviso] = useState('')
+
+  // Ao criar conta: a senha digitada cumpre todas as regras?
+  const senhaForte = regrasSenha.every((regra) => regra.ok(senha))
 
   // Sem as chaves do Supabase, o login não existe (o app continua funcionando sem conta)
   if (!supabase) {
@@ -85,6 +97,11 @@ function Entrar({ onSemConta }) {
     }
 
     // modo === 'criar': as duas senhas precisam ser iguais
+    if (!senhaForte) {
+      setCarregando(false)
+      setErro(t('auth.erros.weak_password'))
+      return
+    }
     if (senha !== confirmarSenha) {
       setCarregando(false)
       setErro(t('auth.senhasDiferentes'))
@@ -198,9 +215,10 @@ function Entrar({ onSemConta }) {
                   onChange={(e) => {
                     setSenha(e.target.value)
                     setCredenciaisErradas(false)
+                    setErro('')
                   }}
                   autoComplete={modo === 'entrar' ? 'current-password' : 'new-password'}
-                  minLength={6}
+                  minLength={modo === 'criar' ? 8 : 6}
                   required
                 />
                 <button
@@ -214,7 +232,20 @@ function Entrar({ onSemConta }) {
                   <i className={`bi ${mostrarSenha ? 'bi-eye-slash' : 'bi-eye'}`} />
                 </button>
               </div>
-              {modo === 'criar' && <div className="form-text">{t('auth.senhaDica')}</div>}
+              {/* Ao criar conta: lista das regras, que vão ficando verdes enquanto a pessoa digita */}
+              {modo === 'criar' && (
+                <ul className="regras-senha list-unstyled small mt-2 mb-0">
+                  {regrasSenha.map((regra) => {
+                    const cumpriu = regra.ok(senha)
+                    return (
+                      <li key={regra.id} className={cumpriu ? 'ok' : ''}>
+                        <i className={`bi ${cumpriu ? 'bi-check-circle-fill' : 'bi-circle'} me-2`} />
+                        {t(`auth.regras.${regra.id}`)}
+                      </li>
+                    )
+                  })}
+                </ul>
+              )}
             </div>
 
             {/* Repetir a senha: só ao criar conta, para evitar erro de digitação */}

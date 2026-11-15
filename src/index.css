@@ -835,3 +835,13 @@
   border-color: var(--bs-border-color);
   color: var(--texto-secundario);
 }
+
+/* Regras da senha no cadastro: cinza até cumprir, verde quando cumpre */
+.regras-senha li {
+  color: var(--texto-secundario);
+  transition: color 0.15s;
+}
+
+.regras-senha li.ok {
+  color: var(--bs-success-text-emphasis);
+}
