@@ -249,5 +249,31 @@
   "permissoes": {
     "soLeitura": "Você não pode editar esta tarefa",
     "avisoModal": "Você pode ver esta tarefa, mas não editar. Peça ao dono do quadro para mudar o seu papel."
+  },
+  "feedback": {
+    "botao": "Suporte e feedback",
+    "titulo": "Suporte e feedback",
+    "descricao": "Encontrou um problema, tem uma ideia ou quer só dar um oi? A mensagem vai direto para quem faz o Kanguin.",
+    "sobre": "É sobre",
+    "tipos": {
+      "sugestao": "Sugestão",
+      "problema": "Problema",
+      "elogio": "Elogio",
+      "outro": "Outro"
+    },
+    "placeholders": {
+      "sugestao": "O que poderia ser melhor ou o que você gostaria que o Kanguin tivesse?",
+      "problema": "O que aconteceu? Se puder, conte o que você estava fazendo na hora.",
+      "elogio": "O que você mais gostou?",
+      "outro": "Escreva aqui..."
+    },
+    "mensagem": "Mensagem",
+    "email": "Seu email (opcional)",
+    "emailAjuda": "Só se quiser uma resposta. Não aparece para mais ninguém.",
+    "enviar": "Enviar",
+    "obrigado": "Obrigado pela mensagem!",
+    "vamosResponder": "Recebemos e vamos responder no seu email assim que possível.",
+    "recebido": "Recebemos e vamos ler com carinho.",
+    "problemaEntrar": "Problemas para entrar? Fale com a gente"
   }
 }

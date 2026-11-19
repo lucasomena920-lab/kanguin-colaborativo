@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { supabase } from '../lib/supabase.js'
 import CartaoConta from './CartaoConta.jsx'
 import ModalMeuNome from './ModalMeuNome.jsx'
+import ModalFeedback from './ModalFeedback.jsx'
 import SeletorQuadro from './SeletorQuadro.jsx'
 import { usePermissoes, possoGerenciar } from '../contexts/permissoes.js'
 import { corDaPessoa } from '../utils/cores.js'
@@ -42,6 +43,7 @@ function ConteudoMenu({
   // Meu nome: o escolhido pela pessoa; enquanto carrega, o começo do email
   const nomeExibido = meuNome || usuario?.email?.split('@')[0] || ''
   const [editandoNome, setEditandoNome] = useState(false)
+  const [mandandoFeedback, setMandandoFeedback] = useState(false)
 
   return (
     <>
@@ -183,6 +185,14 @@ function ConteudoMenu({
       </div>
 
       <div className="mt-auto d-flex flex-column gap-3">
+        {/* Suporte e feedback: só com o Supabase configurado (é lá que as mensagens ficam) */}
+        {supabase && (
+          <button type="button" className="btn btn-link link-secondary botao-feedback" onClick={() => setMandandoFeedback(true)}>
+            <i className="bi bi-chat-heart me-2" />
+            {t('feedback.botao')}
+          </button>
+        )}
+
         <div>
           <p className="menu-titulo">{t('idioma')}</p>
           <div className="btn-group w-100" role="group" aria-label={t('idioma')}>
@@ -226,6 +236,8 @@ function ConteudoMenu({
             </div>
           ))}
       </div>
+
+      {mandandoFeedback && <ModalFeedback usuario={usuario} onFechar={() => setMandandoFeedback(false)} />}
 
       {editandoNome && (
         <ModalMeuNome nomeAtual={nomeExibido} onSalvar={onMudarNome} onFechar={() => setEditandoNome(false)} />

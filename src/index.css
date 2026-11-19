@@ -845,3 +845,20 @@
 .regras-senha li.ok {
   color: var(--bs-success-text-emphasis);
 }
+
+/* ===== SUPORTE E FEEDBACK ===== */
+.botao-feedback {
+  text-align: left;
+  text-decoration: none;
+  font-size: 14px;
+  padding: 4px 12px;
+}
+
+/* Campo armadilha para robôs: existe no HTML, mas fica fora da tela */
+.campo-armadilha {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}

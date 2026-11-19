@@ -249,5 +249,31 @@
   "permissoes": {
     "soLeitura": "You can't edit this task",
     "avisoModal": "You can view this task, but not edit it. Ask the board owner to change your role."
+  },
+  "feedback": {
+    "botao": "Support & feedback",
+    "titulo": "Support & feedback",
+    "descricao": "Found a problem, have an idea or just want to say hi? Your message goes straight to the person who makes Kanguin.",
+    "sobre": "It's about",
+    "tipos": {
+      "sugestao": "Suggestion",
+      "problema": "Problem",
+      "elogio": "Praise",
+      "outro": "Other"
+    },
+    "placeholders": {
+      "sugestao": "What could be better, or what would you like Kanguin to have?",
+      "problema": "What happened? If you can, tell us what you were doing at the time.",
+      "elogio": "What did you like most?",
+      "outro": "Write here..."
+    },
+    "mensagem": "Message",
+    "email": "Your email (optional)",
+    "emailAjuda": "Only if you'd like a reply. Nobody else will see it.",
+    "enviar": "Send",
+    "obrigado": "Thanks for your message!",
+    "vamosResponder": "We got it and will reply by email as soon as we can.",
+    "recebido": "We got it and will read it carefully.",
+    "problemaEntrar": "Trouble signing in? Let us know"
   }
 }

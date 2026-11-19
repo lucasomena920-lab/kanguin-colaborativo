@@ -249,5 +249,31 @@
   "permissoes": {
     "soLeitura": "No puedes editar esta tarea",
     "avisoModal": "Puedes ver esta tarea, pero no editarla. Pide al dueño del tablero que cambie tu rol."
+  },
+  "feedback": {
+    "botao": "Soporte y comentarios",
+    "titulo": "Soporte y comentarios",
+    "descricao": "¿Encontraste un problema, tienes una idea o solo quieres saludar? El mensaje va directo a quien hace Kanguin.",
+    "sobre": "Es sobre",
+    "tipos": {
+      "sugestao": "Sugerencia",
+      "problema": "Problema",
+      "elogio": "Elogio",
+      "outro": "Otro"
+    },
+    "placeholders": {
+      "sugestao": "¿Qué podría mejorar o qué te gustaría que Kanguin tuviera?",
+      "problema": "¿Qué pasó? Si puedes, cuenta qué estabas haciendo en ese momento.",
+      "elogio": "¿Qué es lo que más te gustó?",
+      "outro": "Escribe aquí..."
+    },
+    "mensagem": "Mensaje",
+    "email": "Tu email (opcional)",
+    "emailAjuda": "Solo si quieres una respuesta. Nadie más lo verá.",
+    "enviar": "Enviar",
+    "obrigado": "¡Gracias por el mensaje!",
+    "vamosResponder": "Lo recibimos y te responderemos por email lo antes posible.",
+    "recebido": "Lo recibimos y lo leeremos con cariño.",
+    "problemaEntrar": "¿Problemas para entrar? Escríbenos"
   }
 }

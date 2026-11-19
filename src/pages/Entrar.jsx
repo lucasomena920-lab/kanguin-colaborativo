@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { supabase } from '../lib/supabase.js'
 import Logo from '../components/Logo.jsx'
+import ModalFeedback from '../components/ModalFeedback.jsx'
 
 // Regras de uma senha forte (as mesmas configuradas no Supabase)
 const regrasSenha = [
@@ -40,6 +41,7 @@ function Entrar({ onSemConta }) {
   const [carregando, setCarregando] = useState(false)
   const [erro, setErro] = useState('')
   const [aviso, setAviso] = useState('')
+  const [mandandoFeedback, setMandandoFeedback] = useState(false)
 
   // Ao criar conta: a senha digitada cumpre todas as regras?
   const senhaForte = regrasSenha.every((regra) => regra.ok(senha))
@@ -295,6 +297,16 @@ function Entrar({ onSemConta }) {
             {t('auth.voltar')}
           </Link>
         </div>
+
+        {/* Problema para entrar ou criar conta: dá para avisar sem ter conta */}
+        <div className="text-center mt-2">
+          <button type="button" className="btn btn-link btn-sm link-secondary" onClick={() => setMandandoFeedback(true)}>
+            <i className="bi bi-chat-heart me-1" />
+            {t('feedback.problemaEntrar')}
+          </button>
+        </div>
+
+        {mandandoFeedback && <ModalFeedback usuario={null} onFechar={() => setMandandoFeedback(false)} />}
       </div>
     </main>
   )
